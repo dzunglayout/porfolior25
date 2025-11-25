@@ -78,7 +78,6 @@
 <body class="bg-paper text-primary dark:bg-dark dark:text-stone-200 transition-colors duration-500 font-sans antialiased">
 
     <!-- Navbar -->
-    <!-- Đã bỏ mix-blend-difference để tránh chớp giật -->
     <nav id="main-nav" class="fixed w-full z-50 text-primary dark:text-white transition-all duration-500 border-b border-transparent"> 
         <div class="max-w-screen-2xl mx-auto px-6 py-6 flex justify-between items-center">
             <a href="#" class="text-2xl font-serif font-bold tracking-widest uppercase">Dzung.</a>
@@ -186,7 +185,7 @@
                 <!-- Project 2 -->
                 <div class="group cursor-pointer md:mt-20">
                     <div class="relative overflow-hidden aspect-[3/4] mb-6 bg-stone-100">
-                        <img src="images/web-show-1.jpg" alt="Work 2" class="object-cover w-full h-full transform transition duration-700 group-hover:scale-105 filter grayscale group-hover:grayscale-0">
+                        <img src="https://images.unsplash.com/photo-1626785774573-4b7993143d23?w=800&auto=format&fit=crop&q=80" alt="Work 2" class="object-cover w-full h-full transform transition duration-700 group-hover:scale-105 filter grayscale group-hover:grayscale-0">
                     </div>
                     <div class="flex justify-between items-start">
                         <div>
@@ -328,6 +327,91 @@
         </div>
     </section>
 
+    <!-- NEW ABOUT SECTION: Editorial Style -->
+    <section id="about" class="py-32 px-6 bg-white dark:bg-darkPaper border-t border-stone-100 dark:border-stone-900 overflow-hidden">
+        <div class="max-w-5xl mx-auto">
+            <!-- Top: Big Headline -->
+            <div class="mb-16">
+                <span class="text-xs font-bold tracking-[0.2em] uppercase text-accent block mb-4" data-i18n="about.intro">The Person Behind</span>
+                <h2 class="text-5xl md:text-7xl font-serif italic leading-tight">
+                    <span data-i18n="about.headline_1">Visuals with</span> <br>
+                    <span class="ml-12 md:ml-24 text-stone-400 dark:text-stone-600" data-i18n="about.headline_2">Soul & Purpose.</span>
+                </h2>
+            </div>
+
+            <div class="grid md:grid-cols-12 gap-12 items-start">
+                <!-- Left: Portrait (chiếm 5 cột) -->
+                <div class="md:col-span-5 relative group">
+                    <div class="relative overflow-hidden aspect-[3/4]">
+                        <img src="https://plus.unsplash.com/premium_photo-1682141028605-b2456e2bab14?q=80&w=687&auto=format&fit=crop" 
+                             alt="Portrait" 
+                             class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition duration-1000">
+                        <!-- Decorative Frame -->
+                        <div class="absolute top-4 left-4 right-4 bottom-4 border border-white/20 pointer-events-none"></div>
+                    </div>
+                    
+                    <!-- Location Badge -->
+                    <div class="absolute -bottom-6 -right-6 bg-paper dark:bg-stone-800 p-6 shadow-xl border border-stone-100 dark:border-stone-700 hidden md:block">
+                        <p class="text-xs font-bold tracking-widest uppercase text-accent mb-1">Based in</p>
+                        <p class="font-serif text-xl" data-i18n="about.location">Ho Chi Minh City</p>
+                    </div>
+                </div>
+
+                <!-- Right: Content (chiếm 7 cột) -->
+                <div class="md:col-span-7 md:pl-12 flex flex-col justify-between h-full">
+                    <div>
+                        <h3 class="text-2xl font-bold mb-4" data-i18n="about.greeting">Hi, I'm DzungLayout.</h3>
+                        
+                        <!-- Bio -->
+                        <p class="text-lg font-light leading-relaxed text-stone-600 dark:text-stone-300 mb-8 text-justify" data-i18n="about.bio">
+                            I am a Visual Director focused on storytelling through editing and motion. My approach is simple: strip away the unnecessary until only the essential emotion remains.
+                        </p>
+
+                        <!-- PHILOSOPHY (Đã thêm lại) -->
+                        <div class="mb-8 pl-6 border-l-2 border-accent/50 italic text-stone-500 dark:text-stone-400 font-serif text-lg leading-relaxed">
+                            <p data-i18n="about.philosophy">"Design is not just what it looks like and feels like. Design is how it works..."</p>
+                        </div>
+
+                        <!-- EXPERTISE (Đã thêm lại) -->
+                        <div class="mb-10">
+                            <h4 class="font-bold tracking-widest uppercase text-xs mb-4 text-stone-400" data-i18n="about.expertise">Expertise</h4>
+                            <div class="grid grid-cols-2 gap-x-4 gap-y-2 text-stone-700 dark:text-stone-300 font-light">
+                                <div class="flex items-center"><span class="w-1.5 h-1.5 bg-accent rounded-full mr-2"></span>Art Direction</div>
+                                <div class="flex items-center"><span class="w-1.5 h-1.5 bg-accent rounded-full mr-2"></span>Video Editing</div>
+                                <div class="flex items-center"><span class="w-1.5 h-1.5 bg-accent rounded-full mr-2"></span>Motion Graphics</div>
+                                <div class="flex items-center"><span class="w-1.5 h-1.5 bg-accent rounded-full mr-2"></span>Brand Identity</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Signature -->
+                        <div class="mb-12 opacity-70">
+                            <svg width="200" height="60" viewBox="0 0 200 60" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M10,40 Q30,10 50,40 T90,30 T130,40 T180,20" stroke="currentColor" stroke-width="2" fill="none" class="text-primary dark:text-white" />
+                                <text x="140" y="50" font-family="serif" font-size="12" fill="currentColor" class="text-primary dark:text-white">Dzung.</text>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <!-- Key Stats (Giữ nguyên thay cho Awards) -->
+                    <div class="grid grid-cols-3 gap-8 border-t border-stone-200 dark:border-stone-800 pt-8">
+                        <div>
+                            <span class="block text-4xl font-serif font-bold mb-1">07+</span>
+                            <span class="text-xs uppercase tracking-widest text-stone-500" data-i18n="about.stat_years">Years Exp</span>
+                        </div>
+                        <div>
+                            <span class="block text-4xl font-serif font-bold mb-1">150+</span>
+                            <span class="text-xs uppercase tracking-widest text-stone-500" data-i18n="about.stat_projects">Projects</span>
+                        </div>
+                        <div>
+                            <span class="block text-4xl font-serif font-bold mb-1">100%</span>
+                            <span class="text-xs uppercase tracking-widest text-stone-500" data-i18n="about.stat_happy">Satisfaction</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Client Logos (Marquee) -->
     <section class="py-16 border-t border-stone-100 dark:border-stone-800 bg-paper dark:bg-dark overflow-hidden">
         <div class="max-w-screen-xl mx-auto px-6 mb-8 text-center">
@@ -407,53 +491,6 @@
                             <span data-i18n="ai.t2_btn">Compose</span>
                             <span class="ml-2 transform group-hover:translate-x-1 transition"><i class="fas fa-arrow-right"></i></span>
                         </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Profile & Skills -->
-    <section id="about" class="py-32 px-6 bg-white dark:bg-darkPaper border-t border-stone-100 dark:border-stone-900">
-        <div class="max-w-5xl mx-auto flex flex-col md:flex-row gap-16 items-start">
-            <div class="md:w-1/3 sticky top-32">
-                 <div class="relative">
-                    <img src="https://plus.unsplash.com/premium_photo-1682141028605-b2456e2bab14?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Portrait" class="w-full grayscale hover:grayscale-0 transition duration-1000">
-                    <div class="mt-4 flex justify-between items-end">
-                        <div>
-                            <h3 class="text-xl font-serif">DzungLayout</h3>
-                            <p class="text-xs tracking-widest text-stone-500 uppercase mt-1" data-i18n="about.location">Ho Chi Minh City</p>
-                        </div>
-                        <!-- SỬA Ở ĐÂY: Thay src="..." bằng đường dẫn ảnh logo của bạn -->
-                        <!-- Ví dụ nếu upload lên GitHub: src="images/logo-cua-toi.png" -->
-                        <img src="https://drive.google.com/uc?export=view&id=11bYKWwMcHkXDyRSDUxsqsP7dFpGusoso" class="w-10 h-10 rounded-full shadow-lg" alt="Logo">
-                    </div>
-                 </div>
-            </div>
-            
-            <div class="md:w-2/3">
-                <h2 class="text-3xl md:text-4xl mb-8" data-i18n="about.title">Dzung Layout</h2>
-                <p class="text-lg md:text-xl font-light leading-relaxed text-stone-700 dark:text-stone-300 mb-12" data-i18n="about.philosophy">
-                    "Design is not just what it looks like and feels like. Design is how it works. I believe in minimalism that speaks volumes, and motion that evokes emotion."
-                </p>
-
-                <div class="grid grid-cols-2 gap-y-12 gap-x-8">
-                    <div>
-                        <h4 class="font-bold tracking-widest uppercase text-xs mb-4 border-b border-stone-200 dark:border-stone-800 pb-2" data-i18n="about.expertise">Expertise</h4>
-                        <ul class="space-y-2 font-light text-stone-600 dark:text-stone-400">
-                            <li>Art Direction</li>
-                            <li>Video Editing (Premiere/DaVinci)</li>
-                            <li>Motion Graphics (After Effects)</li>
-                            <li>Brand Identity</li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h4 class="font-bold tracking-widest uppercase text-xs mb-4 border-b border-stone-200 dark:border-stone-800 pb-2" data-i18n="about.recognition">Recognition</h4>
-                        <ul class="space-y-2 font-light text-stone-600 dark:text-stone-400">
-                            <li>Behance Featured 2023</li>
-                            <li>Vimeo Staff Pick</li>
-                            <li>Awwwards Nominee</li>
-                        </ul>
                     </div>
                 </div>
             </div>
@@ -541,11 +578,18 @@
                     t2_btn: "Compose"
                 },
                 about: {
+                    intro: "The Person Behind",
+                    headline_1: "Visuals with",
+                    headline_2: "Soul & Purpose.",
                     location: "Ho Chi Minh City",
-                    title: "Philosophy",
+                    greeting: "Hi, I'm DzungLayout.",
+                    bio: "I am a Visual Director focused on storytelling through editing and motion. My approach is simple: strip away the unnecessary until only the essential emotion remains. I don't just edit videos; I engineer feelings.",
                     philosophy: "\"Design is not just what it looks like and feels like. Design is how it works. I believe in minimalism that speaks volumes, and motion that evokes emotion.\"",
                     expertise: "Expertise",
-                    recognition: "Recognition"
+                    recognition: "Recognition",
+                    stat_years: "Years Exp",
+                    stat_projects: "Projects",
+                    stat_happy: "Satisfaction"
                 },
                 footer: { text: "Let's create something timeless." },
                 typing: ['DzungLayout', 'a Video Editor', 'a Designer', 'a Minimalist']
@@ -590,11 +634,18 @@
                     t2_btn: "Soạn thảo"
                 },
                 about: {
+                    intro: "Con người phía sau",
+                    headline_1: "Hình ảnh có",
+                    headline_2: "Tâm hồn & Mục đích.",
                     location: "TP. Hồ Chí Minh",
-                    title: "Triết lý",
+                    greeting: "Chào, tôi là DzungLayout.",
+                    bio: "Tôi là một Visual Director tập trung vào việc kể chuyện thông qua cắt dựng và chuyển động. Phương pháp của tôi rất đơn giản: loại bỏ những thứ không cần thiết cho đến khi chỉ còn lại cảm xúc cốt lõi.",
                     philosophy: "\"Thiết kế không chỉ là trông nó như thế nào. Thiết kế là cách nó vận hành. Tôi tin vào sự tối giản nhưng sâu sắc, và những chuyển động khơi gợi cảm xúc.\"",
                     expertise: "Chuyên môn",
-                    recognition: "Giải thưởng"
+                    recognition: "Giải thưởng",
+                    stat_years: "Năm kinh nghiệm",
+                    stat_projects: "Dự án",
+                    stat_happy: "Hài lòng"
                 },
                 footer: { text: "Cùng tạo nên những giá trị vượt thời gian." },
                 typing: ['DzungLayout', 'Video Editor', 'Designer', 'Người yêu tối giản']
@@ -845,4 +896,3 @@
     </script>
 </body>
 </html>
-
