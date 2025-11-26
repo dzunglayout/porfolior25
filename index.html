@@ -135,7 +135,7 @@
                 <a href="#work" class="group relative px-8 py-3 overflow-hidden border border-primary dark:border-stone-200 transition-all hover:bg-primary hover:text-white dark:hover:bg-white dark:hover:text-black">
                     <span class="relative z-10 text-sm tracking-widest uppercase" data-i18n="hero.cta_work">View Selected Work</span>
                 </a>
-                 <a href="#contact" class="text-sm tracking-widest uppercase border-b border-transparent hover:border-primary dark:hover:border-white transition-all pb-1" data-i18n="hero.cta_contact">
+                <a href="#contact" class="text-sm tracking-widest uppercase border-b border-transparent hover:border-primary dark:hover:border-white transition-all pb-1" data-i18n="hero.cta_contact">
                     Get in touch
                 </a>
             </div>
@@ -185,7 +185,7 @@
                 <!-- Project 2 -->
                 <div class="group cursor-pointer md:mt-20">
                     <div class="relative overflow-hidden aspect-[3/4] mb-6 bg-stone-100">
-                        <img src="https://satecay.github.io/portfolio-2025/images/web-show-1.jpg" alt="Work 2" class="object-cover w-full h-full transform transition duration-700 group-hover:scale-105 filter grayscale group-hover:grayscale-0">
+                        <img src="https://satecay.github.io/portfolio-2025/images/web-show-1.jpg$0" alt="Work 2" class="object-cover w-full h-full transform transition duration-700 group-hover:scale-105 filter grayscale group-hover:grayscale-0">
                     </div>
                     <div class="flex justify-between items-start">
                         <div>
@@ -232,8 +232,34 @@
         </div>
     </section>
 
+    <!-- NEW: FEATURED SHOWREEL (Parallax/Curtain Effect) -->
+    <!-- Video này sẽ dính ở dưới (z-0), các phần khác đè lên (z-10) -->
+    <section class="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden -z-10">
+        <!-- Video Background -->
+        <video autoplay loop muted playsinline class="absolute inset-0 w-full h-full object-cover brightness-75">
+            <!-- Dùng video mẫu visual art/abstract -->
+            <source src="https://videos.pexels.com/video-files/3129957/3129957-uhd_2560_1440_25fps.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        
+        <!-- Overlay Content -->
+        <div class="relative z-20 text-center text-white mix-blend-overlay px-6">
+            <p class="text-sm md:text-base font-bold tracking-[0.5em] uppercase mb-4 animate-pulse">Showreel 2025</p>
+            <h2 class="text-6xl md:text-9xl font-serif italic tracking-tighter">Emotion &<br>Motion</h2>
+            
+            <!-- Play Button -->
+            <button class="mt-12 w-20 h-20 rounded-full border border-white/30 flex items-center justify-center hover:bg-white hover:text-black transition duration-500 group video-trigger" data-video-id="tgbNymZ7vqY">
+                <i class="fas fa-play text-2xl pl-1 group-hover:scale-110 transition"></i>
+            </button>
+        </div>
+        
+        <!-- Gradient Overlay để chuyển tiếp mượt hơn -->
+        <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"></div>
+    </section>
+
     <!-- Services (Cinematic Cards) -->
-    <section id="services" class="py-24 px-6 bg-paper dark:bg-dark border-t border-stone-100 dark:border-stone-800">
+    <!-- Thêm z-10 và background màu đặc để "che" video khi cuộn lên -->
+    <section id="services" class="relative z-10 py-24 px-6 bg-paper dark:bg-dark border-t border-stone-100 dark:border-stone-800 shadow-2xl shadow-stone-900/20">
         <div class="max-w-screen-xl mx-auto">
             <div class="mb-16 md:w-1/2">
                 <span class="text-xs font-bold tracking-[0.2em] uppercase text-accent" data-i18n="services.label">What I do</span>
@@ -498,7 +524,7 @@
     </section>
 
     <!-- Footer -->
-    <footer class="bg-primary text-white py-20 px-6">
+    <footer id="contact" class="bg-primary text-white py-20 px-6">
         <div class="max-w-screen-xl mx-auto flex flex-col md:flex-row justify-between items-center">
             <div class="mb-8 md:mb-0 text-center md:text-left">
                 <h2 class="text-4xl font-serif italic mb-2" data-i18n="footer.text">Let's create something timeless.</h2>
@@ -896,5 +922,3 @@
     </script>
 </body>
 </html>
-
-
