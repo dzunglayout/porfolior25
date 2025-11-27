@@ -21,6 +21,8 @@
                     fontFamily: {
                         sans: ['"Be Vietnam Pro"', 'sans-serif'],
                         serif: ['Playfair Display', 'serif'],
+                        // CẬP NHẬT: Thêm "Great Vibes" làm font dự phòng nếu Scripture lỗi
+                        scripture: ['Scripture', '"Great Vibes"', 'cursive', 'serif'], 
                     },
                     colors: {
                         primary: '#1c1917',   
@@ -37,6 +39,16 @@
         }
     </script>
     <style>
+         /* KHAI BÁO FONT FACE */
+        @font-face {
+            font-family: 'Scripture';
+            /* LƯU Ý: Kiểm tra kỹ tên file trên GitHub chính xác từng ký tự hoa/thường */
+            src: url('fonts/Scripture.ttf') format('truetype'); 
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+        
         h1, h2, h3, h4 { font-family: 'Playfair Display', serif; }
         
         .typing-effect::after {
@@ -74,20 +86,7 @@
             animation-play-state: paused;
         }
         /* 1. Khai báo Font mới */
-@font-face {
-    font-family: 'Scripture'; /* Tự đặt tên cho font */
-    /* Đường dẫn trỏ vào thư mục fonts bạn vừa tạo */
-    src: url('fonts/Scripture.ttf') format('truetype'); 
-    font-weight: normal;
-    font-style: normal;
-    font-display: swap; /* Giúp hiện chữ mặc định trước khi font tải xong */
-}
-
-/* 2. Tạo class để dùng font này */
-.font-signature-custom {
-    font-family: 'Dzunglayout', cursive; /* cursive là font dự phòng */
-}
-        
+ 
     </style>
 </head>
 <body class="bg-paper text-primary dark:bg-dark dark:text-stone-200 transition-colors duration-500 font-sans antialiased">
@@ -940,6 +939,7 @@
     </script>
 </body>
 </html>
+
 
 
 
