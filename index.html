@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<!-- BỎ class scroll-smooth ở đây để dùng JS xử lý mượt hơn -->
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -9,7 +8,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts: Be Vietnam Pro & Playfair Display -->
+    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@100;200;300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Great+Vibes&display=swap" rel="stylesheet">
     <!-- Markdown Parser -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
@@ -39,7 +38,25 @@
         }
     </script>
     <style>
-        /* KHAI BÁO FONT FACE */
+        /* TỐI ƯU HIỆU SUẤT CUỘN */
+        html {
+            scroll-behavior: auto !important; /* Tắt mặc định để JS xử lý */
+            height: 100%;
+        }
+        
+        body {
+            /* Ngăn chặn hiệu ứng "bounciness" trên Mac có thể gây giật */
+            overscroll-behavior-y: none; 
+        }
+
+        /* GPU Acceleration Hacks (Chống giật/chớp) */
+        .gpu-accelerated {
+            transform: translateZ(0);
+            backface-visibility: hidden;
+            perspective: 1000px;
+            will-change: transform, opacity;
+        }
+
         @font-face {
             font-family: 'Scripture';
             src: url('fonts/Scripture.ttf') format('truetype'); 
@@ -85,22 +102,22 @@
             animation-play-state: paused;
         }
 
-        /* --- HIỆU ỨNG REVEAL ON SCROLL --- */
         .reveal {
             opacity: 0;
-            transform: translateY(50px); /* Đẩy xuống dưới 50px */
-            transition: all 1s ease-out; /* Thời gian hiện ra 1 giây */
+            transform: translateY(50px) translateZ(0); /* Thêm translateZ để mượt hơn */
+            transition: opacity 1s ease-out, transform 1s ease-out;
+            will-change: opacity, transform;
         }
         .reveal.active {
             opacity: 1;
-            transform: translateY(0); /* Trở về vị trí cũ */
+            transform: translateY(0) translateZ(0);
         }
     </style>
 </head>
 <body class="bg-paper text-primary dark:bg-dark dark:text-stone-200 transition-colors duration-500 font-sans antialiased">
 
-    <!-- Navbar -->
-    <nav id="main-nav" class="fixed w-full z-50 text-primary dark:text-white transition-all duration-500 border-b border-transparent"> 
+    <!-- Navbar (Thêm gpu-accelerated) -->
+    <nav id="main-nav" class="fixed w-full z-50 text-primary dark:text-white transition-all duration-500 border-b border-transparent gpu-accelerated"> 
         <div class="max-w-screen-2xl mx-auto px-6 py-6 flex justify-between items-center">
             <a href="#" class="text-2xl font-serif font-bold tracking-widest uppercase">Dzung.</a>
             
@@ -108,26 +125,18 @@
                 <a href="#home" class="hover:text-accent transition" data-i18n="nav.home">Home</a>
                 <a href="#work" class="hover:text-accent transition" data-i18n="nav.work">Selected Work</a>
                 <a href="#services" class="hover:text-accent transition" data-i18n="nav.services">Services</a>
-                
+                <a href="#studio" class="hover:text-accent transition" data-i18n="nav.studio">AI Studio</a>
                 <a href="#about" class="hover:text-accent transition" data-i18n="nav.profile">Profile</a>
                 <a href="LINK_GOOGLE_DRIVE_CUA_BAN" target="_blank" class="hover:text-primary dark:hover:text-white transition font-bold border-b border-stone-500 pb-1" data-i18n="nav.resume">Resume</a>
             </div>
 
             <div class="flex items-center space-x-6">
-                <!-- Language Toggle Button -->
-                <button id="lang-toggle" class="hover:text-accent transition text-sm font-bold border border-current px-2 py-1 rounded">
-                    EN
-                </button>
-                <button id="theme-toggle" class="hover:text-accent transition text-lg">
-                    <i class="fas fa-adjust"></i> 
-                </button>
-                <button id="mobile-menu-btn" class="md:hidden text-lg">
-                    <i class="fas fa-bars"></i>
-                </button>
+                <button id="lang-toggle" class="hover:text-accent transition text-sm font-bold border border-current px-2 py-1 rounded">EN</button>
+                <button id="theme-toggle" class="hover:text-accent transition text-lg"><i class="fas fa-adjust"></i></button>
+                <button id="mobile-menu-btn" class="md:hidden text-lg"><i class="fas fa-bars"></i></button>
             </div>
         </div>
         
-        <!-- Mobile Menu -->
         <div id="mobile-menu" class="hidden absolute top-full left-0 w-full bg-paper dark:bg-dark text-primary dark:text-white border-b border-stone-200 dark:border-stone-800 shadow-xl">
             <div class="flex flex-col p-6 space-y-4 font-serif text-xl">
                 <a href="#home" class="block" data-i18n="nav.home">Home</a>
@@ -140,7 +149,7 @@
     </nav>
 
     <!-- Hero Section -->
-    <section id="home" class="min-h-screen flex items-center justify-center relative pt-20 px-6">
+    <section id="home" class="min-h-screen flex items-center justify-center relative pt-20 px-6 gpu-accelerated">
         <div class="absolute inset-0 bg-noise opacity-50 pointer-events-none"></div>
         <div class="max-w-5xl mx-auto text-center z-10">
             <p class="text-sm md:text-base tracking-[0.3em] uppercase text-accent mb-6 animate-fade-in-up" data-i18n="hero.subtitle">Portfolio 2025</p>
@@ -157,9 +166,7 @@
                 <a href="#work" class="group relative px-8 py-3 overflow-hidden border border-primary dark:border-stone-200 transition-all hover:bg-primary hover:text-white dark:hover:bg-white dark:hover:text-black">
                     <span class="relative z-10 text-sm tracking-widest uppercase" data-i18n="hero.cta_work">View Selected Work</span>
                 </a>
-                <a href="#contact" class="text-sm tracking-widest uppercase border-b border-transparent hover:border-primary dark:hover:border-white transition-all pb-1" data-i18n="hero.cta_contact">
-                    Get in touch
-                </a>
+                <a href="#contact" class="text-sm tracking-widest uppercase border-b border-transparent hover:border-primary dark:hover:border-white transition-all pb-1" data-i18n="hero.cta_contact">Get in touch</a>
             </div>
         </div>
         <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
@@ -183,16 +190,13 @@
                 </div>
             </div>
 
-            <!-- Grid Layout -->
             <div class="grid md:grid-cols-2 gap-x-8 gap-y-16">
-                <!-- Project 1 (Thêm class "reveal") -->
+                <!-- Project 1 -->
                 <div class="group cursor-pointer video-trigger reveal" data-video-id="zjUzZNXi2aQ"> 
                     <div class="relative overflow-hidden aspect-[16/9] mb-6 bg-stone-100">
                         <img src="https://youtu.be/zjUzZNXi2aQ" alt="Work 1" class="object-cover w-full h-full transform transition duration-700 group-hover:scale-105 filter grayscale group-hover:grayscale-0">
                         <div class="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition duration-500 flex items-center justify-center">
-                            <div class="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center group-hover:scale-110 transition duration-300">
-                                <i class="fas fa-play text-white text-xl pl-1"></i>
-                            </div>
+                            <div class="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center group-hover:scale-110 transition duration-300"><i class="fas fa-play text-white text-xl pl-1"></i></div>
                         </div>
                     </div>
                     <div class="flex justify-between items-start">
@@ -204,7 +208,7 @@
                     </div>
                 </div>
 
-                <!-- Project 2 (Thêm class "reveal") -->
+                <!-- Project 2 -->
                 <div class="group cursor-pointer md:mt-20 reveal">
                     <div class="relative overflow-hidden aspect-[3/4] mb-6 bg-stone-100">
                         <img src="https://satecay.github.io/portfolio-2025/images/web-show-1.jpg$0" alt="Work 2" class="object-cover w-full h-full transform transition duration-700 group-hover:scale-105 filter grayscale group-hover:grayscale-0">
@@ -218,14 +222,12 @@
                     </div>
                 </div>
 
-                 <!-- Project 3 (Thêm class "reveal") -->
+                 <!-- Project 3 -->
                  <div class="group cursor-pointer video-trigger reveal" data-video-id="LXb3EKWsInQ">
                     <div class="relative overflow-hidden aspect-[16/9] mb-6 bg-stone-100">
                         <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=800&auto=format&fit=crop&q=80" alt="Work 3" class="object-cover w-full h-full transform transition duration-700 group-hover:scale-105 filter grayscale group-hover:grayscale-0">
                         <div class="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition duration-500 flex items-center justify-center">
-                            <div class="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center group-hover:scale-110 transition duration-300">
-                                <i class="fas fa-play text-white text-xl pl-1"></i>
-                            </div>
+                            <div class="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center group-hover:scale-110 transition duration-300"><i class="fas fa-play text-white text-xl pl-1"></i></div>
                         </div>
                     </div>
                     <div class="flex justify-between items-start">
@@ -237,7 +239,7 @@
                     </div>
                 </div>
 
-                 <!-- Project 4 (Thêm class "reveal") -->
+                 <!-- Project 4 -->
                  <div class="group cursor-pointer md:mt-20 reveal">
                     <div class="relative overflow-hidden aspect-[4/5] mb-6 bg-stone-100">
                         <img src="https://images.unsplash.com/photo-1600607686527-6fb886090705?w=800&auto=format&fit=crop&q=80" alt="Work 4" class="object-cover w-full h-full transform transition duration-700 group-hover:scale-105 filter grayscale group-hover:grayscale-0">
@@ -254,33 +256,29 @@
         </div>
     </section>
 
-    <!-- FEATURED SHOWREEL (Parallax/Curtain Effect) -->
-    <section class="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden -z-10">
-        <!-- Video Background -->
+    <!-- FEATURED SHOWREEL (Tối ưu Sticky GPU) -->
+    <!-- Thêm class gpu-accelerated vào đây -->
+    <section class="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden -z-10 gpu-accelerated">
         <video autoplay loop muted playsinline class="absolute inset-0 w-full h-full object-cover brightness-75">
-            <!-- Dùng video mẫu visual art/abstract -->
             <source src="https://videos.pexels.com/video-files/3129957/3129957-uhd_2560_1440_25fps.mp4" type="video/mp4">
             Your browser does not support the video tag.
         </video>
         
-        <!-- Overlay Content -->
         <div class="relative z-20 text-center text-white mix-blend-overlay px-6">
             <p class="text-sm md:text-base font-bold tracking-[0.5em] uppercase mb-4 animate-pulse">Showreel 2025</p>
             <h2 class="text-6xl md:text-9xl font-serif italic tracking-tighter">Emotion &<br>Motion</h2>
             
-            <!-- Play Button -->
             <button class="mt-12 w-20 h-20 rounded-full border border-white/30 flex items-center justify-center hover:bg-white hover:text-black transition duration-500 group video-trigger" data-video-id="tgbNymZ7vqY">
                 <i class="fas fa-play text-2xl pl-1 group-hover:scale-110 transition"></i>
             </button>
         </div>
         
-        <!-- Gradient Overlay để chuyển tiếp mượt hơn -->
         <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"></div>
     </section>
 
-    <!-- Services (Cinematic Cards) -->
-    <!-- z-10 để che video khi cuộn lên -->
-    <section id="services" class="relative z-10 py-24 px-6 bg-paper dark:bg-dark border-t border-stone-100 dark:border-stone-800 shadow-2xl shadow-stone-900/20">
+    <!-- Services -->
+    <!-- Thêm class gpu-accelerated vào đây để tránh flicker khi đè lên video -->
+    <section id="services" class="relative z-10 py-24 px-6 bg-paper dark:bg-dark border-t border-stone-100 dark:border-stone-800 shadow-2xl shadow-stone-900/20 gpu-accelerated">
         <div class="max-w-screen-xl mx-auto">
             <div class="mb-16 md:w-1/2">
                 <span class="text-xs font-bold tracking-[0.2em] uppercase text-accent" data-i18n="services.label">What I do</span>
@@ -291,81 +289,46 @@
             </div>
 
             <div class="grid md:grid-cols-3 gap-6">
-                <!-- Service 1 (Thêm class "reveal") -->
+                <!-- Service 1 -->
                 <div class="group relative h-[500px] overflow-hidden cursor-pointer reveal">
-                    <!-- Background Image (Editing Timeline/Film) -->
-                    <img src="https://images.unsplash.com/photo-1696389500422-d48223c77d5f?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fGRhdmluY2klMjByZXNvbHZlfGVufDB8fDB8fHww" 
-                         class="absolute inset-0 w-full h-full object-cover transition duration-700 group-hover:scale-110 filter grayscale group-hover:grayscale-0 brightness-50 group-hover:brightness-55" 
-                         alt="Editing">
-                    
-                    <!-- Content Overlay -->
+                    <img src="https://images.unsplash.com/photo-1696389500422-d48223c77d5f?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fGRhdmluY2klMjByZXNvbHZlfGVufDB8fDB8fHww" class="absolute inset-0 w-full h-full object-cover transition duration-700 group-hover:scale-110 filter grayscale group-hover:grayscale-0 brightness-50 group-hover:brightness-55" alt="Editing">
                     <div class="absolute inset-0 p-8 flex flex-col justify-end">
                         <div class="relative z-10 transform translate-y-4 group-hover:translate-y-0 transition duration-500">
                             <span class="text-xs font-bold tracking-widest text-white/60 mb-2 block border-b border-white/20 pb-2 w-8">01</span>
                             <h3 class="text-3xl font-serif italic text-white mb-4" data-i18n="services.s1_title">Post-Production</h3>
-                            
-                            <!-- Hidden description revealed on hover -->
                             <div class="h-0 opacity-0 group-hover:h-auto group-hover:opacity-100 overflow-hidden transition-all duration-500 delay-75">
-                                <p class="text-white/90 text-sm leading-relaxed mb-4" data-i18n="services.s1_desc">
-                                    Professional editing, sound design, and color grading for commercials, music videos, and documentaries.
-                                </p>
-                                <ul class="text-xs font-bold text-white/70 space-y-1">
-                                    <li>+ Offline & Online Editing</li>
-                                    <li>+ Color Grading (DaVinci)</li>
-                                    <li>+ Sound Mixing</li>
-                                </ul>
+                                <p class="text-white/90 text-sm leading-relaxed mb-4" data-i18n="services.s1_desc">Professional editing, sound design, and color grading for commercials, music videos, and documentaries.</p>
+                                <ul class="text-xs font-bold text-white/70 space-y-1"><li>+ Offline & Online Editing</li><li>+ Color Grading (DaVinci)</li><li>+ Sound Mixing</li></ul>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Service 2 (Thêm class "reveal") -->
+                <!-- Service 2 -->
                 <div class="group relative h-[500px] overflow-hidden cursor-pointer reveal">
-                    <!-- Background Image (Abstract Light/Neon) -->
-                    <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=600&auto=format&fit=crop&q=80" 
-                         class="absolute inset-0 w-full h-full object-cover transition duration-700 group-hover:scale-110 filter grayscale group-hover:grayscale-0 brightness-50 group-hover:brightness-55" 
-                         alt="Motion">
-                    
+                    <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=600&auto=format&fit=crop&q=80" class="absolute inset-0 w-full h-full object-cover transition duration-700 group-hover:scale-110 filter grayscale group-hover:grayscale-0 brightness-50 group-hover:brightness-55" alt="Motion">
                     <div class="absolute inset-0 p-8 flex flex-col justify-end">
                         <div class="relative z-10 transform translate-y-4 group-hover:translate-y-0 transition duration-500">
                             <span class="text-xs font-bold tracking-widest text-white/60 mb-2 block border-b border-white/20 pb-2 w-8">02</span>
                             <h3 class="text-3xl font-serif italic text-white mb-4" data-i18n="services.s2_title">VFX</h3>
-                            
                             <div class="h-0 opacity-0 group-hover:h-auto group-hover:opacity-100 overflow-hidden transition-all duration-500 delay-75">
-                                <p class="text-white/90 text-sm leading-relaxed mb-4" data-i18n="services.s2_desc">
-                                    Elevating visuals with 2D/3D motion graphics, compositing, and visual effects that captivate.
-                                </p>
-                                <ul class="text-xs font-bold text-white/70 space-y-1">
-                                    <li>+ Title Sequences</li>
-                                    <li>+ Logo Animation</li>
-                                    <li>+ Clean-up & Rotoscoping</li>
-                                </ul>
+                                <p class="text-white/90 text-sm leading-relaxed mb-4" data-i18n="services.s2_desc">Elevating visuals with 2D/3D motion graphics, compositing, and visual effects that captivate.</p>
+                                <ul class="text-xs font-bold text-white/70 space-y-1"><li>+ Title Sequences</li><li>+ Logo Animation</li><li>+ Clean-up & Rotoscoping</li></ul>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Service 3 (Thêm class "reveal") -->
+                <!-- Service 3 -->
                 <div class="group relative h-[500px] overflow-hidden cursor-pointer reveal">
-                    <!-- Background Image (Abstract Texture/Design) -->
-                    <img src="https://images.unsplash.com/photo-1509343256512-d77a5cb3791b?w=600&auto=format&fit=crop&q=80" 
-                         class="absolute inset-0 w-full h-full object-cover transition duration-700 group-hover:scale-110 filter grayscale group-hover:grayscale-0 brightness-50 group-hover:brightness-55" 
-                         alt="Art Direction">
-                    
+                    <img src="https://images.unsplash.com/photo-1509343256512-d77a5cb3791b?w=600&auto=format&fit=crop&q=80" class="absolute inset-0 w-full h-full object-cover transition duration-700 group-hover:scale-110 filter grayscale group-hover:grayscale-0 brightness-50 group-hover:brightness-55" alt="Art Direction">
                     <div class="absolute inset-0 p-8 flex flex-col justify-end">
                         <div class="relative z-10 transform translate-y-4 group-hover:translate-y-0 transition duration-500">
                             <span class="text-xs font-bold tracking-widest text-white/60 mb-2 block border-b border-white/20 pb-2 w-8">03</span>
                             <h3 class="text-3xl font-serif italic text-white mb-4" data-i18n="services.s3_title">Art Direction</h3>
-                            
                             <div class="h-0 opacity-0 group-hover:h-auto group-hover:opacity-100 overflow-hidden transition-all duration-500 delay-75">
-                                <p class="text-white/90 text-sm leading-relaxed mb-4" data-i18n="services.s3_desc">
-                                    Defining the visual language and aesthetic strategy for brands, ensuring consistency across all media.
-                                </p>
-                                <ul class="text-xs font-bold text-white/70 space-y-1">
-                                    <li>+ Brand Identity</li>
-                                    <li>+ Moodboards</li>
-                                    <li>+ Visual Strategy</li>
-                                </ul>
+                                <p class="text-white/90 text-sm leading-relaxed mb-4" data-i18n="services.s3_desc">Defining the visual language and aesthetic strategy for brands, ensuring consistency across all media.</p>
+                                <ul class="text-xs font-bold text-white/70 space-y-1"><li>+ Brand Identity</li><li>+ Moodboards</li><li>+ Visual Strategy</li></ul>
                             </div>
                         </div>
                     </div>
@@ -377,7 +340,6 @@
     <!-- NEW ABOUT SECTION: Editorial Style -->
     <section id="about" class="relative z-10 py-32 px-6 bg-white dark:bg-darkPaper border-t border-stone-100 dark:border-stone-900 overflow-hidden">
         <div class="max-w-5xl mx-auto">
-            <!-- Top: Big Headline -->
             <div class="mb-16">
                 <span class="text-xs font-bold tracking-[0.2em] uppercase text-accent block mb-4" data-i18n="about.intro">The Person Behind</span>
                 <h2 class="text-5xl md:text-7xl font-serif italic leading-tight">
@@ -387,39 +349,24 @@
             </div>
 
             <div class="grid md:grid-cols-12 gap-12 items-start">
-                <!-- Left: Portrait (chiếm 5 cột) - Thêm class "reveal" -->
                 <div class="md:col-span-5 relative group reveal">
                     <div class="relative overflow-hidden aspect-[3/4]">
-                        <img src="https://plus.unsplash.com/premium_photo-1682141028605-b2456e2bab14?q=80&w=687&auto=format&fit=crop" 
-                             alt="Portrait" 
-                             class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition duration-1000">
-                        <!-- Decorative Frame -->
+                        <img src="https://plus.unsplash.com/premium_photo-1682141028605-b2456e2bab14?q=80&w=687&auto=format&fit=crop" alt="Portrait" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition duration-1000">
                         <div class="absolute top-4 left-4 right-4 bottom-4 border border-white/20 pointer-events-none"></div>
                     </div>
-                    
-                    <!-- Location Badge -->
                     <div class="absolute -bottom-6 -right-6 bg-paper dark:bg-stone-800 p-6 shadow-xl border border-stone-100 dark:border-stone-700 hidden md:block">
                         <p class="text-xs font-bold tracking-widest uppercase text-accent mb-1">Based in</p>
                         <p class="font-serif text-xl" data-i18n="about.location">Ho Chi Minh City</p>
                     </div>
                 </div>
 
-                <!-- Right: Content (chiếm 7 cột) -->
                 <div class="md:col-span-7 md:pl-12 flex flex-col justify-between h-full">
                     <div>
                         <h3 class="text-2xl font-bold mb-4" data-i18n="about.greeting">Hi, I'm DzungLayout.</h3>
-                        
-                        <!-- Bio -->
-                        <p class="text-lg font-light leading-relaxed text-stone-600 dark:text-stone-300 mb-8 text-justify" data-i18n="about.bio">
-                            I am a Visual Director focused on storytelling through editing and motion. My approach is simple: strip away the unnecessary until only the essential emotion remains.
-                        </p>
-
-                        <!-- PHILOSOPHY (Đã thêm lại) -->
+                        <p class="text-lg font-light leading-relaxed text-stone-600 dark:text-stone-300 mb-8 text-justify" data-i18n="about.bio">I am a Visual Director focused on storytelling through editing and motion. My approach is simple: strip away the unnecessary until only the essential emotion remains.</p>
                         <div class="mb-8 pl-6 border-l-2 border-accent/50 italic text-stone-500 dark:text-stone-400 font-serif text-lg leading-relaxed">
                             <p data-i18n="about.philosophy">"Design is not just what it looks like and feels like. Design is how it works..."</p>
                         </div>
-
-                        <!-- EXPERTISE (Đã thêm lại) -->
                         <div class="mb-10">
                             <h4 class="font-bold tracking-widest uppercase text-xs mb-4 text-stone-400" data-i18n="about.expertise">Expertise</h4>
                             <div class="grid grid-cols-2 gap-x-4 gap-y-2 text-stone-700 dark:text-stone-300 font-light">
@@ -429,28 +376,15 @@
                                 <div class="flex items-center"><span class="w-1.5 h-1.5 bg-accent rounded-full mr-2"></span>Brand Identity</div>
                             </div>
                         </div>
-                        
-                        <!-- Signature -->
                         <div class="mb-12 opacity-80 text-primary dark:text-white">
-                            <!-- SỬ DỤNG FONT MỚI SCRIPTURE CHO CHỮ KÝ -->
                             <p class="font-scripture text-1xl md:text-3xl transform -rotate-0">Dzunglayout.</p>
                         </div>
                     </div>
 
-                    <!-- Key Stats (Giữ nguyên thay cho Awards) -->
                     <div class="grid grid-cols-3 gap-8 border-t border-stone-200 dark:border-stone-800 pt-8">
-                        <div>
-                            <span class="block text-4xl font-serif font-bold mb-1">07+</span>
-                            <span class="text-xs uppercase tracking-widest text-stone-500" data-i18n="about.stat_years">Years Exp</span>
-                        </div>
-                        <div>
-                            <span class="block text-4xl font-serif font-bold mb-1">150+</span>
-                            <span class="text-xs uppercase tracking-widest text-stone-500" data-i18n="about.stat_projects">Projects</span>
-                        </div>
-                        <div>
-                            <span class="block text-4xl font-serif font-bold mb-1">100%</span>
-                            <span class="text-xs uppercase tracking-widest text-stone-500" data-i18n="about.stat_happy">Satisfaction</span>
-                        </div>
+                        <div><span class="block text-4xl font-serif font-bold mb-1">07+</span><span class="text-xs uppercase tracking-widest text-stone-500" data-i18n="about.stat_years">Years Exp</span></div>
+                        <div><span class="block text-4xl font-serif font-bold mb-1">150+</span><span class="text-xs uppercase tracking-widest text-stone-500" data-i18n="about.stat_projects">Projects</span></div>
+                        <div><span class="block text-4xl font-serif font-bold mb-1">100%</span><span class="text-xs uppercase tracking-widest text-stone-500" data-i18n="about.stat_happy">Satisfaction</span></div>
                     </div>
                 </div>
             </div>
@@ -464,24 +398,16 @@
                 <h2 class="text-4xl font-serif italic mb-2" data-i18n="footer.text">Let's create something timeless.</h2>
                 <a href="mailto:contact@dzung.com" class="text-stone-400 hover:text-white transition border-b border-stone-600 pb-1">contact@dzunglayout.com</a>
             </div>
-            
             <div class="flex gap-6 text-xl">
                 <a href="#" class="hover:text-stone-400 transition"><i class="fab fa-instagram"></i></a>
                 <a href="#" class="hover:text-stone-400 transition"><i class="fab fa-behance"></i></a>
                 <a href="#" class="hover:text-stone-400 transition"><i class="fab fa-linkedin"></i></a>
             </div>
         </div>
-
-        <!-- Scroll to Top Button (Mới thêm) -->
         <div class="flex justify-center mt-16 mb-4">
-            <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="text-stone-600 hover:text-stone-300 transition duration-500 p-2 animate-bounce opacity-50 hover:opacity-100" title="Back to Top">
-                <i class="fas fa-chevron-up text-xl"></i>
-            </button>
+            <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="text-stone-600 hover:text-stone-300 transition duration-500 p-2 animate-bounce opacity-50 hover:opacity-100" title="Back to Top"><i class="fas fa-chevron-up text-xl"></i></button>
         </div>
-
-        <div class="text-center text-xs text-stone-600 uppercase tracking-widest">
-            © 2025 DzungLayout. All Rights Reserved.
-        </div>
+        <div class="text-center text-xs text-stone-600 uppercase tracking-widest">© 2025 DzungLayout. All Rights Reserved.</div>
     </footer>
 
     <!-- VIDEO MODAL -->
@@ -496,117 +422,27 @@
     <script>
         const apiKey = ""; 
 
-        // --- TRANSLATION DATA ---
+        // --- TRANSLATION DATA (Keep your translations here) ---
         const translations = {
             en: {
                 nav: { home: "Home", work: "Selected Work", services: "Services", studio: "AI Studio", profile: "Profile", resume: "Resume", contact: "Contact" },
-                hero: {
-                    subtitle: "Portfolio 2025",
-                    title1: "Visual",
-                    title2: "Storyteller",
-                    intro: "I am",
-                    desc: "Crafting emotions through frames and pixels.",
-                    cta_work: "View Selected Work",
-                    cta_contact: "Get in touch",
-                    scroll: "Scroll"
-                },
+                hero: { subtitle: "Portfolio 2025", title1: "Visual", title2: "Storyteller", intro: "I am", desc: "Crafting emotions through frames and pixels.", cta_work: "View Selected Work", cta_contact: "Get in touch", scroll: "Scroll" },
                 work: { title: "Selected Work", subtitle: "A collection of moments & brands.", filter_all: "All" },
                 project1: { title: "Northwest Journey" },
-                services: {
-                    label: "What I do",
-                    title: "Services",
-                    desc: "Comprehensive visual solutions tailored for brands that value aesthetics and storytelling.",
-                    s1_title: "Post-Production",
-                    s1_desc: "Professional editing, sound design, and color grading for commercials, music videos, and documentaries.",
-                    s2_title: "Motion & VFX",
-                    s2_desc: "Elevating visuals with 2D/3D motion graphics, compositing, and visual effects that captivate.",
-                    s3_title: "Art Direction",
-                    s3_desc: "Defining the visual language and aesthetic strategy for brands, ensuring consistency across all media."
-                },
-                logos: { label: "Trusted Partners" },
-                ai: {
-                    label: "Experimental",
-                    title: "AI Creative Studio",
-                    desc: "Merging human intuition with machine intelligence. A suite of tools I use to spark inspiration.",
-                    t1_title: "Concept Generator",
-                    t1_desc: "Generate art direction & visual mood.",
-                    t1_placeholder: "Enter a subject (e.g. Noir City)...",
-                    t1_btn: "Ignite Spark",
-                    t2_title: "Draft Assistant",
-                    t2_desc: "Compose professional inquiries.",
-                    t2_placeholder: "Brief requirements...",
-                    t2_btn: "Compose"
-                },
-                about: {
-                    intro: "The Person Behind",
-                    headline_1: "Visuals with",
-                    headline_2: "Soul & Purpose.",
-                    location: "Ho Chi Minh City",
-                    greeting: "Hi, I'm DzungLayout.",
-                    bio: "I am a Visual Director focused on storytelling through editing and motion. My approach is simple: strip away the unnecessary until only the essential emotion remains. I don't just edit videos; I engineer feelings.",
-                    philosophy: "\"Design is not just what it looks like and feels like. Design is how it works. I believe in minimalism that speaks volumes, and motion that evokes emotion.\"",
-                    expertise: "Expertise",
-                    recognition: "Recognition",
-                    stat_years: "Years Exp",
-                    stat_projects: "Projects",
-                    stat_happy: "Satisfaction"
-                },
+                services: { label: "What I do", title: "Services", desc: "Comprehensive visual solutions tailored for brands that value aesthetics and storytelling.", s1_title: "Post-Production", s1_desc: "Professional editing, sound design, and color grading for commercials, music videos, and documentaries.", s2_title: "Motion & VFX", s2_desc: "Elevating visuals with 2D/3D motion graphics, compositing, and visual effects that captivate.", s3_title: "Art Direction", s3_desc: "Defining the visual language and aesthetic strategy for brands, ensuring consistency across all media." },
+                ai: { label: "Experimental", title: "AI Creative Studio", desc: "Merging human intuition with machine intelligence. A suite of tools I use to spark inspiration.", t1_title: "Concept Generator", t1_desc: "Generate art direction & visual mood.", t1_placeholder: "Enter a subject (e.g. Noir City)...", t1_btn: "Ignite Spark", t2_title: "Draft Assistant", t2_desc: "Compose professional inquiries.", t2_placeholder: "Brief requirements...", t2_btn: "Compose" },
+                about: { intro: "The Person Behind", headline_1: "Visuals with", headline_2: "Soul & Purpose.", location: "Ho Chi Minh City", greeting: "Hi, I'm DzungLayout.", bio: "I am a Visual Director focused on storytelling through editing and motion. My approach is simple: strip away the unnecessary until only the essential emotion remains. I don't just edit videos; I engineer feelings.", philosophy: "\"Design is not just what it looks like and feels like. Design is how it works. I believe in minimalism that speaks volumes, and motion that evokes emotion.\"", expertise: "Expertise", recognition: "Recognition", stat_years: "Years Exp", stat_projects: "Projects", stat_happy: "Satisfaction" },
                 footer: { text: "Let's create something timeless." },
                 typing: ['DzungLayout', 'a Video Editor', 'a Designer', 'a Minimalist']
             },
             vi: {
                 nav: { home: "Trang chủ", work: "Dự án", services: "Dịch vụ", studio: "AI Studio", profile: "Về tôi", resume: "Hồ sơ", contact: "Liên hệ" },
-                hero: {
-                    subtitle: "Portfolio 2025",
-                    title1: "Nghệ thuật",
-                    title2: "kể chuyện",
-                    intro: "Tôi là",
-                    desc: "Chạm tới cảm xúc bằng hình ảnh và từng khung hình.",
-                    cta_work: "Xem Dự Án",
-                    cta_contact: "Liên hệ ngay",
-                    scroll: "Cuộn"
-                },
+                hero: { subtitle: "Portfolio 2025", title1: "Nghệ thuật", title2: "kể chuyện", intro: "Tôi là", desc: "Chạm tới cảm xúc bằng hình ảnh và từng khung hình.", cta_work: "Xem Dự Án", cta_contact: "Liên hệ ngay", scroll: "Cuộn" },
                 work: { title: "Dự án tiêu biểu", subtitle: "Bộ sưu tập những khoảnh khắc & thương hiệu.", filter_all: "Tất cả" },
                 project1: { title: "Hành trình Tây Bắc" },
-                services: {
-                    label: "Lĩnh vực chuyên môn",
-                    title: "Dịch vụ",
-                    desc: "Giải pháp hình ảnh toàn diện dành cho những thương hiệu đề cao tính thẩm mỹ và câu chuyện.",
-                    s1_title: "Dựng Phim (Post-Production)",
-                    s1_desc: "Biên tập chuyên nghiệp, thiết kế âm thanh và chỉnh màu (Color Grading) cho TVC, MV và phim tài liệu.",
-                    s2_title: "Chuyển động & VFX",
-                    s2_desc: "Nâng tầm hình ảnh với đồ họa chuyển động 2D/3D, kỹ xảo điện ảnh đầy mê hoặc.",
-                    s3_title: "Chỉ đạo Nghệ thuật",
-                    s3_desc: "Định hình ngôn ngữ hình ảnh và chiến lược thẩm mỹ cho thương hiệu, đảm bảo sự nhất quán trên mọi nền tảng."
-                },
-                logos: { label: "Đối tác tin cậy" },
-                ai: {
-                    label: "Thử nghiệm",
-                    title: "AI Creative Studio",
-                    desc: "Kết hợp trực giác con người và trí tuệ nhân tạo. Bộ công cụ tôi dùng để khơi nguồn cảm hứng.",
-                    t1_title: "Tạo Concept",
-                    t1_desc: "Gợi ý chỉ đạo nghệ thuật & mood hình ảnh.",
-                    t1_placeholder: "Nhập chủ đề (VD: Sài Gòn xưa)...",
-                    t1_btn: "Tạo ý tưởng",
-                    t2_title: "Trợ lý Soạn thảo",
-                    t2_desc: "Soạn email liên hệ chuyên nghiệp.",
-                    t2_placeholder: "Yêu cầu ngắn gọn...",
-                    t2_btn: "Soạn thảo"
-                },
-                about: {
-                    intro: "Con người phía sau",
-                    headline_1: "Hình ảnh có",
-                    headline_2: "Tâm hồn & Mục đích.",
-                    location: "TP. Hồ Chí Minh",
-                    greeting: "Chào, tôi là DzungLayout.",
-                    bio: "Tôi là một Visual Director tập trung vào việc kể chuyện thông qua cắt dựng và chuyển động. Phương pháp của tôi rất đơn giản: loại bỏ những thứ không cần thiết cho đến khi chỉ còn lại cảm xúc cốt lõi.",
-                    philosophy: "\"Thiết kế không chỉ là trông nó như thế nào. Thiết kế là cách nó vận hành. Tôi tin vào sự tối giản nhưng sâu sắc, và những chuyển động khơi gợi cảm xúc.\"",
-                    expertise: "Chuyên môn",
-                    recognition: "Giải thưởng",
-                    stat_years: "Năm kinh nghiệm",
-                    stat_projects: "Dự án",
-                    stat_happy: "Hài lòng"
-                },
+                services: { label: "Lĩnh vực chuyên môn", title: "Dịch vụ", desc: "Giải pháp hình ảnh toàn diện dành cho những thương hiệu đề cao tính thẩm mỹ và câu chuyện.", s1_title: "Dựng Phim (Post-Production)", s1_desc: "Biên tập chuyên nghiệp, thiết kế âm thanh và chỉnh màu (Color Grading) cho TVC, MV và phim tài liệu.", s2_title: "Chuyển động & VFX", s2_desc: "Nâng tầm hình ảnh với đồ họa chuyển động 2D/3D, kỹ xảo điện ảnh đầy mê hoặc.", s3_title: "Chỉ đạo Nghệ thuật", s3_desc: "Định hình ngôn ngữ hình ảnh và chiến lược thẩm mỹ cho thương hiệu, đảm bảo sự nhất quán trên mọi nền tảng." },
+                ai: { label: "Thử nghiệm", title: "AI Creative Studio", desc: "Kết hợp trực giác con người và trí tuệ nhân tạo. Bộ công cụ tôi dùng để khơi nguồn cảm hứng.", t1_title: "Tạo Concept", t1_desc: "Gợi ý chỉ đạo nghệ thuật & mood hình ảnh.", t1_placeholder: "Nhập chủ đề (VD: Sài Gòn xưa)...", t1_btn: "Tạo ý tưởng", t2_title: "Trợ lý Soạn thảo", t2_desc: "Soạn email liên hệ chuyên nghiệp.", t2_placeholder: "Yêu cầu ngắn gọn...", t2_btn: "Soạn thảo" },
+                about: { intro: "Con người phía sau", headline_1: "Hình ảnh có", headline_2: "Tâm hồn & Mục đích.", location: "TP. Hồ Chí Minh", greeting: "Chào, tôi là DzungLayout.", bio: "Tôi là một Visual Director tập trung vào việc kể chuyện thông qua cắt dựng và chuyển động. Phương pháp của tôi rất đơn giản: loại bỏ những thứ không cần thiết cho đến khi chỉ còn lại cảm xúc cốt lõi.", philosophy: "\"Thiết kế không chỉ là trông nó như thế nào. Thiết kế là cách nó vận hành. Tôi tin vào sự tối giản nhưng sâu sắc, và những chuyển động khơi gợi cảm xúc.\"", expertise: "Chuyên môn", recognition: "Giải thưởng", stat_years: "Năm kinh nghiệm", stat_projects: "Dự án", stat_happy: "Hài lòng" },
                 footer: { text: "Cùng tạo nên những giá trị vượt thời gian." },
                 typing: ['DzungLayout', 'Video Editor', 'Designer', 'Người yêu tối giản']
             }
@@ -620,17 +456,16 @@
                 event.preventDefault();
             });
             
-             // --- SMOOTH SCROLLING FOR NAV LINKS (MỚI THÊM) ---
+             // --- SMOOTH SCROLLING FOR NAV LINKS ---
             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
                 anchor.addEventListener('click', function (e) {
-                    e.preventDefault(); // Chặn hành vi nhảy cóc mặc định
-                    
+                    e.preventDefault(); 
                     const targetId = this.getAttribute('href');
                     if (targetId === '#') return;
                     
                     const targetElement = document.querySelector(targetId);
                     if (targetElement) {
-                        const headerOffset = 80; // Chiều cao thanh menu
+                        const headerOffset = 80;
                         const elementPosition = targetElement.getBoundingClientRect().top;
                         const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
                     
@@ -639,7 +474,6 @@
                             behavior: "smooth"
                         });
                         
-                        // Đóng menu mobile nếu đang mở
                         const mobileMenu = document.getElementById('mobile-menu');
                         if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
                             mobileMenu.classList.add('hidden');
@@ -648,22 +482,27 @@
                 });
             });
 
-            // --- SCROLL EFFECT FOR NAV ---
+            // --- OPTIMIZED SCROLL LISTENER (THROTTLING) ---
             const nav = document.getElementById('main-nav');
-            let isScrolled = false; // Flag để tránh cập nhật DOM liên tục
+            let isScrolled = false; 
+            let ticking = false; // Flag cho requestAnimationFrame
 
             if (nav) {
                 window.addEventListener('scroll', () => {
-                    const scrolled = window.scrollY > 50;
-                    
-                    if (scrolled && !isScrolled) {
-                        isScrolled = true;
-                        // Khi cuộn xuống: Thêm nền mờ
-                        nav.classList.add('bg-white/80', 'dark:bg-dark/80', 'backdrop-blur-md', 'border-b', 'border-stone-200', 'dark:border-stone-800', 'shadow-sm');
-                    } else if (!scrolled && isScrolled) {
-                        isScrolled = false;
-                        // Khi ở đỉnh trang: Trong suốt
-                        nav.classList.remove('bg-white/80', 'dark:bg-dark/80', 'backdrop-blur-md', 'border-b', 'border-stone-200', 'dark:border-stone-800', 'shadow-sm');
+                    if (!ticking) {
+                        window.requestAnimationFrame(() => {
+                            const scrolled = window.scrollY > 50;
+                            if (scrolled && !isScrolled) {
+                                isScrolled = true;
+                                nav.classList.add('bg-white/90', 'dark:bg-dark/90', 'backdrop-blur-sm', 'border-b', 'border-stone-200', 'dark:border-stone-800', 'shadow-sm');
+                                // Giảm blur xuống 'sm' và tăng opacity nền lên 90 để đỡ lag hơn
+                            } else if (!scrolled && isScrolled) {
+                                isScrolled = false;
+                                nav.classList.remove('bg-white/90', 'dark:bg-dark/90', 'backdrop-blur-sm', 'border-b', 'border-stone-200', 'dark:border-stone-800', 'shadow-sm');
+                            }
+                            ticking = false;
+                        });
+                        ticking = true;
                     }
                 });
             }
@@ -675,12 +514,11 @@
                 entries.forEach(entry => {
                     if(entry.isIntersecting) {
                         entry.target.classList.add('active');
-                        // Nếu muốn hiệu ứng chỉ chạy 1 lần duy nhất thì bỏ comment dòng dưới
                         observer.unobserve(entry.target);
                     }
                 });
             }, {
-                threshold: 0.15 // Kích hoạt khi phần tử xuất hiện 15% trong khung hình
+                threshold: 0.1 // Giảm threshold xuống để hiện sớm hơn một chút, đỡ cảm giác lag
             });
 
             revealElements.forEach(el => revealObserver.observe(el));
@@ -691,7 +529,6 @@
             const langBtn = document.getElementById('lang-toggle');
             
             function updateContent() {
-                // Update Text
                 document.querySelectorAll('[data-i18n]').forEach(el => {
                     const key = el.getAttribute('data-i18n');
                     const keys = key.split('.');
@@ -700,7 +537,6 @@
                     if (val) el.textContent = val;
                 });
                 
-                // Update Placeholders
                 document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
                     const key = el.getAttribute('data-i18n-placeholder');
                     const keys = key.split('.');
@@ -709,10 +545,7 @@
                     if (val) el.placeholder = val;
                 });
 
-                // Update Button Text
                 if (langBtn) langBtn.textContent = currentLang === 'en' ? 'EN' : 'VN';
-                
-                // Update Typing Effect Phrases (Safe Update)
                 phrases = translations[currentLang].typing;
             }
 
@@ -780,7 +613,6 @@
                 }
             }
             
-            // Start components
             updateContent();
             type();
 
@@ -819,7 +651,7 @@
                 });
             }
 
-            // --- GEMINI API BUTTONS (With Null Checks) ---
+            // --- GEMINI API BUTTONS ---
             const btnIdea = document.getElementById('btn-generate-idea');
             const btnEmail = document.getElementById('btn-generate-email');
 
