@@ -652,6 +652,22 @@
 
             revealElements.forEach(el => revealObserver.observe(el));
 
+            // --- REVEAL ON SCROLL OBSERVER ---
+            const revealElements = document.querySelectorAll('.reveal');
+            
+            const revealObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if(entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                        // Nếu muốn hiệu ứng chỉ chạy 1 lần duy nhất thì bỏ comment dòng dưới
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, {
+                threshold: 0.15 // Kích hoạt khi phần tử xuất hiện 15% trong khung hình
+            });
+
+            revealElements.forEach(el => revealObserver.observe(el));
 
             // --- LANGUAGE LOGIC ---
             let currentLang = localStorage.getItem('lang') || 'en';
@@ -874,6 +890,7 @@
     </script>
 </body>
 </html>
+
 
 
 
