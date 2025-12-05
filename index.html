@@ -283,6 +283,33 @@
         </div>
     </section>
 
+     <!-- Hero Section -->
+    <section id="home" class="min-h-screen flex items-center justify-center relative pt-20 px-6 gpu-accelerated">
+        <div class="absolute inset-0 bg-noise opacity-50 pointer-events-none"></div>
+        <div class="max-w-5xl mx-auto text-center z-10">
+            <p class="text-sm md:text-base tracking-[0.3em] uppercase text-accent mb-6 animate-fade-in-up" data-i18n="hero.subtitle">Portfolio 2025</p>
+            <h1 class="text-6xl md:text-9xl font-serif leading-none mb-8 tracking-tighter">
+                <span class="block" data-i18n="hero.title1">Visual</span>
+                <span class="block italic text-stone-400 dark:text-stone-600" data-i18n="hero.title2">Storyteller</span>
+            </h1>
+            <div class="h-px w-24 bg-primary dark:bg-white mx-auto mb-8"></div>
+            <p class="text-lg md:text-2xl font-light max-w-2xl mx-auto leading-relaxed mb-12">
+                <span data-i18n="hero.intro">I am</span> <span id="typing-text" class="font-normal italic"></span>.<br>
+                <span data-i18n="hero.desc">Crafting emotions through frames and pixels.</span>
+            </p>
+            <div class="flex flex-col md:flex-row justify-center items-center gap-6">
+                <a href="#work" class="group relative px-8 py-3 overflow-hidden border border-primary dark:border-stone-200 transition-all hover:bg-primary hover:text-white dark:hover:bg-white dark:hover:text-black">
+                    <span class="relative z-10 text-sm tracking-widest uppercase" data-i18n="hero.cta_work">View Selected Work</span>
+                </a>
+                <a href="#contact" class="text-sm tracking-widest uppercase border-b border-transparent hover:border-primary dark:hover:border-white transition-all pb-1" data-i18n="hero.cta_contact">Get in touch</a>
+            </div>
+        </div>
+        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
+            <span class="text-xs tracking-widest uppercase rotate-90 block origin-left translate-y-12 translate-x-1" data-i18n="hero.scroll">Scroll</span>
+            <div class="h-16 w-px bg-stone-300 mx-auto mt-4"></div>
+        </div>
+    </section>
+
     <!-- Selected Work -->
     <section id="work" class="py-32 px-6 bg-white dark:bg-darkPaper">
         <div class="max-w-screen-xl mx-auto">
@@ -364,29 +391,30 @@
         </div>
     </section>
 
-    <!-- FEATURED SHOWREEL (Tối ưu Sticky GPU) -->
-    <!-- Thêm class gpu-accelerated vào đây -->
-    <section class="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden -z-10 gpu-accelerated">
-        <video autoplay loop muted playsinline class="absolute inset-0 w-full h-full object-cover brightness-75">
+    <!-- FEATURED SHOWREEL (ĐÃ GỠ BỎ STICKY ĐỂ CUỘN MƯỢT HƠN) -->
+    <!-- Thay đổi từ 'sticky top-0' thành 'relative' -->
+    <section class="relative h-screen w-full flex items-center justify-center overflow-hidden bg-black">
+        <video autoplay loop muted playsinline class="absolute inset-0 w-full h-full object-cover opacity-80">
             <source src="https://videos.pexels.com/video-files/3129957/3129957-uhd_2560_1440_25fps.mp4" type="video/mp4">
             Your browser does not support the video tag.
         </video>
         
-        <div class="relative z-20 text-center text-white mix-blend-overlay px-6">
+        <div class="relative z-20 text-center text-white px-6">
             <p class="text-sm md:text-base font-bold tracking-[0.5em] uppercase mb-4 animate-pulse">Showreel 2025</p>
-            <h2 class="text-6xl md:text-9xl font-serif italic tracking-tighter">Emotion &<br>Motion</h2>
+            <h2 class="text-6xl md:text-9xl font-serif italic tracking-tighter mix-blend-overlay">Emotion &<br>Motion</h2>
             
-            <button class="mt-12 w-20 h-20 rounded-full border border-white/30 flex items-center justify-center hover:bg-white hover:text-black transition duration-500 group video-trigger" data-video-id="tgbNymZ7vqY">
+            <button class="mt-12 w-20 h-20 rounded-full border border-white/30 flex items-center justify-center hover:bg-white hover:text-black transition duration-500 group video-trigger mx-auto" data-video-id="tgbNymZ7vqY">
                 <i class="fas fa-play text-2xl pl-1 group-hover:scale-110 transition"></i>
             </button>
         </div>
         
-        <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
+        <div class="absolute inset-0 bg-gradient-to-b from-black via-transparent to-transparent"></div>
     </section>
 
     <!-- Services -->
-    <!-- Thêm class gpu-accelerated vào đây để tránh flicker khi đè lên video -->
-    <section id="services" class="relative z-10 py-24 px-6 bg-paper dark:bg-dark border-t border-stone-100 dark:border-stone-800 shadow-2xl shadow-stone-900/20 gpu-accelerated">
+    <!-- Loại bỏ các class xử lý GPU nặng không cần thiết -->
+    <section id="services" class="relative z-10 py-24 px-6 bg-paper dark:bg-dark border-t border-stone-100 dark:border-stone-800 shadow-2xl shadow-stone-900/20">
         <div class="max-w-screen-xl mx-auto">
             <div class="mb-16 md:w-1/2">
                 <span class="text-xs font-bold tracking-[0.2em] uppercase text-accent" data-i18n="services.label">What I do</span>
@@ -499,6 +527,91 @@
         </div>
     </section>
 
+    <!-- Client Logos (Marquee) - ĐÃ KHÔI PHỤC -->
+    <section class="py-16 border-t border-stone-100 dark:border-stone-800 bg-paper dark:bg-dark overflow-hidden">
+        <div class="max-w-screen-xl mx-auto px-6 mb-8 text-center">
+            <p class="text-xs font-bold tracking-[0.2em] uppercase text-stone-400" data-i18n="logos.label">Trusted Partners</p>
+        </div>
+        <div class="relative flex overflow-x-hidden group">
+            <div class="absolute top-0 bottom-0 left-0 w-24 z-10 bg-gradient-to-r from-paper dark:from-dark to-transparent"></div>
+            <div class="absolute top-0 bottom-0 right-0 w-24 z-10 bg-gradient-to-l from-paper dark:from-dark to-transparent"></div>
+            <div class="py-4 animate-infinite-scroll whitespace-nowrap flex items-center gap-16 md:gap-24 pl-6">
+                <!-- LOGOS -->
+                <img src="https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg" class="h-8 w-auto object-contain grayscale opacity-40 hover:grayscale-0 hover:opacity-100 transition duration-300 cursor-pointer" alt="Google">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg" class="h-8 w-auto object-contain grayscale opacity-40 hover:grayscale-0 hover:opacity-100 transition duration-300 cursor-pointer" alt="Netflix">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/a/a6/Logo_NIKE.svg" class="h-6 w-auto object-contain grayscale opacity-40 hover:grayscale-0 hover:opacity-100 transition duration-300 cursor-pointer" alt="Nike">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/2/20/Adidas_Logo.svg" class="h-10 w-auto object-contain grayscale opacity-40 hover:grayscale-0 hover:opacity-100 transition duration-300 cursor-pointer" alt="Adidas">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/7/7b/Meta_Platforms_Inc._logo.svg" class="h-8 w-auto object-contain grayscale opacity-40 hover:grayscale-0 hover:opacity-100 transition duration-300 cursor-pointer" alt="Meta">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/IBM_logo.svg" class="h-8 w-auto object-contain grayscale opacity-40 hover:grayscale-0 hover:opacity-100 transition duration-300 cursor-pointer" alt="IBM">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/4/47/Samsung.svg" class="h-8 w-auto object-contain grayscale opacity-40 hover:grayscale-0 hover:opacity-100 transition duration-300 cursor-pointer" alt="Samsung">
+                <!-- Duplicate -->
+                <img src="https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg" class="h-8 w-auto object-contain grayscale opacity-40 hover:grayscale-0 hover:opacity-100 transition duration-300 cursor-pointer" alt="Google">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg" class="h-8 w-auto object-contain grayscale opacity-40 hover:grayscale-0 hover:opacity-100 transition duration-300 cursor-pointer" alt="Netflix">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/a/a6/Logo_NIKE.svg" class="h-6 w-auto object-contain grayscale opacity-40 hover:grayscale-0 hover:opacity-100 transition duration-300 cursor-pointer" alt="Nike">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/2/20/Adidas_Logo.svg" class="h-10 w-auto object-contain grayscale opacity-40 hover:grayscale-0 hover:opacity-100 transition duration-300 cursor-pointer" alt="Adidas">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/7/7b/Meta_Platforms_Inc._logo.svg" class="h-8 w-auto object-contain grayscale opacity-40 hover:grayscale-0 hover:opacity-100 transition duration-300 cursor-pointer" alt="Meta">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/IBM_logo.svg" class="h-8 w-auto object-contain grayscale opacity-40 hover:grayscale-0 hover:opacity-100 transition duration-300 cursor-pointer" alt="IBM">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/4/47/Samsung.svg" class="h-8 w-auto object-contain grayscale opacity-40 hover:grayscale-0 hover:opacity-100 transition duration-300 cursor-pointer" alt="Samsung">
+            </div>
+        </div>
+    </section>
+
+    <!-- AI Studio - ĐÃ KHÔI PHỤC -->
+    <section id="studio" class="py-32 px-6 bg-paper dark:bg-dark relative">
+        <div class="absolute inset-0 bg-noise opacity-30 pointer-events-none"></div>
+        <div class="max-w-4xl mx-auto relative z-10">
+            <div class="text-center mb-16">
+                <span class="text-xs font-bold tracking-[0.2em] uppercase text-accent" data-i18n="ai.label">Experimental</span>
+                <h2 class="text-4xl md:text-5xl mt-2 mb-6" data-i18n="ai.title">AI Creative Studio</h2>
+                <p class="font-light text-lg text-stone-600 dark:text-stone-400 max-w-xl mx-auto" data-i18n="ai.desc">
+                    Merging human intuition with machine intelligence. A suite of tools I use to spark inspiration.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-12">
+                <!-- Tool 1 -->
+                <div class="bg-white dark:bg-[#1a1a1a] p-8 md:p-10 shadow-sm hover:shadow-xl transition duration-500 border border-stone-100 dark:border-stone-800">
+                    <div class="mb-8">
+                        <i class="fas fa-lightbulb text-2xl text-stone-400 mb-4 block"></i>
+                        <h3 class="text-2xl font-serif italic mb-2" data-i18n="ai.t1_title">Concept Generator</h3>
+                        <p class="text-sm text-stone-500 font-light" data-i18n="ai.t1_desc">Generate art direction & visual mood.</p>
+                    </div>
+                    
+                    <div class="space-y-6">
+                        <input type="text" id="idea-input" class="w-full bg-transparent border-b border-stone-300 dark:border-stone-700 py-3 text-lg focus:outline-none focus:border-primary dark:focus:border-white transition placeholder-stone-400 font-serif" placeholder="Enter a subject (e.g. Noir City)..." data-i18n-placeholder="ai.t1_placeholder">
+                        
+                        <div id="idea-result" class="hidden text-sm leading-relaxed text-stone-600 dark:text-stone-300 prose dark:prose-invert"></div>
+
+                        <button id="btn-generate-idea" class="group flex items-center text-sm font-bold tracking-widest uppercase hover:text-stone-500 transition">
+                            <span data-i18n="ai.t1_btn">Ignite Spark</span>
+                            <span class="ml-2 transform group-hover:translate-x-1 transition"><i class="fas fa-arrow-right"></i></span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Tool 2 -->
+                <div class="bg-white dark:bg-[#1a1a1a] p-8 md:p-10 shadow-sm hover:shadow-xl transition duration-500 border border-stone-100 dark:border-stone-800">
+                    <div class="mb-8">
+                        <i class="fas fa-pen-fancy text-2xl text-stone-400 mb-4 block"></i>
+                        <h3 class="text-2xl font-serif italic mb-2" data-i18n="ai.t2_title">Draft Assistant</h3>
+                        <p class="text-sm text-stone-500 font-light" data-i18n="ai.t2_desc">Compose professional inquiries.</p>
+                    </div>
+                    
+                    <div class="space-y-6">
+                        <textarea id="email-input" rows="1" class="w-full bg-transparent border-b border-stone-300 dark:border-stone-700 py-3 text-lg focus:outline-none focus:border-primary dark:focus:border-white transition placeholder-stone-400 font-serif resize-none" placeholder="Brief requirements..." data-i18n-placeholder="ai.t2_placeholder"></textarea>
+                        
+                        <div id="email-result" class="hidden relative p-6 bg-stone-50 dark:bg-black/20 text-sm font-mono text-stone-600 dark:text-stone-300 border-l-2 border-stone-300"></div>
+
+                        <button id="btn-generate-email" class="group flex items-center text-sm font-bold tracking-widest uppercase hover:text-stone-500 transition">
+                            <span data-i18n="ai.t2_btn">Compose</span>
+                            <span class="ml-2 transform group-hover:translate-x-1 transition"><i class="fas fa-arrow-right"></i></span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Footer -->
     <footer id="contact" class="bg-primary text-white py-20 px-6">
         <div class="max-w-screen-xl mx-auto flex flex-col md:flex-row justify-between items-center">
@@ -564,28 +677,56 @@
                 event.preventDefault();
             });
             
-             // --- SMOOTH SCROLLING FOR NAV LINKS ---
+            // --- CUSTOM SMOOTH SCROLL FUNCTION (EASE-IN-OUT) ---
+            // Hàm tính toán chuyển động mượt: Chậm -> Nhanh -> Chậm dần
+            function easeInOutCubic(t, b, c, d) {
+                t /= d / 2;
+                if (t < 1) return c / 2 * t * t * t + b;
+                t -= 2;
+                return c / 2 * (t * t * t + 2) + b;
+            }
+
+            function smoothScrollTo(target, duration) {
+                const targetElement = document.querySelector(target);
+                if (!targetElement) return;
+
+                const headerOffset = 80; // Chiều cao thanh menu để trừ hao
+                const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - headerOffset;
+                const startPosition = window.pageYOffset;
+                const distance = targetPosition - startPosition;
+                let startTime = null;
+
+                function animation(currentTime) {
+                    if (startTime === null) startTime = currentTime;
+                    const timeElapsed = currentTime - startTime;
+                    
+                    // Tính toán vị trí tiếp theo
+                    const run = easeInOutCubic(timeElapsed, startPosition, distance, duration);
+                    window.scrollTo(0, run);
+
+                    // Tiếp tục chạy animation nếu chưa hết thời gian
+                    if (timeElapsed < duration) {
+                        requestAnimationFrame(animation);
+                    }
+                }
+
+                requestAnimationFrame(animation);
+            }
+
+            // --- GẮN SỰ KIỆN CLICK CHO MENU ---
             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
                 anchor.addEventListener('click', function (e) {
                     e.preventDefault(); 
                     const targetId = this.getAttribute('href');
                     if (targetId === '#') return;
                     
-                    const targetElement = document.querySelector(targetId);
-                    if (targetElement) {
-                        const headerOffset = 80;
-                        const elementPosition = targetElement.getBoundingClientRect().top;
-                        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                    // Gọi hàm scroll custom với thời gian 1500ms (1.5 giây) để cảm nhận rõ độ mượt
+                    smoothScrollTo(targetId, 1200); 
                     
-                        window.scrollTo({
-                            top: offsetPosition,
-                            behavior: "smooth"
-                        });
-                        
-                        const mobileMenu = document.getElementById('mobile-menu');
-                        if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
-                            mobileMenu.classList.add('hidden');
-                        }
+                    // Đóng menu mobile nếu đang mở
+                    const mobileMenu = document.getElementById('mobile-menu');
+                    if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
+                        mobileMenu.classList.add('hidden');
                     }
                 });
             });
