@@ -162,7 +162,8 @@
     </section>
 
      <!-- Hero Section 2 -->
-    <section id="home2" class="min-h-screen flex items-center justify-center relative pt-5 px-6 gpu-accelerated">
+    <!-- Đã có min-h-screen và flex items-center, giữ nguyên nhưng tinh chỉnh padding -->
+    <section id="home2" class="min-h-screen flex items-center justify-center relative px-6 gpu-accelerated">
         <div class="absolute inset-0 bg-noise opacity-50 pointer-events-none"></div>
         <div class="max-w-5xl mx-auto text-center z-10">
             <p class="text-sm md:text-base tracking-[0.3em] uppercase text-accent mb-6 animate-fade-in-up" data-i18n="hero.subtitle">Portfolio 2025</p>
@@ -189,26 +190,27 @@
     </section>
 
    <!-- About Section -->
-    <section id="about" class="relative z-10 py-32 px-6 bg-white dark:bg-darkPaper border-t border-stone-100 dark:border-stone-900 overflow-hidden">
-        <div class="max-w-5xl mx-auto">
-            <div class="mb-16">
+   <!-- Thêm min-h-screen và flex items-center để căn giữa màn hình -->
+    <section id="about" class="relative z-10 min-h-screen flex items-center py-20 px-6 bg-white dark:bg-darkPaper border-t border-stone-100 dark:border-stone-900 overflow-hidden">
+        <div class="max-w-5xl mx-auto w-full">
+            <div class="mb-12 md:mb-16">
                 <span class="text-xs font-bold tracking-[0.2em] uppercase text-accent block mb-4" data-i18n="about.intro">The Person Behind</span>
                 <h2 class="text-5xl md:text-7xl font-serif italic leading-tight"><span data-i18n="about.headline_1">Visuals with</span> <br> <span class="ml-12 md:ml-24 text-stone-400 dark:text-stone-600" data-i18n="about.headline_2">Soul & Purpose.</span></h2>
             </div>
-            <div class="grid md:grid-cols-12 gap-12 items-start">
+            <div class="grid md:grid-cols-12 gap-12 items-center"> <!-- items-center để căn giữa hình và chữ -->
                 <div class="md:col-span-5 relative group reveal">
                     <div class="relative overflow-hidden aspect-[3/4]"><img src="https://plus.unsplash.com/premium_photo-1682141028605-b2456e2bab14?q=80&w=687&auto=format&fit=crop" alt="Portrait" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition duration-1000"><div class="absolute top-4 left-4 right-4 bottom-4 border border-white/20 pointer-events-none"></div></div>
                     <div class="absolute -bottom-6 -right-6 bg-paper dark:bg-stone-800 p-6 shadow-xl border border-stone-100 dark:border-stone-700 hidden md:block"><p class="text-xs font-bold tracking-widest uppercase text-accent mb-1">Based in</p><p class="font-serif text-xl" data-i18n="about.location">Ho Chi Minh City</p></div>
                 </div>
-                <div class="md:col-span-7 md:pl-12 flex flex-col justify-between h-full">
+                <div class="md:col-span-7 md:pl-12 flex flex-col justify-center h-full">
                     <div>
                         <h3 class="text-2xl font-bold mb-4" data-i18n="about.greeting">Hi, I'm DzungLayout.</h3>
-                        <p class="text-lg font-light leading-relaxed text-stone-600 dark:text-stone-300 mb-8 text-justify" data-i18n="about.bio">I am a Visual Director focused on storytelling through editing and motion. My approach is simple: strip away the unnecessary until only the essential emotion remains. I don't just edit videos; I engineer feelings.</p>
-                        <div class="mb-8 pl-6 border-l-2 border-accent/50 italic text-stone-500 dark:text-stone-400 font-serif text-lg leading-relaxed"><p data-i18n="about.philosophy">"Design is not just what it looks like and feels like. Design is how it works..."</p></div>
-                        <div class="mb-10"><h4 class="font-bold tracking-widest uppercase text-xs mb-4 text-stone-400" data-i18n="about.expertise">Expertise</h4><div class="grid grid-cols-2 gap-x-4 gap-y-2 text-stone-700 dark:text-stone-300 font-light"><div class="flex items-center"><span class="w-1.5 h-1.5 bg-accent rounded-full mr-2"></span>Art Direction</div><div class="flex items-center"><span class="w-1.5 h-1.5 bg-accent rounded-full mr-2"></span>Video Editing</div><div class="flex items-center"><span class="w-1.5 h-1.5 bg-accent rounded-full mr-2"></span>Motion Graphics</div><div class="flex items-center"><span class="w-1.5 h-1.5 bg-accent rounded-full mr-2"></span>Brand Identity</div></div></div>
-                        <div class="mb-12 opacity-80 text-primary dark:text-white"><p class="font-scripture text-1xl md:text-3xl transform -rotate-0">Dzunglayout.</p></div>
+                        <p class="text-lg font-light leading-relaxed text-stone-600 dark:text-stone-300 mb-6 text-justify" data-i18n="about.bio">I am a Visual Director focused on storytelling through editing and motion. My approach is simple: strip away the unnecessary until only the essential emotion remains. I don't just edit videos; I engineer feelings.</p>
+                        <div class="mb-6 pl-6 border-l-2 border-accent/50 italic text-stone-500 dark:text-stone-400 font-serif text-lg leading-relaxed"><p data-i18n="about.philosophy">"Design is not just what it looks like and feels like. Design is how it works..."</p></div>
+                        <div class="mb-8"><h4 class="font-bold tracking-widest uppercase text-xs mb-4 text-stone-400" data-i18n="about.expertise">Expertise</h4><div class="grid grid-cols-2 gap-x-4 gap-y-2 text-stone-700 dark:text-stone-300 font-light"><div class="flex items-center"><span class="w-1.5 h-1.5 bg-accent rounded-full mr-2"></span>Art Direction</div><div class="flex items-center"><span class="w-1.5 h-1.5 bg-accent rounded-full mr-2"></span>Video Editing</div><div class="flex items-center"><span class="w-1.5 h-1.5 bg-accent rounded-full mr-2"></span>Motion Graphics</div><div class="flex items-center"><span class="w-1.5 h-1.5 bg-accent rounded-full mr-2"></span>Brand Identity</div></div></div>
+                        <div class="mb-8 opacity-80 text-primary dark:text-white"><p class="font-scripture text-1xl md:text-3xl transform -rotate-0">Dzunglayout.</p></div>
                     </div>
-                    <div class="grid grid-cols-3 gap-8 border-t border-stone-200 dark:border-stone-800 pt-8">
+                    <div class="grid grid-cols-3 gap-8 border-t border-stone-200 dark:border-stone-800 pt-6">
                         <div><span class="block text-4xl font-serif font-bold mb-1">07+</span><span class="text-xs uppercase tracking-widest text-stone-500" data-i18n="about.stat_years">Years Exp</span></div>
                         <div><span class="block text-4xl font-serif font-bold mb-1">150+</span><span class="text-xs uppercase tracking-widest text-stone-500" data-i18n="about.stat_projects">Projects</span></div>
                         <div><span class="block text-4xl font-serif font-bold mb-1">100%</span><span class="text-xs uppercase tracking-widest text-stone-500" data-i18n="about.stat_happy">Satisfaction</span></div>
@@ -302,17 +304,19 @@
     </section>
 
     <!-- Services (Minimalist Zigzag - Aligned Left/Right) -->
-    <section id="services" class="relative z-10 py-32 px-6 bg-white dark:bg-dark border-t border-stone-100 dark:border-stone-800">
-        <div class="max-w-screen-xl mx-auto">
+    <!-- Thêm min-h-screen và flex items-center để gói gọn trong 1 màn hình -->
+    <section id="services" class="relative z-10 min-h-screen flex items-center py-20 px-6 bg-white dark:bg-dark border-t border-stone-100 dark:border-stone-800">
+        <div class="max-w-screen-xl mx-auto w-full">
             
             <!-- 1. Header Section -->
-             <div class="max-w-5xl mx-auto mb-32">
-                <div class="mb-12">
+             <!-- Giảm mb-32 xuống mb-16 để tiết kiệm không gian -->
+             <div class="max-w-5xl mx-auto mb-16"> 
+                <div class="mb-8">
                     <span class="text-xs font-bold tracking-[0.2em] uppercase text-accent block mb-4" data-i18n="services.intro">What I do</span>
                     <h2 class="text-4xl md:text-5xl" data-i18n="services.title">Services</h2>
                 </div>
                 <div class="h-1 w-24 bg-primary dark:bg-white mt-2"></div> 
-                <div class="mt-8 max-w-xl"> 
+                <div class="mt-6 max-w-xl"> 
                     <p class="text-lg md:text-xl text-stone-500 dark:text-stone-400 font-light leading-relaxed" data-i18n="services.desc">
                         Comprehensive visual solutions tailored for brands that value aesthetics and storytelling.
                     </p>
@@ -320,11 +324,12 @@
             </div>
 
             <!-- 2. Services List -->
-            <div class="flex flex-col gap-24 md:gap-32 relative">
+            <!-- Giảm gap-24/32 xuống gap-16 để gọn hơn -->
+            <div class="flex flex-col gap-16 md:gap-20 relative">
                 
                 <!-- Item 1: Post-Production (CANH TRÁI - Aligned Right items-end text-right) -->
                 <div class="flex flex-col items-center text-center z-10 reveal md:w-1/2 md:ml-auto"> 
-                    <div class="mb-6 text-4xl text-primary dark:text-white transition-transform duration-500 hover:-translate-y-2">
+                    <div class="mb-4 text-4xl text-primary dark:text-white transition-transform duration-500 hover:-translate-y-2">
                         <i class="fas fa-film"></i>
                     </div>
                     
@@ -337,7 +342,7 @@
 
                 <!-- Item 2: VFX & Motion (CANH PHẢI - Aligned Left) -->
                 <div class="flex flex-col items-center text-center z-10 reveal delay-100 md:w-1/2">
-                     <div class="mb-6 text-4xl text-primary dark:text-white transition-transform duration-500 hover:-translate-y-2">
+                     <div class="mb-4 text-4xl text-primary dark:text-white transition-transform duration-500 hover:-translate-y-2">
                          <i class="fas fa-cubes"></i>
                     </div>
                     <h3 class="text-2xl md:text-4xl font-serif italic font-bold mb-4" data-i18n="services.s2_title">VFX & Motion</h3>
@@ -349,7 +354,7 @@
 
                 <!-- Item 3: Art Direction (CANH TRÁI - Aligned Right - Thẳng hàng với Post-Production) -->
                 <div class="flex flex-col items-center text-center z-10 reveal delay-100 md:w-1/2 md:ml-auto">
-                    <div class="mb-6 text-4xl text-primary dark:text-white transition-transform duration-500 hover:-translate-y-2">
+                    <div class="mb-4 text-4xl text-primary dark:text-white transition-transform duration-500 hover:-translate-y-2">
                         <i class="fas fa-compass"></i>
                     </div>
                      <h3 class="text-2xl md:text-4xl font-serif italic font-bold mb-4" data-i18n="services.s3_title">Art Direction</h3>
