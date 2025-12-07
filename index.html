@@ -38,25 +38,17 @@
         }
     </script>
     <style>
-        /* TỐI ƯU HIỆU SUẤT CUỘN */
         html {
-            scroll-behavior: auto !important; /* Tắt mặc định để JS xử lý */
+            scroll-behavior: auto !important;
             height: 100%;
         }
-        
-        body {
-            /* Ngăn chặn hiệu ứng "bounciness" trên Mac có thể gây giật */
-            overscroll-behavior-y: none; 
-        }
-
-        /* GPU Acceleration Hacks (Chống giật/chớp) */
+        body { overscroll-behavior-y: none; }
         .gpu-accelerated {
             transform: translateZ(0);
             backface-visibility: hidden;
             perspective: 1000px;
             will-change: transform, opacity;
         }
-
         @font-face {
             font-family: 'Scripture';
             src: url('fonts/Scripture.ttf') format('truetype'); 
@@ -64,9 +56,7 @@
             font-style: normal;
             font-display: swap;
         }
-
         h1, h2, h3, h4 { font-family: 'Playfair Display', serif; }
-        
         .typing-effect::after {
             content: '';
             display: inline-block;
@@ -77,50 +67,42 @@
             animation: blink 1s infinite;
         }
         @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
-        
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: #d6d3d1; border-radius: 0; }
         ::-webkit-scrollbar-thumb:hover { background: #78716c; }
-
         ::selection { background: #1c1917; color: #fff; }
         .dark ::selection { background: #fff; color: #000; }
-
         .prose h3 { font-family: 'Playfair Display', serif; font-size: 1.25rem; font-style: italic; margin-bottom: 0.5rem; color: #1c1917; }
         .dark .prose h3 { color: #e7e5e4; }
         .prose ul { list-style-type: none; padding-left: 0; margin-bottom: 1rem; }
         .prose li::before { content: "—"; margin-right: 0.5rem; color: #a8a29e; }
-
-        @keyframes scroll {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
-        }
-        .animate-infinite-scroll {
-            animation: scroll 40s linear infinite;
-        }
-        .animate-infinite-scroll:hover {
-            animation-play-state: paused;
-        }
-
+        @keyframes scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+        .animate-infinite-scroll { animation: scroll 40s linear infinite; }
+        .animate-infinite-scroll:hover { animation-play-state: paused; }
         .reveal {
             opacity: 0;
-            transform: translateY(50px) translateZ(0); /* Thêm translateZ để mượt hơn */
+            transform: translateY(50px) translateZ(0);
             transition: opacity 1s ease-out, transform 1s ease-out;
             will-change: opacity, transform;
         }
-        .reveal.active {
-            opacity: 1;
-            transform: translateY(0) translateZ(0);
+        .reveal.active { opacity: 1; transform: translateY(0) translateZ(0); }
+
+        /* Animation cho filter */
+        .work-item {
+            transition: all 0.5s ease;
+        }
+        .work-item.hidden-item {
+            display: none; /* Dùng display none để layout grid tự động sắp xếp lại */
         }
     </style>
 </head>
 <body class="bg-paper text-primary dark:bg-dark dark:text-stone-200 transition-colors duration-500 font-sans antialiased">
 
-    <!-- Navbar (Thêm gpu-accelerated) -->
+    <!-- Navbar -->
     <nav id="main-nav" class="fixed w-full z-50 text-white transition-all duration-500 border-b border-transparent gpu-accelerated mix-blend-difference"> 
         <div class="max-w-screen-2xl mx-auto px-6 py-6 flex justify-between items-center">
             <a href="#" class="text-2xl font-serif font-bold tracking-widest uppercase">Dzung.</a>
-            
             <div class="hidden md:flex space-x-12 text-sm tracking-widest font-light uppercase">
                 <a href="#home" class="hover:text-accent transition" data-i18n="nav.home">Home</a>
                 <a href="#work" class="hover:text-accent transition" data-i18n="nav.work">Selected Work</a>
@@ -128,14 +110,12 @@
                 <a href="#about" class="hover:text-accent transition" data-i18n="nav.profile">Profile</a>
                 <a href="LINK_GOOGLE_DRIVE_CUA_BAN" target="_blank" class="hover:text-primary dark:hover:text-white transition font-bold border-b border-white pb-1" data-i18n="nav.resume">Resume</a>
             </div>
-
             <div class="flex items-center space-x-6">
                 <button id="lang-toggle" class="hover:text-accent transition text-sm font-bold border border-current px-2 py-1 rounded">EN</button>
                 <button id="theme-toggle" class="hover:text-accent transition text-lg"><i class="fas fa-adjust"></i></button>
                 <button id="mobile-menu-btn" class="md:hidden text-lg"><i class="fas fa-bars"></i></button>
             </div>
         </div>
-        
         <div id="mobile-menu" class="hidden absolute top-full left-0 w-full bg-paper dark:bg-dark text-primary dark:text-white border-b border-stone-200 dark:border-stone-800 shadow-xl">
             <div class="flex flex-col p-6 space-y-4 font-serif text-xl">
                 <a href="#home" class="block" data-i18n="nav.home">Home</a>
@@ -147,144 +127,41 @@
     </nav>
 
     <!-- NEW HERO SECTION: GRID MOSAIC -->
-    <!-- Thêm class 'cursor-pointer' để hiển thị biểu tượng bàn tay khi rê chuột vào -->
     <section id="home" class="relative w-full h-screen overflow-hidden bg-black gpu-accelerated cursor-pointer">
-        <!-- Grid Container -->
         <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 h-full w-full">
-            
-            <!-- ROW 1 -->
-            <!-- Image 1: Travel (Mountains) -->
-            <div class="group relative w-full h-full overflow-hidden border border-white/5">
-                <img src="https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=500&auto=format&fit=crop&q=60" 
-                     class="absolute inset-0 w-full h-full object-cover grayscale brightness-[0.5] transition-all duration-700 ease-out group-hover:grayscale-0 group-hover:brightness-100 group-hover:scale-110" 
-                     alt="Travel 1">
-            </div>
-            <!-- Image 2: Motion (Neon/Abstract) -->
-            <div class="group relative w-full h-full overflow-hidden border border-white/5">
-                <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=500&auto=format&fit=crop&q=60" 
-                     class="absolute inset-0 w-full h-full object-cover grayscale brightness-[0.5] transition-all duration-700 ease-out group-hover:grayscale-0 group-hover:brightness-100 group-hover:scale-110" 
-                     alt="Motion 1">
-            </div>
-            <!-- Image 3: Design (Typography) -->
-            <div class="group relative w-full h-full overflow-hidden border border-white/5 hidden md:block">
-                <img src="https://images.unsplash.com/photo-1561070791-2526d30994b5?w=500&auto=format&fit=crop&q=60" 
-                     class="absolute inset-0 w-full h-full object-cover grayscale brightness-[0.5] transition-all duration-700 ease-out group-hover:grayscale-0 group-hover:brightness-100 group-hover:scale-110" 
-                     alt="Design 1">
-            </div>
-            <!-- Image 4: Travel (Road) -->
-            <div class="group relative w-full h-full overflow-hidden border border-white/5 hidden lg:block">
-                <img src="https://images.unsplash.com/photo-1504609773096-104ff2c73ba4?w=500&auto=format&fit=crop&q=60" 
-                     class="absolute inset-0 w-full h-full object-cover grayscale brightness-[0.5] transition-all duration-700 ease-out group-hover:grayscale-0 group-hover:brightness-100 group-hover:scale-110" 
-                     alt="Travel 2">
-            </div>
-            <!-- Image 5: Motion (3D Shapes) -->
-            <div class="group relative w-full h-full overflow-hidden border border-white/5 hidden lg:block">
-                <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=500&auto=format&fit=crop&q=60" 
-                     class="absolute inset-0 w-full h-full object-cover grayscale brightness-[0.5] transition-all duration-700 ease-out group-hover:grayscale-0 group-hover:brightness-100 group-hover:scale-110" 
-                     alt="Motion 2">
-            </div>
-            <!-- Image 6: Design (Minimalist) -->
-            <div class="group relative w-full h-full overflow-hidden border border-white/5">
-                <img src="https://images.unsplash.com/photo-1509343256512-d77a5cb3791b?w=500&auto=format&fit=crop&q=60" 
-                     class="absolute inset-0 w-full h-full object-cover grayscale brightness-[0.5] transition-all duration-700 ease-out group-hover:grayscale-0 group-hover:brightness-100 group-hover:scale-110" 
-                     alt="Design 2">
-            </div>
-
-            <!-- ROW 2 -->
-            <!-- Image 7: Design (Branding) -->
-            <div class="group relative w-full h-full overflow-hidden border border-white/5">
-                <img src="https://images.unsplash.com/photo-1626785774573-4b7993143d23?w=500&auto=format&fit=crop&q=60" 
-                     class="absolute inset-0 w-full h-full object-cover grayscale brightness-[0.5] transition-all duration-700 ease-out group-hover:grayscale-0 group-hover:brightness-100 group-hover:scale-110" 
-                     alt="Design 3">
-            </div>
-            <!-- Image 8: Travel (Forest) -->
-            <div class="group relative w-full h-full overflow-hidden border border-white/5 hidden lg:block">
-                <img src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=500&auto=format&fit=crop&q=60" 
-                     class="absolute inset-0 w-full h-full object-cover grayscale brightness-[0.5] transition-all duration-700 ease-out group-hover:grayscale-0 group-hover:brightness-100 group-hover:scale-110" 
-                     alt="Travel 3">
-            </div>
-            
-            <!-- CENTER AREA -->
-             <div class="group relative w-full h-full overflow-hidden border border-white/5 hidden md:block">
-                <img src="https://images.unsplash.com/photo-1558655146-d09347e0b7a9?w=500&auto=format&fit=crop&q=60" 
-                     class="absolute inset-0 w-full h-full object-cover grayscale brightness-[0.5] transition-all duration-700 ease-out group-hover:grayscale-0 group-hover:brightness-100 group-hover:scale-110" 
-                     alt="Motion 3">
-            </div>
-            <div class="group relative w-full h-full overflow-hidden border border-white/5">
-                <img src="https://images.unsplash.com/photo-1534972195531-d756b9bfa9f2?w=500&auto=format&fit=crop&q=60" 
-                     class="absolute inset-0 w-full h-full object-cover grayscale brightness-[0.5] transition-all duration-700 ease-out group-hover:grayscale-0 group-hover:brightness-100 group-hover:scale-110" 
-                     alt="Design 4">
-            </div>
-            
-             <div class="group relative w-full h-full overflow-hidden border border-white/5 hidden lg:block">
-                <img src="https://images.unsplash.com/photo-1518837695005-2083093ee35b?w=500&auto=format&fit=crop&q=60" 
-                     class="absolute inset-0 w-full h-full object-cover grayscale brightness-[0.5] transition-all duration-700 ease-out group-hover:grayscale-0 group-hover:brightness-100 group-hover:scale-110" 
-                     alt="Travel 4">
-            </div>
-            <!-- Image 12: Motion (Liquid) -->
-            <div class="group relative w-full h-full overflow-hidden border border-white/5">
-                <img src="https://images.unsplash.com/photo-1497250681960-ef048c0ab447?w=500&auto=format&fit=crop&q=60" 
-                     class="absolute inset-0 w-full h-full object-cover grayscale brightness-[0.5] transition-all duration-700 ease-out group-hover:grayscale-0 group-hover:brightness-100 group-hover:scale-110" 
-                     alt="Motion 4">
-            </div>
-
-            <!-- ROW 3 -->
-            <!-- Image 13: Travel (Sea) -->
-            <div class="group relative w-full h-full overflow-hidden border border-white/5">
-                <img src="https://images.unsplash.com/photo-1505118380757-91f5f5632de0?w=500&auto=format&fit=crop&q=60" 
-                     class="absolute inset-0 w-full h-full object-cover grayscale brightness-[0.5] transition-all duration-700 ease-out group-hover:grayscale-0 group-hover:brightness-100 group-hover:scale-110" 
-                     alt="Travel 5">
-            </div>
-            <!-- Image 14: Design (Geometric) -->
-            <div class="group relative w-full h-full overflow-hidden border border-white/5 hidden md:block">
-                <img src="https://images.unsplash.com/photo-1550684848-fac1c5b4e853?w=500&auto=format&fit=crop&q=60" 
-                     class="absolute inset-0 w-full h-full object-cover grayscale brightness-[0.5] transition-all duration-700 ease-out group-hover:grayscale-0 group-hover:brightness-100 group-hover:scale-110" 
-                     alt="Design 5">
-            </div>
-            <!-- Image 15: Motion (Light Trails) -->
-            <div class="group relative w-full h-full overflow-hidden border border-white/5 hidden lg:block">
-                <img src="https://images.unsplash.com/photo-1495020686659-1f4a4565a58c?w=500&auto=format&fit=crop&q=60" 
-                     class="absolute inset-0 w-full h-full object-cover grayscale brightness-[0.5] transition-all duration-700 ease-out group-hover:grayscale-0 group-hover:brightness-100 group-hover:scale-110" 
-                     alt="Motion 5">
-            </div>
-            <!-- Image 16: Travel (City) -->
-            <div class="group relative w-full h-full overflow-hidden border border-white/5">
-                <img src="https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=500&auto=format&fit=crop&q=60" 
-                     class="absolute inset-0 w-full h-full object-cover grayscale brightness-[0.5] transition-all duration-700 ease-out group-hover:grayscale-0 group-hover:brightness-100 group-hover:scale-110" 
-                     alt="Travel 6">
-            </div>
-            <!-- Image 17: Design (Texture) -->
-            <div class="group relative w-full h-full overflow-hidden border border-white/5 hidden lg:block">
-                <img src="https://images.unsplash.com/photo-1614850523060-8da1d56ae167?w=500&auto=format&fit=crop&q=60" 
-                     class="absolute inset-0 w-full h-full object-cover grayscale brightness-[0.5] transition-all duration-700 ease-out group-hover:grayscale-0 group-hover:brightness-100 group-hover:scale-110" 
-                     alt="Design 6">
-            </div>
-            <!-- Image 18: Motion (Particles) -->
-            <div class="group relative w-full h-full overflow-hidden border border-white/5">
-                <img src="https://images.unsplash.com/photo-1518640467707-6811f4a6ab73?w=500&auto=format&fit=crop&q=60" 
-                     class="absolute inset-0 w-full h-full object-cover grayscale brightness-[0.5] transition-all duration-700 ease-out group-hover:grayscale-0 group-hover:brightness-100 group-hover:scale-110" 
-                     alt="Motion 6">
-            </div>
+            <!-- Images (1-18) -->
+            <div class="group relative w-full h-full overflow-hidden border border-white/5"><img src="https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=500&auto=format&fit=crop&q=60" class="absolute inset-0 w-full h-full object-cover grayscale brightness-[0.5] transition-all duration-700 ease-out group-hover:grayscale-0 group-hover:brightness-100 group-hover:scale-110" alt="Travel"></div>
+            <div class="group relative w-full h-full overflow-hidden border border-white/5"><img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=500&auto=format&fit=crop&q=60" class="absolute inset-0 w-full h-full object-cover grayscale brightness-[0.5] transition-all duration-700 ease-out group-hover:grayscale-0 group-hover:brightness-100 group-hover:scale-110" alt="Motion"></div>
+            <div class="group relative w-full h-full overflow-hidden border border-white/5 hidden md:block"><img src="https://images.unsplash.com/photo-1561070791-2526d30994b5?w=500&auto=format&fit=crop&q=60" class="absolute inset-0 w-full h-full object-cover grayscale brightness-[0.5] transition-all duration-700 ease-out group-hover:grayscale-0 group-hover:brightness-100 group-hover:scale-110" alt="Design"></div>
+            <div class="group relative w-full h-full overflow-hidden border border-white/5 hidden lg:block"><img src="https://images.unsplash.com/photo-1504609773096-104ff2c73ba4?w=500&auto=format&fit=crop&q=60" class="absolute inset-0 w-full h-full object-cover grayscale brightness-[0.5] transition-all duration-700 ease-out group-hover:grayscale-0 group-hover:brightness-100 group-hover:scale-110" alt="Travel"></div>
+            <div class="group relative w-full h-full overflow-hidden border border-white/5 hidden lg:block"><img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=500&auto=format&fit=crop&q=60" class="absolute inset-0 w-full h-full object-cover grayscale brightness-[0.5] transition-all duration-700 ease-out group-hover:grayscale-0 group-hover:brightness-100 group-hover:scale-110" alt="Motion"></div>
+            <div class="group relative w-full h-full overflow-hidden border border-white/5"><img src="https://images.unsplash.com/photo-1509343256512-d77a5cb3791b?w=500&auto=format&fit=crop&q=60" class="absolute inset-0 w-full h-full object-cover grayscale brightness-[0.5] transition-all duration-700 ease-out group-hover:grayscale-0 group-hover:brightness-100 group-hover:scale-110" alt="Design"></div>
+            <div class="group relative w-full h-full overflow-hidden border border-white/5"><img src="https://images.unsplash.com/photo-1626785774573-4b7993143d23?w=500&auto=format&fit=crop&q=60" class="absolute inset-0 w-full h-full object-cover grayscale brightness-[0.5] transition-all duration-700 ease-out group-hover:grayscale-0 group-hover:brightness-100 group-hover:scale-110" alt="Design"></div>
+            <div class="group relative w-full h-full overflow-hidden border border-white/5 hidden lg:block"><img src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=500&auto=format&fit=crop&q=60" class="absolute inset-0 w-full h-full object-cover grayscale brightness-[0.5] transition-all duration-700 ease-out group-hover:grayscale-0 group-hover:brightness-100 group-hover:scale-110" alt="Travel"></div>
+            <div class="group relative w-full h-full overflow-hidden border border-white/5 hidden md:block"><img src="https://images.unsplash.com/photo-1558655146-d09347e0b7a9?w=500&auto=format&fit=crop&q=60" class="absolute inset-0 w-full h-full object-cover grayscale brightness-[0.5] transition-all duration-700 ease-out group-hover:grayscale-0 group-hover:brightness-100 group-hover:scale-110" alt="Motion"></div>
+            <div class="group relative w-full h-full overflow-hidden border border-white/5"><img src="https://images.unsplash.com/photo-1534972195531-d756b9bfa9f2?w=500&auto=format&fit=crop&q=60" class="absolute inset-0 w-full h-full object-cover grayscale brightness-[0.5] transition-all duration-700 ease-out group-hover:grayscale-0 group-hover:brightness-100 group-hover:scale-110" alt="Design"></div>
+            <div class="group relative w-full h-full overflow-hidden border border-white/5 hidden lg:block"><img src="https://images.unsplash.com/photo-1518837695005-2083093ee35b?w=500&auto=format&fit=crop&q=60" class="absolute inset-0 w-full h-full object-cover grayscale brightness-[0.5] transition-all duration-700 ease-out group-hover:grayscale-0 group-hover:brightness-100 group-hover:scale-110" alt="Travel"></div>
+            <div class="group relative w-full h-full overflow-hidden border border-white/5"><img src="https://images.unsplash.com/photo-1497250681960-ef048c0ab447?w=500&auto=format&fit=crop&q=60" class="absolute inset-0 w-full h-full object-cover grayscale brightness-[0.5] transition-all duration-700 ease-out group-hover:grayscale-0 group-hover:brightness-100 group-hover:scale-110" alt="Motion"></div>
+            <div class="group relative w-full h-full overflow-hidden border border-white/5"><img src="https://images.unsplash.com/photo-1505118380757-91f5f5632de0?w=500&auto=format&fit=crop&q=60" class="absolute inset-0 w-full h-full object-cover grayscale brightness-[0.5] transition-all duration-700 ease-out group-hover:grayscale-0 group-hover:brightness-100 group-hover:scale-110" alt="Travel"></div>
+            <div class="group relative w-full h-full overflow-hidden border border-white/5 hidden md:block"><img src="https://images.unsplash.com/photo-1550684848-fac1c5b4e853?w=500&auto=format&fit=crop&q=60" class="absolute inset-0 w-full h-full object-cover grayscale brightness-[0.5] transition-all duration-700 ease-out group-hover:grayscale-0 group-hover:brightness-100 group-hover:scale-110" alt="Design"></div>
+            <div class="group relative w-full h-full overflow-hidden border border-white/5 hidden lg:block"><img src="https://images.unsplash.com/photo-1495020686659-1f4a4565a58c?w=500&auto=format&fit=crop&q=60" class="absolute inset-0 w-full h-full object-cover grayscale brightness-[0.5] transition-all duration-700 ease-out group-hover:grayscale-0 group-hover:brightness-100 group-hover:scale-110" alt="Motion"></div>
+            <div class="group relative w-full h-full overflow-hidden border border-white/5"><img src="https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=500&auto=format&fit=crop&q=60" class="absolute inset-0 w-full h-full object-cover grayscale brightness-[0.5] transition-all duration-700 ease-out group-hover:grayscale-0 group-hover:brightness-100 group-hover:scale-110" alt="Travel"></div>
+            <div class="group relative w-full h-full overflow-hidden border border-white/5 hidden lg:block"><img src="https://images.unsplash.com/photo-1614850523060-8da1d56ae167?w=500&auto=format&fit=crop&q=60" class="absolute inset-0 w-full h-full object-cover grayscale brightness-[0.5] transition-all duration-700 ease-out group-hover:grayscale-0 group-hover:brightness-100 group-hover:scale-110" alt="Design"></div>
+            <div class="group relative w-full h-full overflow-hidden border border-white/5"><img src="https://images.unsplash.com/photo-1518640467707-6811f4a6ab73?w=500&auto=format&fit=crop&q=60" class="absolute inset-0 w-full h-full object-cover grayscale brightness-[0.5] transition-all duration-700 ease-out group-hover:grayscale-0 group-hover:brightness-100 group-hover:scale-110" alt="Motion"></div>
         </div>
 
-        <!-- CENTER TEXT OVERLAY -->
         <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none z-20">
-            <h1 class="text-4xl md:text-8xl lg:text-9xl font-black tracking-tighter text-white uppercase drop-shadow-2xl text-center px-4" style="font-family: 'Be Vietnam Pro', sans-serif;">
-                DzungLayout
-            </h1>
-            <p class="text-white/90 text-xs md:text-base lg:text-xl tracking-[0.5em] uppercase mt-4 font-light animate-pulse">
-                Crafting emotions through frames and pixels.
-            </p>
+            <h1 class="text-4xl md:text-8xl lg:text-9xl font-black tracking-tighter text-white uppercase drop-shadow-2xl text-center px-4" style="font-family: 'Be Vietnam Pro', sans-serif;">DzungLayout</h1>
+            <p class="text-white/90 text-xs md:text-base lg:text-xl tracking-[0.5em] uppercase mt-4 font-light animate-pulse">Crafting emotions through frames and pixels.</p>
         </div>
         
-        <!-- Scroll Indicator -->
         <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 z-30 animate-bounce">
             <span class="text-xs tracking-widest uppercase rotate-90 block origin-left translate-y-12 translate-x-1 text-white font-bold" data-i18n="hero.scroll">Scroll</span>
             <div class="h-16 w-px bg-white mx-auto mt-4 shadow-lg"></div>
         </div>
     </section>
 
-     <!-- Hero Section -->
+     <!-- Hero Section 2 -->
     <section id="home2" class="min-h-screen flex items-center justify-center relative pt-5 px-6 gpu-accelerated">
         <div class="absolute inset-0 bg-noise opacity-50 pointer-events-none"></div>
         <div class="max-w-5xl mx-auto text-center z-10">
@@ -311,6 +188,37 @@
         </div>
     </section>
 
+   <!-- About Section -->
+    <section id="about" class="relative z-10 py-32 px-6 bg-white dark:bg-darkPaper border-t border-stone-100 dark:border-stone-900 overflow-hidden">
+        <div class="max-w-5xl mx-auto">
+            <div class="mb-16">
+                <span class="text-xs font-bold tracking-[0.2em] uppercase text-accent block mb-4" data-i18n="about.intro">The Person Behind</span>
+                <h2 class="text-5xl md:text-7xl font-serif italic leading-tight"><span data-i18n="about.headline_1">Visuals with</span> <br> <span class="ml-12 md:ml-24 text-stone-400 dark:text-stone-600" data-i18n="about.headline_2">Soul & Purpose.</span></h2>
+            </div>
+            <div class="grid md:grid-cols-12 gap-12 items-start">
+                <div class="md:col-span-5 relative group reveal">
+                    <div class="relative overflow-hidden aspect-[3/4]"><img src="https://plus.unsplash.com/premium_photo-1682141028605-b2456e2bab14?q=80&w=687&auto=format&fit=crop" alt="Portrait" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition duration-1000"><div class="absolute top-4 left-4 right-4 bottom-4 border border-white/20 pointer-events-none"></div></div>
+                    <div class="absolute -bottom-6 -right-6 bg-paper dark:bg-stone-800 p-6 shadow-xl border border-stone-100 dark:border-stone-700 hidden md:block"><p class="text-xs font-bold tracking-widest uppercase text-accent mb-1">Based in</p><p class="font-serif text-xl" data-i18n="about.location">Ho Chi Minh City</p></div>
+                </div>
+                <div class="md:col-span-7 md:pl-12 flex flex-col justify-between h-full">
+                    <div>
+                        <h3 class="text-2xl font-bold mb-4" data-i18n="about.greeting">Hi, I'm DzungLayout.</h3>
+                        <p class="text-lg font-light leading-relaxed text-stone-600 dark:text-stone-300 mb-8 text-justify" data-i18n="about.bio">I am a Visual Director focused on storytelling through editing and motion. My approach is simple: strip away the unnecessary until only the essential emotion remains. I don't just edit videos; I engineer feelings.</p>
+                        <div class="mb-8 pl-6 border-l-2 border-accent/50 italic text-stone-500 dark:text-stone-400 font-serif text-lg leading-relaxed"><p data-i18n="about.philosophy">"Design is not just what it looks like and feels like. Design is how it works..."</p></div>
+                        <div class="mb-10"><h4 class="font-bold tracking-widest uppercase text-xs mb-4 text-stone-400" data-i18n="about.expertise">Expertise</h4><div class="grid grid-cols-2 gap-x-4 gap-y-2 text-stone-700 dark:text-stone-300 font-light"><div class="flex items-center"><span class="w-1.5 h-1.5 bg-accent rounded-full mr-2"></span>Art Direction</div><div class="flex items-center"><span class="w-1.5 h-1.5 bg-accent rounded-full mr-2"></span>Video Editing</div><div class="flex items-center"><span class="w-1.5 h-1.5 bg-accent rounded-full mr-2"></span>Motion Graphics</div><div class="flex items-center"><span class="w-1.5 h-1.5 bg-accent rounded-full mr-2"></span>Brand Identity</div></div></div>
+                        <div class="mb-12 opacity-80 text-primary dark:text-white"><p class="font-scripture text-1xl md:text-3xl transform -rotate-0">Dzunglayout.</p></div>
+                    </div>
+                    <div class="grid grid-cols-3 gap-8 border-t border-stone-200 dark:border-stone-800 pt-8">
+                        <div><span class="block text-4xl font-serif font-bold mb-1">07+</span><span class="text-xs uppercase tracking-widest text-stone-500" data-i18n="about.stat_years">Years Exp</span></div>
+                        <div><span class="block text-4xl font-serif font-bold mb-1">150+</span><span class="text-xs uppercase tracking-widest text-stone-500" data-i18n="about.stat_projects">Projects</span></div>
+                        <div><span class="block text-4xl font-serif font-bold mb-1">100%</span><span class="text-xs uppercase tracking-widest text-stone-500" data-i18n="about.stat_happy">Satisfaction</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
     <!-- Selected Work -->
     <section id="work" class="py-32 px-6 bg-white dark:bg-darkPaper">
         <div class="max-w-screen-xl mx-auto">
@@ -319,16 +227,17 @@
                     <h2 class="text-4xl md:text-5xl mb-2" data-i18n="work.title">Selected Work</h2>
                     <p class="text-stone-500 font-light" data-i18n="work.subtitle">A collection of moments & brands.</p>
                 </div>
+                <!-- Filter Buttons (Updated with functionality) -->
                 <div class="mt-6 md:mt-0 flex gap-4 text-sm font-bold text-stone-400">
-                    <a href="#" class="text-primary dark:text-white border-b border-primary dark:border-white pb-1" data-i18n="work.filter_all">All</a>
-                    <a href="#" class="hover:text-primary dark:hover:text-white transition">Film</a>
-                    <a href="#" class="hover:text-primary dark:hover:text-white transition">Design</a>
+                    <button class="filter-btn text-primary dark:text-white border-b border-primary dark:border-white pb-1 transition-all" data-filter="all" data-i18n="work.filter_all">All</button>
+                    <button class="filter-btn hover:text-primary dark:hover:text-white border-b border-transparent hover:border-primary dark:hover:border-white pb-1 transition-all" data-filter="film">Film</button>
+                    <button class="filter-btn hover:text-primary dark:hover:text-white border-b border-transparent hover:border-primary dark:hover:border-white pb-1 transition-all" data-filter="design">Design</button>
                 </div>
             </div>
 
-            <div class="grid md:grid-cols-2 gap-x-8 gap-y-16">
-                <!-- Project 1 -->
-                <div class="group cursor-pointer video-trigger reveal" data-video-id="zjUzZNXi2aQ"> 
+            <div class="grid md:grid-cols-2 gap-x-8 gap-y-16" id="work-grid">
+                <!-- Project 1 (Film) -->
+                <div class="work-item group cursor-pointer video-trigger reveal" data-category="film" data-video-id="zjUzZNXi2aQ"> 
                     <div class="relative overflow-hidden aspect-[16/9] mb-6 bg-stone-100">
                         <img src="https://youtu.be/zjUzZNXi2aQ" alt="Work 1" class="object-cover w-full h-full transform transition duration-700 group-hover:scale-105 filter grayscale group-hover:grayscale-0">
                         <div class="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition duration-500 flex items-center justify-center">
@@ -344,8 +253,8 @@
                     </div>
                 </div>
 
-                <!-- Project 2 -->
-                <div class="group cursor-pointer md:mt-20 reveal">
+                <!-- Project 2 (Design) -->
+                <div class="work-item group cursor-pointer md:mt-20 reveal" data-category="design">
                     <div class="relative overflow-hidden aspect-[3/4] mb-6 bg-stone-100">
                         <img src="https://satecay.github.io/portfolio-2025/images/web-show-1.jpg$0" alt="Work 2" class="object-cover w-full h-full transform transition duration-700 group-hover:scale-105 filter grayscale group-hover:grayscale-0">
                     </div>
@@ -358,8 +267,8 @@
                     </div>
                 </div>
 
-                 <!-- Project 3 -->
-                 <div class="group cursor-pointer video-trigger reveal" data-video-id="LXb3EKWsInQ">
+                 <!-- Project 3 (Film/Motion) -->
+                 <div class="work-item group cursor-pointer video-trigger reveal" data-category="film" data-video-id="LXb3EKWsInQ">
                     <div class="relative overflow-hidden aspect-[16/9] mb-6 bg-stone-100">
                         <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=800&auto=format&fit=crop&q=80" alt="Work 3" class="object-cover w-full h-full transform transition duration-700 group-hover:scale-105 filter grayscale group-hover:grayscale-0">
                         <div class="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition duration-500 flex items-center justify-center">
@@ -375,8 +284,8 @@
                     </div>
                 </div>
 
-                 <!-- Project 4 -->
-                 <div class="group cursor-pointer md:mt-20 reveal">
+                 <!-- Project 4 (Design) -->
+                 <div class="work-item group cursor-pointer md:mt-20 reveal" data-category="design">
                     <div class="relative overflow-hidden aspect-[4/5] mb-6 bg-stone-100">
                         <img src="https://images.unsplash.com/photo-1600607686527-6fb886090705?w=800&auto=format&fit=crop&q=80" alt="Work 4" class="object-cover w-full h-full transform transition duration-700 group-hover:scale-105 filter grayscale group-hover:grayscale-0">
                     </div>
@@ -392,152 +301,77 @@
         </div>
     </section>
 
-    <!-- FEATURED SHOWREEL (ĐÃ GỠ BỎ STICKY ĐỂ CUỘN MƯỢT HƠN) -->
-    <!-- Thay đổi từ 'sticky top-0' thành 'relative' -->
-    <section class="relative h-screen w-full flex items-center justify-center overflow-hidden bg-black">
-        <video autoplay loop muted playsinline class="absolute inset-0 w-full h-full object-cover opacity-80">
-            <source src="https://videos.pexels.com/video-files/3129957/3129957-uhd_2560_1440_25fps.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-        </video>
-        
-        <div class="relative z-20 text-center text-white px-6">
-            <p class="text-sm md:text-base font-bold tracking-[0.5em] uppercase mb-4 animate-pulse">Showreel 2025</p>
-            <h2 class="text-6xl md:text-9xl font-serif italic tracking-tighter mix-blend-overlay">Emotion &<br>Motion</h2>
-            
-            <button class="mt-12 w-20 h-20 rounded-full border border-white/30 flex items-center justify-center hover:bg-white hover:text-black transition duration-500 group video-trigger mx-auto" data-video-id="tgbNymZ7vqY">
-                <i class="fas fa-play text-2xl pl-1 group-hover:scale-110 transition"></i>
-            </button>
-        </div>
-        
-        <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
-        <div class="absolute inset-0 bg-gradient-to-b from-black via-transparent to-transparent"></div>
-    </section>
-
-    <!-- Services -->
-    <!-- Loại bỏ các class xử lý GPU nặng không cần thiết -->
-    <section id="services" class="relative z-10 py-24 px-6 bg-paper dark:bg-dark border-t border-stone-100 dark:border-stone-800 shadow-2xl shadow-stone-900/20">
+    <!-- Services (Minimalist Zigzag - Aligned Left/Right) -->
+    <section id="services" class="relative z-10 py-32 px-6 bg-white dark:bg-dark border-t border-stone-100 dark:border-stone-800">
         <div class="max-w-screen-xl mx-auto">
-            <div class="mb-16 md:w-1/2">
-                <span class="text-xs font-bold tracking-[0.2em] uppercase text-accent" data-i18n="services.label">What I do</span>
-                <h2 class="text-4xl md:text-5xl mt-4 mb-6" data-i18n="services.title">Services</h2>
-                <p class="font-light text-lg text-stone-600 dark:text-stone-400" data-i18n="services.desc">
-                    Comprehensive visual solutions tailored for brands that value aesthetics and storytelling.
-                </p>
-            </div>
-
-            <div class="grid md:grid-cols-3 gap-6">
-                <!-- Service 1 -->
-                <div class="group relative h-[500px] overflow-hidden cursor-pointer reveal">
-                    <img src="https://images.unsplash.com/photo-1696389500422-d48223c77d5f?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fGRhdmluY2klMjByZXNvbHZlfGVufDB8fDB8fHww" class="absolute inset-0 w-full h-full object-cover transition duration-700 group-hover:scale-110 filter grayscale group-hover:grayscale-0 brightness-50 group-hover:brightness-55" alt="Editing">
-                    <div class="absolute inset-0 p-8 flex flex-col justify-end">
-                        <div class="relative z-10 transform translate-y-4 group-hover:translate-y-0 transition duration-500">
-                            <span class="text-xs font-bold tracking-widest text-white/60 mb-2 block border-b border-white/20 pb-2 w-8">01</span>
-                            <h3 class="text-3xl font-serif italic text-white mb-4" data-i18n="services.s1_title">Post-Production</h3>
-                            <div class="h-0 opacity-0 group-hover:h-auto group-hover:opacity-100 overflow-hidden transition-all duration-500 delay-75">
-                                <p class="text-white/90 text-sm leading-relaxed mb-4" data-i18n="services.s1_desc">Professional editing, sound design, and color grading for commercials, music videos, and documentaries.</p>
-                                <ul class="text-xs font-bold text-white/70 space-y-1"><li>+ Offline & Online Editing</li><li>+ Color Grading (DaVinci)</li><li>+ Sound Mixing</li></ul>
-                            </div>
-                        </div>
-                    </div>
+            
+            <!-- 1. Header Section -->
+             <div class="max-w-5xl mx-auto mb-32">
+                <div class="mb-12">
+                    <span class="text-xs font-bold tracking-[0.2em] uppercase text-accent block mb-4" data-i18n="services.intro">What I do</span>
+                    <h2 class="text-4xl md:text-5xl" data-i18n="services.title">Services</h2>
                 </div>
-
-                <!-- Service 2 -->
-                <div class="group relative h-[500px] overflow-hidden cursor-pointer reveal">
-                    <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=600&auto=format&fit=crop&q=80" class="absolute inset-0 w-full h-full object-cover transition duration-700 group-hover:scale-110 filter grayscale group-hover:grayscale-0 brightness-50 group-hover:brightness-55" alt="Motion">
-                    <div class="absolute inset-0 p-8 flex flex-col justify-end">
-                        <div class="relative z-10 transform translate-y-4 group-hover:translate-y-0 transition duration-500">
-                            <span class="text-xs font-bold tracking-widest text-white/60 mb-2 block border-b border-white/20 pb-2 w-8">02</span>
-                            <h3 class="text-3xl font-serif italic text-white mb-4" data-i18n="services.s2_title">VFX</h3>
-                            <div class="h-0 opacity-0 group-hover:h-auto group-hover:opacity-100 overflow-hidden transition-all duration-500 delay-75">
-                                <p class="text-white/90 text-sm leading-relaxed mb-4" data-i18n="services.s2_desc">Elevating visuals with 2D/3D motion graphics, compositing, and visual effects that captivate.</p>
-                                <ul class="text-xs font-bold text-white/70 space-y-1"><li>+ Title Sequences</li><li>+ Logo Animation</li><li>+ Clean-up & Rotoscoping</li></ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Service 3 -->
-                <div class="group relative h-[500px] overflow-hidden cursor-pointer reveal">
-                    <img src="https://images.unsplash.com/photo-1509343256512-d77a5cb3791b?w=600&auto=format&fit=crop&q=80" class="absolute inset-0 w-full h-full object-cover transition duration-700 group-hover:scale-110 filter grayscale group-hover:grayscale-0 brightness-50 group-hover:brightness-55" alt="Art Direction">
-                    <div class="absolute inset-0 p-8 flex flex-col justify-end">
-                        <div class="relative z-10 transform translate-y-4 group-hover:translate-y-0 transition duration-500">
-                            <span class="text-xs font-bold tracking-widest text-white/60 mb-2 block border-b border-white/20 pb-2 w-8">03</span>
-                            <h3 class="text-3xl font-serif italic text-white mb-4" data-i18n="services.s3_title">Art Direction</h3>
-                            <div class="h-0 opacity-0 group-hover:h-auto group-hover:opacity-100 overflow-hidden transition-all duration-500 delay-75">
-                                <p class="text-white/90 text-sm leading-relaxed mb-4" data-i18n="services.s3_desc">Defining the visual language and aesthetic strategy for brands, ensuring consistency across all media.</p>
-                                <ul class="text-xs font-bold text-white/70 space-y-1"><li>+ Brand Identity</li><li>+ Moodboards</li><li>+ Visual Strategy</li></ul>
-                            </div>
-                        </div>
-                    </div>
+                <div class="h-1 w-24 bg-primary dark:bg-white mt-2"></div> 
+                <div class="mt-8 max-w-xl"> 
+                    <p class="text-lg md:text-xl text-stone-500 dark:text-stone-400 font-light leading-relaxed" data-i18n="services.desc">
+                        Comprehensive visual solutions tailored for brands that value aesthetics and storytelling.
+                    </p>
                 </div>
             </div>
-        </div>
-    </section>
 
-    <!-- NEW ABOUT SECTION: Editorial Style -->
-    <section id="about" class="relative z-10 py-32 px-6 bg-white dark:bg-darkPaper border-t border-stone-100 dark:border-stone-900 overflow-hidden">
-        <div class="max-w-5xl mx-auto">
-            <div class="mb-16">
-                <span class="text-xs font-bold tracking-[0.2em] uppercase text-accent block mb-4" data-i18n="about.intro">The Person Behind</span>
-                <h2 class="text-5xl md:text-7xl font-serif italic leading-tight">
-                    <span data-i18n="about.headline_1">Visuals with</span> <br>
-                    <span class="ml-12 md:ml-24 text-stone-400 dark:text-stone-600" data-i18n="about.headline_2">Soul & Purpose.</span>
-                </h2>
-            </div>
-
-            <div class="grid md:grid-cols-12 gap-12 items-start">
-                <div class="md:col-span-5 relative group reveal">
-                    <div class="relative overflow-hidden aspect-[3/4]">
-                        <img src="https://plus.unsplash.com/premium_photo-1682141028605-b2456e2bab14?q=80&w=687&auto=format&fit=crop" alt="Portrait" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition duration-1000">
-                        <div class="absolute top-4 left-4 right-4 bottom-4 border border-white/20 pointer-events-none"></div>
+            <!-- 2. Services List -->
+            <div class="flex flex-col gap-24 md:gap-32 relative">
+                
+                <!-- Item 1: Post-Production (CANH TRÁI - Aligned Right items-end text-right) -->
+                <div class="flex flex-col items-center text-center z-10 reveal md:w-1/2 md:ml-auto"> 
+                    <div class="mb-6 text-4xl text-primary dark:text-white transition-transform duration-500 hover:-translate-y-2">
+                        <i class="fas fa-film"></i>
                     </div>
-                    <div class="absolute -bottom-6 -right-6 bg-paper dark:bg-stone-800 p-6 shadow-xl border border-stone-100 dark:border-stone-700 hidden md:block">
-                        <p class="text-xs font-bold tracking-widest uppercase text-accent mb-1">Based in</p>
-                        <p class="font-serif text-xl" data-i18n="about.location">Ho Chi Minh City</p>
-                    </div>
+                    
+                    <h3 class="text-2xl md:text-4xl font-serif italic font-bold mb-4" data-i18n="services.s1_title">Post-Production</h3>
+                    <div class="w-24 h-px bg-stone-300 dark:bg-stone-700 mb-4"></div>
+                    <p class="text-stone-500 font-light" data-i18n="services.s1_desc">
+                        Professional editing, sound design, and color grading for commercials, music videos, and documentaries.
+                    </p>
                 </div>
 
-                <div class="md:col-span-7 md:pl-12 flex flex-col justify-between h-full">
-                    <div>
-                        <h3 class="text-2xl font-bold mb-4" data-i18n="about.greeting">Hi, I'm DzungLayout.</h3>
-                        <p class="text-lg font-light leading-relaxed text-stone-600 dark:text-stone-300 mb-8 text-justify" data-i18n="about.bio">I am a Visual Director focused on storytelling through editing and motion. My approach is simple: strip away the unnecessary until only the essential emotion remains.</p>
-                        <div class="mb-8 pl-6 border-l-2 border-accent/50 italic text-stone-500 dark:text-stone-400 font-serif text-lg leading-relaxed">
-                            <p data-i18n="about.philosophy">"Design is not just what it looks like and feels like. Design is how it works..."</p>
-                        </div>
-                        <div class="mb-10">
-                            <h4 class="font-bold tracking-widest uppercase text-xs mb-4 text-stone-400" data-i18n="about.expertise">Expertise</h4>
-                            <div class="grid grid-cols-2 gap-x-4 gap-y-2 text-stone-700 dark:text-stone-300 font-light">
-                                <div class="flex items-center"><span class="w-1.5 h-1.5 bg-accent rounded-full mr-2"></span>Art Direction</div>
-                                <div class="flex items-center"><span class="w-1.5 h-1.5 bg-accent rounded-full mr-2"></span>Video Editing</div>
-                                <div class="flex items-center"><span class="w-1.5 h-1.5 bg-accent rounded-full mr-2"></span>Motion Graphics</div>
-                                <div class="flex items-center"><span class="w-1.5 h-1.5 bg-accent rounded-full mr-2"></span>Brand Identity</div>
-                            </div>
-                        </div>
-                        <div class="mb-12 opacity-80 text-primary dark:text-white">
-                            <p class="font-scripture text-1xl md:text-3xl transform -rotate-0">Dzunglayout.</p>
-                        </div>
+                <!-- Item 2: VFX & Motion (CANH PHẢI - Aligned Left) -->
+                <div class="flex flex-col items-center text-center z-10 reveal delay-100 md:w-1/2">
+                     <div class="mb-6 text-4xl text-primary dark:text-white transition-transform duration-500 hover:-translate-y-2">
+                         <i class="fas fa-cubes"></i>
                     </div>
-
-                    <div class="grid grid-cols-3 gap-8 border-t border-stone-200 dark:border-stone-800 pt-8">
-                        <div><span class="block text-4xl font-serif font-bold mb-1">07+</span><span class="text-xs uppercase tracking-widest text-stone-500" data-i18n="about.stat_years">Years Exp</span></div>
-                        <div><span class="block text-4xl font-serif font-bold mb-1">150+</span><span class="text-xs uppercase tracking-widest text-stone-500" data-i18n="about.stat_projects">Projects</span></div>
-                        <div><span class="block text-4xl font-serif font-bold mb-1">100%</span><span class="text-xs uppercase tracking-widest text-stone-500" data-i18n="about.stat_happy">Satisfaction</span></div>
-                    </div>
+                    <h3 class="text-2xl md:text-4xl font-serif italic font-bold mb-4" data-i18n="services.s2_title">VFX & Motion</h3>
+                    <div class="w-24 h-px bg-stone-300 dark:bg-stone-700 mb-4"></div>
+                     <p class="text-stone-500 dark:text-stone-400 leading-relaxed" data-i18n="services.s2_desc">
+                        Elevating visuals with 2D/3D motion graphics, compositing, and visual effects that captivate.
+                    </p>
                 </div>
+
+                <!-- Item 3: Art Direction (CANH TRÁI - Aligned Right - Thẳng hàng với Post-Production) -->
+                <div class="flex flex-col items-center text-center z-10 reveal delay-100 md:w-1/2 md:ml-auto">
+                    <div class="mb-6 text-4xl text-primary dark:text-white transition-transform duration-500 hover:-translate-y-2">
+                        <i class="fas fa-compass"></i>
+                    </div>
+                     <h3 class="text-2xl md:text-4xl font-serif italic font-bold mb-4" data-i18n="services.s3_title">Art Direction</h3>
+                    <div class="w-24 h-px bg-stone-300 dark:bg-stone-700 mb-4"></div>
+                     <p class="text-stone-500 dark:text-stone-400 leading-relaxed" data-i18n="services.s3_desc">
+                        Defining the visual language and aesthetic strategy for brands, ensuring consistency across all media.
+                    </p>
+                </div>
+
             </div>
         </div>
     </section>
 
-    <!-- Client Logos (Marquee) - ĐÃ KHÔI PHỤC -->
+ 
+
+    <!-- Client Logos -->
     <section class="py-16 border-t border-stone-100 dark:border-stone-800 bg-paper dark:bg-dark overflow-hidden">
-        <div class="max-w-screen-xl mx-auto px-6 mb-8 text-center">
-            <p class="text-xs font-bold tracking-[0.2em] uppercase text-stone-400" data-i18n="logos.label">Trusted Partners</p>
-        </div>
+        <div class="max-w-screen-xl mx-auto px-6 mb-8 text-center"><p class="text-xs font-bold tracking-[0.2em] uppercase text-stone-400" data-i18n="logos.label">Trusted Partners</p></div>
         <div class="relative flex overflow-x-hidden group">
             <div class="absolute top-0 bottom-0 left-0 w-24 z-10 bg-gradient-to-r from-paper dark:from-dark to-transparent"></div>
             <div class="absolute top-0 bottom-0 right-0 w-24 z-10 bg-gradient-to-l from-paper dark:from-dark to-transparent"></div>
             <div class="py-4 animate-infinite-scroll whitespace-nowrap flex items-center gap-16 md:gap-24 pl-6">
-                <!-- LOGOS -->
                 <img src="https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg" class="h-8 w-auto object-contain grayscale opacity-40 hover:grayscale-0 hover:opacity-100 transition duration-300 cursor-pointer" alt="Google">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg" class="h-8 w-auto object-contain grayscale opacity-40 hover:grayscale-0 hover:opacity-100 transition duration-300 cursor-pointer" alt="Netflix">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/a/a6/Logo_NIKE.svg" class="h-6 w-auto object-contain grayscale opacity-40 hover:grayscale-0 hover:opacity-100 transition duration-300 cursor-pointer" alt="Nike">
@@ -545,7 +379,6 @@
                 <img src="https://upload.wikimedia.org/wikipedia/commons/7/7b/Meta_Platforms_Inc._logo.svg" class="h-8 w-auto object-contain grayscale opacity-40 hover:grayscale-0 hover:opacity-100 transition duration-300 cursor-pointer" alt="Meta">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/IBM_logo.svg" class="h-8 w-auto object-contain grayscale opacity-40 hover:grayscale-0 hover:opacity-100 transition duration-300 cursor-pointer" alt="IBM">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/4/47/Samsung.svg" class="h-8 w-auto object-contain grayscale opacity-40 hover:grayscale-0 hover:opacity-100 transition duration-300 cursor-pointer" alt="Samsung">
-                <!-- Duplicate -->
                 <img src="https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg" class="h-8 w-auto object-contain grayscale opacity-40 hover:grayscale-0 hover:opacity-100 transition duration-300 cursor-pointer" alt="Google">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg" class="h-8 w-auto object-contain grayscale opacity-40 hover:grayscale-0 hover:opacity-100 transition duration-300 cursor-pointer" alt="Netflix">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/a/a6/Logo_NIKE.svg" class="h-6 w-auto object-contain grayscale opacity-40 hover:grayscale-0 hover:opacity-100 transition duration-300 cursor-pointer" alt="Nike">
@@ -557,56 +390,30 @@
         </div>
     </section>
 
-    <!-- AI Studio - ĐÃ KHÔI PHỤC -->
+    <!-- AI Studio -->
     <section id="studio" class="py-32 px-6 bg-paper dark:bg-dark relative">
         <div class="absolute inset-0 bg-noise opacity-30 pointer-events-none"></div>
         <div class="max-w-4xl mx-auto relative z-10">
             <div class="text-center mb-16">
                 <span class="text-xs font-bold tracking-[0.2em] uppercase text-accent" data-i18n="ai.label">Experimental</span>
                 <h2 class="text-4xl md:text-5xl mt-2 mb-6" data-i18n="ai.title">AI Creative Studio</h2>
-                <p class="font-light text-lg text-stone-600 dark:text-stone-400 max-w-xl mx-auto" data-i18n="ai.desc">
-                    Merging human intuition with machine intelligence. A suite of tools I use to spark inspiration.
-                </p>
+                <p class="font-light text-lg text-stone-600 dark:text-stone-400 max-w-xl mx-auto" data-i18n="ai.desc">Merging human intuition with machine intelligence. A suite of tools I use to spark inspiration.</p>
             </div>
-
             <div class="grid md:grid-cols-2 gap-12">
-                <!-- Tool 1 -->
                 <div class="bg-white dark:bg-[#1a1a1a] p-8 md:p-10 shadow-sm hover:shadow-xl transition duration-500 border border-stone-100 dark:border-stone-800">
-                    <div class="mb-8">
-                        <i class="fas fa-lightbulb text-2xl text-stone-400 mb-4 block"></i>
-                        <h3 class="text-2xl font-serif italic mb-2" data-i18n="ai.t1_title">Concept Generator</h3>
-                        <p class="text-sm text-stone-500 font-light" data-i18n="ai.t1_desc">Generate art direction & visual mood.</p>
-                    </div>
-                    
+                    <div class="mb-8"><i class="fas fa-lightbulb text-2xl text-stone-400 mb-4 block"></i><h3 class="text-2xl font-serif italic mb-2" data-i18n="ai.t1_title">Concept Generator</h3><p class="text-sm text-stone-500 font-light" data-i18n="ai.t1_desc">Generate art direction & visual mood.</p></div>
                     <div class="space-y-6">
                         <input type="text" id="idea-input" class="w-full bg-transparent border-b border-stone-300 dark:border-stone-700 py-3 text-lg focus:outline-none focus:border-primary dark:focus:border-white transition placeholder-stone-400 font-serif" placeholder="Enter a subject (e.g. Noir City)..." data-i18n-placeholder="ai.t1_placeholder">
-                        
                         <div id="idea-result" class="hidden text-sm leading-relaxed text-stone-600 dark:text-stone-300 prose dark:prose-invert"></div>
-
-                        <button id="btn-generate-idea" class="group flex items-center text-sm font-bold tracking-widest uppercase hover:text-stone-500 transition">
-                            <span data-i18n="ai.t1_btn">Ignite Spark</span>
-                            <span class="ml-2 transform group-hover:translate-x-1 transition"><i class="fas fa-arrow-right"></i></span>
-                        </button>
+                        <button id="btn-generate-idea" class="group flex items-center text-sm font-bold tracking-widest uppercase hover:text-stone-500 transition"><span data-i18n="ai.t1_btn">Ignite Spark</span><span class="ml-2 transform group-hover:translate-x-1 transition"><i class="fas fa-arrow-right"></i></span></button>
                     </div>
                 </div>
-
-                <!-- Tool 2 -->
                 <div class="bg-white dark:bg-[#1a1a1a] p-8 md:p-10 shadow-sm hover:shadow-xl transition duration-500 border border-stone-100 dark:border-stone-800">
-                    <div class="mb-8">
-                        <i class="fas fa-pen-fancy text-2xl text-stone-400 mb-4 block"></i>
-                        <h3 class="text-2xl font-serif italic mb-2" data-i18n="ai.t2_title">Draft Assistant</h3>
-                        <p class="text-sm text-stone-500 font-light" data-i18n="ai.t2_desc">Compose professional inquiries.</p>
-                    </div>
-                    
+                    <div class="mb-8"><i class="fas fa-pen-fancy text-2xl text-stone-400 mb-4 block"></i><h3 class="text-2xl font-serif italic mb-2" data-i18n="ai.t2_title">Draft Assistant</h3><p class="text-sm text-stone-500 font-light" data-i18n="ai.t2_desc">Compose professional inquiries.</p></div>
                     <div class="space-y-6">
                         <textarea id="email-input" rows="1" class="w-full bg-transparent border-b border-stone-300 dark:border-stone-700 py-3 text-lg focus:outline-none focus:border-primary dark:focus:border-white transition placeholder-stone-400 font-serif resize-none" placeholder="Brief requirements..." data-i18n-placeholder="ai.t2_placeholder"></textarea>
-                        
                         <div id="email-result" class="hidden relative p-6 bg-stone-50 dark:bg-black/20 text-sm font-mono text-stone-600 dark:text-stone-300 border-l-2 border-stone-300"></div>
-
-                        <button id="btn-generate-email" class="group flex items-center text-sm font-bold tracking-widest uppercase hover:text-stone-500 transition">
-                            <span data-i18n="ai.t2_btn">Compose</span>
-                            <span class="ml-2 transform group-hover:translate-x-1 transition"><i class="fas fa-arrow-right"></i></span>
-                        </button>
+                        <button id="btn-generate-email" class="group flex items-center text-sm font-bold tracking-widest uppercase hover:text-stone-500 transition"><span data-i18n="ai.t2_btn">Compose</span><span class="ml-2 transform group-hover:translate-x-1 transition"><i class="fas fa-arrow-right"></i></span></button>
                     </div>
                 </div>
             </div>
@@ -616,23 +423,14 @@
     <!-- Footer -->
     <footer id="contact" class="bg-primary text-white py-20 px-6">
         <div class="max-w-screen-xl mx-auto flex flex-col md:flex-row justify-between items-center">
-            <div class="mb-8 md:mb-0 text-center md:text-left">
-                <h2 class="text-4xl font-serif italic mb-2" data-i18n="footer.text">Let's create something timeless.</h2>
-                <a href="mailto:contact@dzung.com" class="text-stone-400 hover:text-white transition border-b border-stone-600 pb-1">contact@dzunglayout.com</a>
-            </div>
-            <div class="flex gap-6 text-xl">
-                <a href="#" class="hover:text-stone-400 transition"><i class="fab fa-instagram"></i></a>
-                <a href="#" class="hover:text-stone-400 transition"><i class="fab fa-behance"></i></a>
-                <a href="#" class="hover:text-stone-400 transition"><i class="fab fa-linkedin"></i></a>
-            </div>
+            <div class="mb-8 md:mb-0 text-center md:text-left"><h2 class="text-4xl font-serif italic mb-2" data-i18n="footer.text">Let's create something timeless.</h2><a href="mailto:contact@dzung.com" class="text-stone-400 hover:text-white transition border-b border-stone-600 pb-1">contact@dzunglayout.com</a></div>
+            <div class="flex gap-6 text-xl"><a href="#" class="hover:text-stone-400 transition"><i class="fab fa-instagram"></i></a><a href="#" class="hover:text-stone-400 transition"><i class="fab fa-behance"></i></a><a href="#" class="hover:text-stone-400 transition"><i class="fab fa-linkedin"></i></a></div>
         </div>
-        <div class="flex justify-center mt-16 mb-4">
-            <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="text-stone-600 hover:text-stone-300 transition duration-500 p-2 animate-bounce opacity-50 hover:opacity-100" title="Back to Top"><i class="fas fa-chevron-up text-xl"></i></button>
-        </div>
+        <div class="flex justify-center mt-16 mb-4"><button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="text-stone-600 hover:text-stone-300 transition duration-500 p-2 animate-bounce opacity-50 hover:opacity-100" title="Back to Top"><i class="fas fa-chevron-up text-xl"></i></button></div>
         <div class="text-center text-xs text-stone-600 uppercase tracking-widest">© 2025 DzungLayout. All Rights Reserved.</div>
     </footer>
 
-    <!-- VIDEO MODAL -->
+    <!-- Video Modal -->
     <div id="video-modal" class="fixed inset-0 z-[100] hidden bg-black/90 backdrop-blur-md flex items-center justify-center p-4">
         <button id="close-modal" class="absolute top-6 right-6 text-white text-4xl hover:text-stone-400 transition focus:outline-none">&times;</button>
         <div class="w-full max-w-5xl aspect-video bg-black shadow-2xl relative">
@@ -643,8 +441,6 @@
     <!-- Scripts -->
     <script>
         const apiKey = ""; 
-
-        // --- TRANSLATION DATA (Keep your translations here) ---
         const translations = {
             en: {
                 nav: { home: "Home", work: "Selected Work", services: "Services", studio: "AI Studio", profile: "Profile", resume: "Resume", contact: "Contact" },
@@ -670,16 +466,9 @@
             }
         };
 
-        // --- WRAP ALL LOGIC IN DOMContentLoaded (FIX ERROR) ---
         document.addEventListener('DOMContentLoaded', () => {
-            
-            // --- DISABLE RIGHT CLICK (KHÓA CHUỘT PHẢI) ---
-            document.addEventListener('contextmenu', (event) => {
-                event.preventDefault();
-            });
-            
-            // --- CUSTOM SMOOTH SCROLL FUNCTION (EASE-IN-OUT) ---
-            // Hàm tính toán chuyển động mượt: Chậm -> Nhanh -> Chậm dần
+            document.addEventListener('contextmenu', (event) => event.preventDefault());
+
             function easeInOutCubic(t, b, c, d) {
                 t /= d / 2;
                 if (t < 1) return c / 2 * t * t * t + b;
@@ -690,61 +479,38 @@
             function smoothScrollTo(target, duration) {
                 const targetElement = document.querySelector(target);
                 if (!targetElement) return;
-
-                const headerOffset = 80; // Chiều cao thanh menu để trừ hao
+                const headerOffset = 80;
                 const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - headerOffset;
                 const startPosition = window.pageYOffset;
                 const distance = targetPosition - startPosition;
                 let startTime = null;
-
                 function animation(currentTime) {
                     if (startTime === null) startTime = currentTime;
                     const timeElapsed = currentTime - startTime;
-                    
-                    // Tính toán vị trí tiếp theo
                     const run = easeInOutCubic(timeElapsed, startPosition, distance, duration);
                     window.scrollTo(0, run);
-
-                    // Tiếp tục chạy animation nếu chưa hết thời gian
-                    if (timeElapsed < duration) {
-                        requestAnimationFrame(animation);
-                    }
+                    if (timeElapsed < duration) requestAnimationFrame(animation);
                 }
-
                 requestAnimationFrame(animation);
             }
 
-            // --- GẮN SỰ KIỆN CLICK CHO MENU ---
             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
                 anchor.addEventListener('click', function (e) {
                     e.preventDefault(); 
                     const targetId = this.getAttribute('href');
                     if (targetId === '#') return;
-                    
-                    // Gọi hàm scroll custom với thời gian 1500ms (1.5 giây) để cảm nhận rõ độ mượt
                     smoothScrollTo(targetId, 1200); 
-                    
-                    // Đóng menu mobile nếu đang mở
                     const mobileMenu = document.getElementById('mobile-menu');
-                    if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
-                        mobileMenu.classList.add('hidden');
-                    }
+                    if (mobileMenu && !mobileMenu.classList.contains('hidden')) mobileMenu.classList.add('hidden');
                 });
             });
 
-            // --- SỰ KIỆN CLICK VÀO HERO SECTION (#home) ĐỂ CUỘN XUỐNG #home2 ---
             const homeSection = document.getElementById('home');
-            if (homeSection) {
-                homeSection.addEventListener('click', function() {
-                    smoothScrollTo('#home2', 1200);
-                });
-            }
+            if (homeSection) homeSection.addEventListener('click', () => smoothScrollTo('#home2', 1200));
 
-            // --- OPTIMIZED SCROLL LISTENER (THROTTLING) ---
             const nav = document.getElementById('main-nav');
             let isScrolled = false; 
-            let ticking = false; // Flag cho requestAnimationFrame
-
+            let ticking = false;
             if (nav) {
                 window.addEventListener('scroll', () => {
                     if (!ticking) {
@@ -752,12 +518,12 @@
                             const scrolled = window.scrollY > 50;
                             if (scrolled && !isScrolled) {
                                 isScrolled = true;
-                                nav.classList.remove('text-white', 'mix-blend-difference'); // Remove hero specific classes
+                                nav.classList.remove('text-white', 'mix-blend-difference');
                                 nav.classList.add('bg-white/90', 'dark:bg-dark/90', 'backdrop-blur-sm', 'border-b', 'border-stone-200', 'dark:border-stone-800', 'shadow-sm', 'text-primary', 'dark:text-white');
                             } else if (!scrolled && isScrolled) {
                                 isScrolled = false;
                                 nav.classList.remove('bg-white/90', 'dark:bg-dark/90', 'backdrop-blur-sm', 'border-b', 'border-stone-200', 'dark:border-stone-800', 'shadow-sm', 'text-primary', 'dark:text-white');
-                                nav.classList.add('text-white', 'mix-blend-difference'); // Add back hero specific classes
+                                nav.classList.add('text-white', 'mix-blend-difference');
                             }
                             ticking = false;
                         });
@@ -766,9 +532,7 @@
                 });
             }
 
-            // --- REVEAL ON SCROLL OBSERVER ---
             const revealElements = document.querySelectorAll('.reveal');
-            
             const revealObserver = new IntersectionObserver((entries, observer) => {
                 entries.forEach(entry => {
                     if(entry.isIntersecting) {
@@ -776,17 +540,11 @@
                         observer.unobserve(entry.target);
                     }
                 });
-            }, {
-                threshold: 0.1 // Giảm threshold xuống để hiện sớm hơn một chút, đỡ cảm giác lag
-            });
-
+            }, { threshold: 0.1 });
             revealElements.forEach(el => revealObserver.observe(el));
 
-
-            // --- LANGUAGE LOGIC ---
             let currentLang = localStorage.getItem('lang') || 'en';
             const langBtn = document.getElementById('lang-toggle');
-            
             function updateContent() {
                 document.querySelectorAll('[data-i18n]').forEach(el => {
                     const key = el.getAttribute('data-i18n');
@@ -795,7 +553,6 @@
                     keys.forEach(k => { if(val) val = val[k]; });
                     if (val) el.textContent = val;
                 });
-                
                 document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
                     const key = el.getAttribute('data-i18n-placeholder');
                     const keys = key.split('.');
@@ -803,11 +560,8 @@
                     keys.forEach(k => { if(val) val = val[k]; });
                     if (val) el.placeholder = val;
                 });
-
                 if (langBtn) langBtn.textContent = currentLang === 'en' ? 'EN' : 'VN';
-                // phrases = translations[currentLang].typing; // Removing typing effect for this version as hero changed
             }
-
             if (langBtn) {
                 langBtn.addEventListener('click', () => {
                     currentLang = currentLang === 'en' ? 'vi' : 'en';
@@ -816,14 +570,9 @@
                 });
             }
 
-            // --- THEME LOGIC ---
             const themeToggleBtn = document.getElementById('theme-toggle');
             const html = document.documentElement;
-            
-            if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-                html.classList.add('dark');
-            }
-
+            if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) html.classList.add('dark');
             if (themeToggleBtn) {
                 themeToggleBtn.addEventListener('click', () => {
                     html.classList.toggle('dark');
@@ -831,29 +580,18 @@
                 });
             }
 
-            // --- MOBILE MENU ---
             const mobileMenuBtn = document.getElementById('mobile-menu-btn');
             const mobileMenu = document.getElementById('mobile-menu');
-            
-            if (mobileMenuBtn && mobileMenu) {
-                mobileMenuBtn.addEventListener('click', () => {
-                    mobileMenu.classList.toggle('hidden');
-                });
-            }
-            
-            updateContent();
+            if (mobileMenuBtn && mobileMenu) mobileMenuBtn.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
 
-             // --- TYPING EFFECT ---
             const textElement = document.getElementById('typing-text');
             let phrases = translations[currentLang].typing; 
             let phraseIndex = 0;
             let charIndex = 0;
             let isDeleting = false;
-
             function type() {
                 if (!textElement) return;
                 const currentPhrase = phrases[phraseIndex % phrases.length]; 
-                
                 if (isDeleting) {
                     textElement.textContent = currentPhrase.substring(0, charIndex - 1);
                     charIndex--;
@@ -861,7 +599,6 @@
                     textElement.textContent = currentPhrase.substring(0, charIndex + 1);
                     charIndex++;
                 }
-
                 if (!isDeleting && charIndex === currentPhrase.length) {
                     isDeleting = true;
                     setTimeout(type, 2000);
@@ -873,16 +610,13 @@
                     setTimeout(type, isDeleting ? 50 : 100);
                 }
             }
-            
             updateContent();
             type();
 
-            // --- VIDEO MODAL LOGIC ---
             const modal = document.getElementById('video-modal');
             const iframe = document.getElementById('video-iframe');
             const closeBtn = document.getElementById('close-modal');
             const videoTriggers = document.querySelectorAll('.video-trigger');
-
             if (modal && iframe) {
                 videoTriggers.forEach(trigger => {
                     trigger.addEventListener('click', () => {
@@ -893,93 +627,84 @@
                         }
                     });
                 });
-
-                const closeModal = () => {
-                    modal.classList.add('hidden');
-                    iframe.src = '';
-                };
-
+                const closeModal = () => { modal.classList.add('hidden'); iframe.src = ''; };
                 if (closeBtn) closeBtn.addEventListener('click', closeModal);
-                
-                modal.addEventListener('click', (e) => {
-                    if (e.target === modal) closeModal();
-                });
-                
-                document.addEventListener('keydown', (e) => {
-                    if (e.key === "Escape" && !modal.classList.contains('hidden')) {
-                        closeModal();
-                    }
-                });
+                modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+                document.addEventListener('keydown', (e) => { if (e.key === "Escape" && !modal.classList.contains('hidden')) closeModal(); });
             }
 
-            // --- GEMINI API BUTTONS ---
             const btnIdea = document.getElementById('btn-generate-idea');
-            const btnEmail = document.getElementById('btn-generate-email');
-
             if (btnIdea) {
                 btnIdea.addEventListener('click', async function() {
                     const input = document.getElementById('idea-input').value;
                     const resultDiv = document.getElementById('idea-result');
                     const btn = this;
-                    
                     if (!input.trim()) return;
-                    
                     const loadingText = currentLang === 'en' ? 'Thinking...' : 'Đang suy nghĩ...';
                     const thinkingText = currentLang === 'en' ? 'Consulting the muse...' : 'Đang tìm cảm hứng...';
                     const btnText = translations[currentLang].ai.t1_btn;
-
                     btn.innerHTML = `<span>${loadingText}</span>`;
                     resultDiv.classList.remove('hidden');
                     resultDiv.innerHTML = `<span class="animate-pulse">${thinkingText}</span>`;
-
                     const langInstruction = currentLang === 'en' ? 'Language: English.' : 'Language: Vietnamese.';
-                    const prompt = `Act as an Art Director. Create a sophisticated visual concept for: "${input}". 
-                    Format: Markdown. Keep it brief, poetic, and professional. 
-                    Structure: 
-                    ### [Concept Name]
-                    * **Mood:** ...
-                    * **Visuals:** ...
-                    ${langInstruction}`;
-
+                    const prompt = `Act as an Art Director. Create a sophisticated visual concept for: "${input}". Format: Markdown. Keep it brief, poetic, and professional. Structure: ### [Concept Name] * **Mood:** ... * **Visuals:** ... ${langInstruction}`;
                     const text = await callGemini(prompt);
                     resultDiv.innerHTML = marked.parse(text);
                     btn.innerHTML = `<span data-i18n="ai.t1_btn">${btnText}</span><span class="ml-2"><i class="fas fa-arrow-right"></i></span>`;
                 });
             }
 
+            const btnEmail = document.getElementById('btn-generate-email');
             if (btnEmail) {
                 btnEmail.addEventListener('click', async function() {
                     const input = document.getElementById('email-input').value;
                     const resultDiv = document.getElementById('email-result');
                     const btn = this;
-                    
                     if (!input.trim()) return;
-
                     const loadingText = currentLang === 'en' ? 'Drafting...' : 'Đang viết...';
                     const thinkingText = currentLang === 'en' ? 'Composing...' : 'Đang soạn thảo...';
                     const btnText = translations[currentLang].ai.t2_btn;
-
                     btn.innerHTML = `<span>${loadingText}</span>`;
                     resultDiv.classList.remove('hidden');
                     resultDiv.innerHTML = `<span class="animate-pulse">${thinkingText}</span>`;
-
                     const langInstruction = currentLang === 'en' ? 'Language: English.' : 'Language: Vietnamese.';
-                    const prompt = `Write a short, professional inquiry email to DzungLayout based on: "${input}". 
-                    Tone: Elegant, respectful, concise. ${langInstruction}`;
-
+                    const prompt = `Write a short, professional inquiry email to DzungLayout based on: "${input}". Tone: Elegant, respectful, concise. ${langInstruction}`;
                     const text = await callGemini(prompt);
                     resultDiv.innerText = text;
-                    
                     const ta = document.getElementById('email-input');
                     ta.value = ""; 
                     ta.placeholder = currentLang === 'en' ? "Anything else?" : "Còn yêu cầu gì khác không?";
-                    
                     btn.innerHTML = `<span data-i18n="ai.t2_btn">${btnText}</span><span class="ml-2"><i class="fas fa-arrow-right"></i></span>`;
                 });
             }
+
+            // Work Filter Logic
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            const workItems = document.querySelectorAll('.work-item');
+
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    // Update active state style
+                    filterBtns.forEach(b => {
+                        b.classList.remove('text-primary', 'dark:text-white', 'border-primary', 'dark:border-white');
+                        b.classList.add('hover:text-primary', 'dark:hover:text-white', 'border-transparent');
+                    });
+                    btn.classList.remove('hover:text-primary', 'dark:hover:text-white', 'border-transparent');
+                    btn.classList.add('text-primary', 'dark:text-white', 'border-primary', 'dark:border-white');
+
+                    const filterValue = btn.getAttribute('data-filter');
+
+                    workItems.forEach(item => {
+                        if (filterValue === 'all' || item.getAttribute('data-category') === filterValue) {
+                            item.classList.remove('hidden-item');
+                        } else {
+                            item.classList.add('hidden-item');
+                        }
+                    });
+                });
+            });
         });
 
-        // --- GEMINI API FUNCTION (Global) ---
         async function callGemini(prompt) {
             const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
             const payload = { contents: [{ parts: [{ text: prompt }] }] };
@@ -1000,4 +725,3 @@
     </script>
 </body>
 </html>
-
