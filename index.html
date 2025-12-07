@@ -162,17 +162,20 @@
     </section>
 
      <!-- Hero Section 2 -->
-    <!-- Đã có min-h-screen và flex items-center, giữ nguyên nhưng tinh chỉnh padding -->
     <section id="home2" class="min-h-screen flex items-center justify-center relative px-6 gpu-accelerated">
         <div class="absolute inset-0 bg-noise opacity-50 pointer-events-none"></div>
         <div class="max-w-5xl mx-auto text-center z-10">
-            <p class="text-sm md:text-base tracking-[0.3em] uppercase text-accent mb-6 animate-fade-in-up" data-i18n="hero.subtitle">Portfolio 2025</p>
-            <h1 class="text-6xl md:text-9xl font-serif leading-none mb-8 tracking-tighter">
+            <!-- Giảm mb-6 xuống mb-4 -->
+            <p class="text-sm md:text-base tracking-[0.3em] uppercase text-accent mb-4 animate-fade-in-up" data-i18n="hero.subtitle">Portfolio 2025</p>
+            <!-- Giảm mb-8 xuống mb-6 -->
+            <h1 class="text-6xl md:text-9xl font-serif leading-none mb-6 tracking-tighter">
                 <span class="block" data-i18n="hero.title1">Visual</span>
                 <span class="block italic text-stone-400 dark:text-stone-600" data-i18n="hero.title2">Storyteller</span>
             </h1>
-            <div class="h-px w-24 bg-primary dark:bg-white mx-auto mb-8"></div>
-            <p class="text-lg md:text-2xl font-light max-w-2xl mx-auto leading-relaxed mb-12">
+            <!-- Giảm mb-8 xuống mb-6 -->
+            <div class="h-px w-24 bg-primary dark:bg-white mx-auto mb-6"></div>
+            <!-- Giảm mb-12 xuống mb-10 -->
+            <p class="text-lg md:text-2xl font-light max-w-2xl mx-auto leading-relaxed mb-10">
                 <span data-i18n="hero.intro">I am</span> <span id="typing-text" class="font-normal italic"></span>.<br>
                 <span data-i18n="hero.desc">Crafting emotions through frames and pixels.</span>
             </p>
@@ -183,9 +186,11 @@
                 <a href="#contact" class="text-sm tracking-widest uppercase border-b border-transparent hover:border-primary dark:hover:border-white transition-all pb-1" data-i18n="hero.cta_contact">Get in touch</a>
             </div>
         </div>
-        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
+        
+        <!-- ĐIỀU CHỈNH VỊ TRÍ SCROLL: Đẩy lên cao hơn (bottom-16) và thu ngắn thanh line (h-12) -->
+        <div class="absolute bottom-16 left-1/2 transform -translate-x-1/2 animate-bounce">
             <span class="text-xs tracking-widest uppercase rotate-90 block origin-left translate-y-12 translate-x-1" data-i18n="hero.scroll">Scroll</span>
-            <div class="h-16 w-px bg-stone-300 mx-auto mt-4"></div>
+            <div class="h-12 w-px bg-stone-300 mx-auto mt-4"></div>
         </div>
     </section>
 
@@ -310,7 +315,7 @@
             
             <!-- 1. Header Section -->
              <!-- Giảm mb-32 xuống mb-16 để tiết kiệm không gian -->
-             <div class="max-w-5xl mx-auto mb-16"> 
+             <div class="max-w-5xl mx-auto mb-10"> 
                 <div class="mb-8">
                     <span class="text-xs font-bold tracking-[0.2em] uppercase text-accent block mb-4" data-i18n="services.intro">What I do</span>
                     <h2 class="text-4xl md:text-5xl" data-i18n="services.title">Services</h2>
@@ -325,7 +330,7 @@
 
             <!-- 2. Services List -->
             <!-- Giảm gap-24/32 xuống gap-16 để gọn hơn -->
-            <div class="flex flex-col gap-16 md:gap-20 relative">
+            <div class="flex flex-col gap-10 md:gap-20 relative">
                 
                 <!-- Item 1: Post-Production (CANH TRÁI - Aligned Right items-end text-right) -->
                 <div class="flex flex-col items-center text-center z-10 reveal md:w-1/2 md:ml-auto"> 
