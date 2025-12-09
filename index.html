@@ -313,8 +313,14 @@
     <section class="relative h-screen w-full flex items-center justify-center overflow-hidden bg-black">
         <!-- Video Background -->
         <video autoplay loop muted playsinline class="absolute inset-0 w-full h-full object-cover opacity-80">
-          <!--  <source src="videos/Ecopark1.mp4" type="mp4"> <!-- https://videos.pexels.com/video-files/3129957/3129957-uhd_2560_1440_25fps.mp4 -->
-            <source src=data-video-id="tgbNymZ7vqY">
+            <!-- 1. Link nội bộ của bạn (Ưu tiên chạy trước) -->
+            <!-- QUAN TRỌNG: Phải sửa type="mp4" thành type="video/mp4" thì trình duyệt mới hiểu -->
+            <source src="videos/Ecopark1.mp4" type="video/mp4">
+            
+            <!-- 2. Link Online (Dự phòng) -->
+            <!-- Nếu không tìm thấy file nội bộ (ví dụ khi xem preview này), trình duyệt sẽ tự chạy link này -->
+            <source src="https://videos.pexels.com/video-files/3129957/3129957-uhd_2560_1440_25fps.mp4" type="video/mp4">
+            
             Your browser does not support the video tag.
         </video>
         
@@ -761,6 +767,7 @@
     </script>
 </body>
 </html>
+
 
 
 
