@@ -26,6 +26,10 @@
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: #d6d3d1; }
         .prose h3 { font-family: 'Playfair Display', serif; font-size: 1.5rem; margin-top: 2rem; margin-bottom: 0.75rem; }
+        .prose strong { font-weight: 700; color: #1c1917; } /* Bold style */
+        .dark .prose strong { color: #fff; }
+        .prose em { font-style: italic; }
+        .prose blockquote { border-left: 4px solid #a8a29e; padding-left: 1rem; font-style: italic; color: #78716c; }
         .masonry-grid { column-count: 1; column-gap: 2rem; }
         @media (min-width: 768px) { .masonry-grid { column-count: 2; } }
         @media (min-width: 1024px) { .masonry-grid { column-count: 3; } }
@@ -83,9 +87,6 @@
             <button class="text-primary dark:text-white border-b border-primary dark:border-white pb-1" onclick="filterPosts('all')">All</button>
             <button class="hover:text-primary dark:hover:text-white transition" onclick="filterPosts('Tutorial')">Tutorials</button>
             <button class="hover:text-primary dark:hover:text-white transition" onclick="filterPosts('Inspiration')">Inspiration</button>
-            <button class="hover:text-primary dark:hover:text-white transition" onclick="filterPosts('BTS')">Behind The Scenes</button>
-            <button class="hover:text-primary dark:hover:text-white transition" onclick="filterPosts('Personal')">Personal</button>
-
         </div>
 
         <!-- Grid -->
@@ -148,10 +149,22 @@
                         <input id="editor-image" type="text" class="w-full bg-transparent border-b border-stone-300 py-2 dark:text-white" placeholder="https://...">
                     </div>
                 </div>
+                
+                <!-- NEW TOOLBAR -->
                 <div>
-                    <label class="text-xs font-bold uppercase tracking-widest text-stone-400 mb-1 block">Content (Markdown)</label>
-                    <textarea id="editor-content" rows="10" class="w-full bg-stone-50 dark:bg-black/30 p-4 font-mono text-sm focus:outline-none border border-stone-200 dark:border-stone-700 dark:text-white" placeholder="Write your content here..."></textarea>
+                    <label class="text-xs font-bold uppercase tracking-widest text-stone-400 mb-2 block">Content</label>
+                    <div class="flex gap-1 mb-2 border-b border-stone-200 dark:border-stone-700 pb-2">
+                        <button type="button" onclick="formatText('bold')" class="p-2 w-8 h-8 flex items-center justify-center rounded hover:bg-stone-100 dark:hover:bg-stone-800 transition" title="Bold (In đậm)"><i class="fas fa-bold"></i></button>
+                        <button type="button" onclick="formatText('italic')" class="p-2 w-8 h-8 flex items-center justify-center rounded hover:bg-stone-100 dark:hover:bg-stone-800 transition" title="Italic (In nghiêng)"><i class="fas fa-italic"></i></button>
+                        <button type="button" onclick="formatText('heading')" class="p-2 w-8 h-8 flex items-center justify-center rounded hover:bg-stone-100 dark:hover:bg-stone-800 transition" title="Heading (Tiêu đề)"><i class="fas fa-heading"></i></button>
+                        <div class="w-px bg-stone-300 dark:bg-stone-700 mx-1"></div>
+                        <button type="button" onclick="formatText('link')" class="p-2 w-8 h-8 flex items-center justify-center rounded hover:bg-stone-100 dark:hover:bg-stone-800 transition" title="Link (Liên kết)"><i class="fas fa-link"></i></button>
+                        <button type="button" onclick="formatText('list')" class="p-2 w-8 h-8 flex items-center justify-center rounded hover:bg-stone-100 dark:hover:bg-stone-800 transition" title="List (Danh sách)"><i class="fas fa-list-ul"></i></button>
+                        <button type="button" onclick="formatText('quote')" class="p-2 w-8 h-8 flex items-center justify-center rounded hover:bg-stone-100 dark:hover:bg-stone-800 transition" title="Quote (Trích dẫn)"><i class="fas fa-quote-right"></i></button>
+                    </div>
+                    <textarea id="editor-content" rows="10" class="w-full bg-stone-50 dark:bg-black/30 p-4 font-mono text-sm focus:outline-none border border-stone-200 dark:border-stone-700 dark:text-white" placeholder="Start writing..."></textarea>
                 </div>
+                
                 <button id="btn-save-post" class="w-full bg-primary text-white py-3 font-bold uppercase tracking-widest hover:opacity-90 shadow-lg">Publish Post</button>
             </div>
         </div>
@@ -354,8 +367,39 @@
             renderPosts();
         }
 
-        // --- 4. EDITOR LOGIC (CREATE & EDIT) ---
+        // --- 4. EDITOR LOGIC (CREATE & EDIT & FORMATTING) ---
         const editor = document.getElementById('blog-editor-view');
+        
+        // FORMAT TEXT FUNCTION
+        window.formatText = function(type) {
+            const textarea = document.getElementById('editor-content');
+            const start = textarea.selectionStart;
+            const end = textarea.selectionEnd;
+            const text = textarea.value;
+            const selection = text.substring(start, end);
+            
+            let prefix = '', suffix = '';
+            
+            switch(type) {
+                case 'bold': prefix = '**'; suffix = '**'; break;
+                case 'italic': prefix = '*'; suffix = '*'; break;
+                case 'heading': prefix = '### '; suffix = ''; break;
+                case 'link': prefix = '['; suffix = '](url)'; break;
+                case 'list': prefix = '- '; suffix = ''; break;
+                case 'quote': prefix = '> '; suffix = ''; break;
+            }
+            
+            const newText = text.substring(0, start) + prefix + selection + suffix + text.substring(end);
+            textarea.value = newText;
+            textarea.focus();
+            
+            // Adjust cursor position
+            if(selection.length === 0) {
+                 textarea.setSelectionRange(start + prefix.length, start + prefix.length);
+            } else {
+                 textarea.setSelectionRange(start + prefix.length, end + prefix.length);
+            }
+        };
         
         function openEditor(post = null) {
             editor.classList.remove('hidden');
@@ -481,5 +525,3 @@
     </script>
 </body>
 </html>
-
-
