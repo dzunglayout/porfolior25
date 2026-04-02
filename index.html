@@ -508,36 +508,6 @@
         </div>
     </section>
 
-    <!-- AI Studio -->
-    <section id="studio" class="py-32 px-6 bg-paper dark:bg-dark relative">
-        <div class="absolute inset-0 bg-noise opacity-30 pointer-events-none"></div>
-        <div class="max-w-4xl mx-auto relative z-10">
-            <div class="text-center mb-16">
-                <span class="text-xs font-bold tracking-[0.2em] uppercase text-accent" data-i18n="ai.label">Experimental</span>
-                <h2 class="text-4xl md:text-5xl mt-2 mb-6" data-i18n="ai.title">AI Creative Studio</h2>
-                <p class="font-light text-lg text-stone-600 dark:text-stone-400 max-w-xl mx-auto" data-i18n="ai.desc">Merging human intuition with machine intelligence. A suite of tools I use to spark inspiration.</p>
-            </div>
-            <div class="grid md:grid-cols-2 gap-12">
-                <div class="bg-white dark:bg-[#1a1a1a] p-8 md:p-10 shadow-sm hover:shadow-xl transition duration-500 border border-stone-100 dark:border-stone-800">
-                    <div class="mb-8"><i class="fas fa-lightbulb text-2xl text-stone-400 mb-4 block"></i><h3 class="text-2xl font-serif italic mb-2" data-i18n="ai.t1_title">Concept Generator</h3><p class="text-sm text-stone-500 font-light" data-i18n="ai.t1_desc">Generate art direction & visual mood.</p></div>
-                    <div class="space-y-6">
-                        <input type="text" id="idea-input" class="w-full bg-transparent border-b border-stone-300 dark:border-stone-700 py-3 text-lg focus:outline-none focus:border-primary dark:focus:border-white transition placeholder-stone-400 font-serif" placeholder="Enter a subject (e.g. Noir City)..." data-i18n-placeholder="ai.t1_placeholder">
-                        <div id="idea-result" class="hidden text-sm leading-relaxed text-stone-600 dark:text-stone-300 prose dark:prose-invert"></div>
-                        <button id="btn-generate-idea" class="group flex items-center text-sm font-bold tracking-widest uppercase hover:text-stone-500 transition"><span data-i18n="ai.t1_btn">Ignite Spark</span><span class="ml-2 transform group-hover:translate-x-1 transition"><i class="fas fa-arrow-right"></i></span></button>
-                    </div>
-                </div>
-                <div class="bg-white dark:bg-[#1a1a1a] p-8 md:p-10 shadow-sm hover:shadow-xl transition duration-500 border border-stone-100 dark:border-stone-800">
-                    <div class="mb-8"><i class="fas fa-pen-fancy text-2xl text-stone-400 mb-4 block"></i><h3 class="text-2xl font-serif italic mb-2" data-i18n="ai.t2_title">Draft Assistant</h3><p class="text-sm text-stone-500 font-light" data-i18n="ai.t2_desc">Compose professional inquiries.</p></div>
-                    <div class="space-y-6">
-                        <textarea id="email-input" rows="1" class="w-full bg-transparent border-b border-stone-300 dark:border-stone-700 py-3 text-lg focus:outline-none focus:border-primary dark:focus:border-white transition placeholder-stone-400 font-serif resize-none" placeholder="Brief requirements..." data-i18n-placeholder="ai.t2_placeholder"></textarea>
-                        <div id="email-result" class="hidden relative p-6 bg-stone-50 dark:bg-black/20 text-sm font-mono text-stone-600 dark:text-stone-300 border-l-2 border-stone-300"></div>
-                        <button id="btn-generate-email" class="group flex items-center text-sm font-bold tracking-widest uppercase hover:text-stone-500 transition"><span data-i18n="ai.t2_btn">Compose</span><span class="ml-2 transform group-hover:translate-x-1 transition"><i class="fas fa-arrow-right"></i></span></button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <!-- Footer -->
     <footer id="contact" class="bg-primary text-white py-20 px-6">
         <div class="max-w-screen-xl mx-auto flex flex-col md:flex-row justify-between items-center">
