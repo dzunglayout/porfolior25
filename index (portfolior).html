@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio - DzungLayout | Visual Director</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@100;200;300;400;500;600;700;900&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Great+Vibes&display=swap" rel="stylesheet">
+    <!-- Markdown Parser -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Be Vietnam Pro"', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                        scripture: ['Scripture', '"Great Vibes"', 'cursive', 'serif'], 
+                    },
+                    colors: {
+                        primary: '#1c1917',   
+                        accent: '#a8a29e',    
+                        paper: '#fafaf9',     
+                        dark: '#0c0a09',      
+                        darkPaper: '#1c1917'
+                    },
+                    backgroundImage: {
+                        'noise': "url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22 opacity=%220.05%22/%3E%3C/svg%3E')",
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        html {
+            scroll-behavior: auto !important;
+            height: 100%;
+        }
+        body { overscroll-behavior-y: none; }
+        .gpu-accelerated {
+            transform: translateZ(0);
+            backface-visibility: hidden;
+            perspective: 1000px;
+            will-change: transform, opacity;
+        }
+        @font-face {
+            font-family: 'Scripture';
+            src: url('fonts/Scripture.ttf') format('truetype'); 
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+        h1, h2, h3, h4 { font-family: 'Playfair Display', serif; }
+        .typing-effect::after {
+            content: '';
+            display: inline-block;
+            width: 2px;
+            height: 1em;
+            background-color: currentColor;
+            margin-left: 4px;
+            animation: blink 1s infinite;
+        }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #d6d3d1; border-radius: 0; }
+        ::-webkit-scrollbar-thumb:hover { background: #78716c; }
+        ::selection { background: #1c1917; color: #fff; }
+        .dark ::selection { background: #fff; color: #000; }
+        .prose h3 { font-family: 'Playfair Display', serif; font-size: 1.25rem; font-style: italic; margin-bottom: 0.5rem; color: #1c1917; }
+        .dark .prose h3 { color: #e7e5e4; }
+        .prose ul { list-style-type: none; padding-left: 0; margin-bottom: 1rem; }
+        .prose li::before { content: "—"; margin-right: 0.5rem; color: #a8a29e; }
+        @keyframes scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+        .animate-infinite-scroll { animation: scroll 40s linear infinite; }
+        .animate-infinite-scroll:hover { animation-play-state: paused; }
+        .reveal {
+            opacity: 0;
+            transform: translateY(50px) translateZ(0);
+            transition: opacity 1s ease-out, transform 1s ease-out;
+            will-change: opacity, transform;
+        }
+        .reveal.active { opacity: 1; transform: translateY(0) translateZ(0); }
+
+        /* Animation cho filter */
+        .work-item {
+            transition: all 0.5s ease;
+        }
+        .work-item.hidden-item {
+            display: none; /* Dùng display none để layout grid tự động sắp xếp lại */
+        }
+    </style>
+</head>
+<body class="bg-paper text-primary dark:bg-dark dark:text-stone-200 transition-colors duration-500 font-sans antialiased">
+
+    <!-- Navbar -->
+    <nav id="main-nav" class="fixed w-full z-50 text-white transition-all duration-500 border-b border-transparent gpu-accelerated mix-blend-difference"> 
+        <div class="max-w-screen-2xl mx-auto px-6 py-6 flex justify-between items-center">
+            <a href="#home2" class="text-2xl font-serif font-bold tracking-widest uppercase">Dzung.</a>
+            <div class="hidden md:flex space-x-12 text-sm tracking-widest font-light uppercase">
+                <a href="#home" class="hover:text-accent transition" data-i18n="nav.home">Home</a>
+                <a href="#about" class="hover:text-accent transition" data-i18n="nav.profile">Profile</a>
+                <a href="#work" class="hover:text-accent transition" data-i18n="nav.work">Selected Work</a>
+                <a href="#services" class="hover:text-accent transition" data-i18n="nav.services">Services</a>
+            
+                <a href="LINK_GOOGLE_DRIVE_CUA_BAN" target="_blank" class="hover:text-primary dark:hover:text-white transition font-bold border-b border-white pb-1" data-i18n="nav.resume">Resume</a>
+                 <!-- LINK TO SEPARATE BLOG FILE -->
+                <a href="blog.html" class="hover:text-accent transition font-bold text-accent" data-i18n="nav.blog">Blog</a>
+            </div>
+            <div class="flex items-center space-x-6">
+                <button id="lang-toggle" class="hover:text-accent transition text-sm font-bold border border-current px-2 py-1 rounded">EN</button>
+                <button id="theme-toggle" class="hover:text-accent transition text-lg"><i class="fas fa-adjust"></i></button>
+                <button id="mobile-menu-btn" class="md:hidden text-lg"><i class="fas fa-bars"></i></button>
+            </div>
+        </div>
+        <div id="mobile-menu" class="hidden absolute top-full left-0 w-full bg-paper dark:bg-dark text-primary dark:text-white border-b border-stone-200 dark:border-stone-800 shadow-xl">
+            <div class="flex flex-col p-6 space-y-4 font-serif text-xl">
+                <a href="#home" class="block" data-i18n="nav.home">Home</a>
+                <a href="#work" class="block" data-i18n="nav.work">Work</a>
+                <a href="#services" class="block" data-i18n="nav.services">Services</a>
+                <a href="blog.html" class="block text-accent">Blog</a>
+                <a href="#contact" class="block" data-i18n="nav.contact">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- NEW HERO SECTION: GRID MOSAIC -->
+    <section id="home" class="relative w-full h-screen overflow-hidden bg-black gpu-accelerated cursor-pointer">
+        <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 h-full w-full">
+            <!-- Images (1-18) -->
+            <div class="group relative w-full h-full overflow-hidden border border-white/5"><img src="Hero-section/1.jpg" class="absolute inset-0 w-full h-full object-cover grayscale brightness-[0.5] transition-all duration-700 ease-out group-hover:grayscale-0 group-hover:brightness-100 group-hover:scale-110" alt="Design"></div>
+            <div class="group relative w-full h-full overflow-hidden border border-white/5"><img src="Hero-section/2.jpg" class="absolute inset-0 w-full h-full object-cover grayscale brightness-[0.5] transition-all duration-700 ease-out group-hover:grayscale-0 group-hover:brightness-100 group-hover:scale-110" alt="Design"></div>
+            <div class="group relative w-full h-full overflow-hidden border border-white/5 hidden md:block"><img src="Hero-section/3.jpg" class="absolute inset-0 w-full h-full object-cover grayscale brightness-[0.5] transition-all duration-700 ease-out group-hover:grayscale-0 group-hover:brightness-100 group-hover:scale-110" alt="Design"></div>
+            <div class="group relative w-full h-full overflow-hidden border border-white/5 hidden lg:block"><img src="Hero-section/7.jpg" class="absolute inset-0 w-full h-full object-cover grayscale brightness-[0.5] transition-all duration-700 ease-out group-hover:grayscale-0 group-hover:brightness-100 group-hover:scale-110" alt="Design"></div>
+            <div class="group relative w-full h-full overflow-hidden border border-white/5 hidden lg:block"><img src="Hero-section/5.jpg" class="absolute inset-0 w-full h-full object-cover grayscale brightness-[0.5] transition-all duration-700 ease-out group-hover:grayscale-0 group-hover:brightness-100 group-hover:scale-110" alt="Design"></div>
+            <div class="group relative w-full h-full overflow-hidden border border-white/5"><img src="Hero-section/6.jpg" class="absolute inset-0 w-full h-full object-cover grayscale brightness-[0.5] transition-all duration-700 ease-out group-hover:grayscale-0 group-hover:brightness-100 group-hover:scale-110" alt="Design"></div>
+            <!-- VIDEO REPLACEMENT (Grid Item 7) -->
+            <div class="group relative w-full h-full overflow-hidden border border-white/5 hidden lg:block">
+                <video autoplay loop muted playsinline class="absolute inset-0 w-full h-full object-cover grayscale brightness-[0.5] transition-all duration-700 ease-out group-hover:grayscale-0 group-hover:brightness-100 group-hover:scale-110">
+                    <source src="Hero-section/Miracle-blue.mp4" type="video/mp4">
+                </video>
+            </div>
+            <div class="group relative w-full h-full overflow-hidden border border-white/5 hidden lg:block"><img src="Hero-section/SkinAqua.png" class="absolute inset-0 w-full h-full object-cover grayscale brightness-[0.2] transition-all duration-700 ease-out group-hover:grayscale-0 group-hover:brightness-100 group-hover:scale-110" alt="Design"></div>
+            <div class="group relative w-full h-full overflow-hidden border border-white/5 hidden md:block"><img src="Hero-section/11.jpg" class="absolute inset-0 w-full h-full object-cover grayscale brightness-[0.2] transition-all duration-700 ease-out group-hover:grayscale-0 group-hover:brightness-100 group-hover:scale-110" alt="Design"></div>
+            <div class="group relative w-full h-full overflow-hidden border border-white/5"><img src="Hero-section/Miracleweb.jpg" class="absolute inset-0 w-full h-full object-cover grayscale brightness-[0.2] transition-all duration-700 ease-out group-hover:grayscale-0 group-hover:brightness-100 group-hover:scale-110" alt="Design"></div>
+            <div class="group relative w-full h-full overflow-hidden border border-white/5 hidden lg:block"><img src="Hero-section/Mobile-Welcome.jpg" class="absolute inset-0 w-full h-full object-cover grayscale brightness-[0.2] transition-all duration-700 ease-out group-hover:grayscale-0 group-hover:brightness-100 group-hover:scale-110" alt="Design"></div>
+            <!-- VIDEO REPLACEMENT (Grid Item 12) -->
+            <div class="group relative w-full h-full overflow-hidden border border-white/5 hidden lg:block">
+                <video autoplay loop muted playsinline class="absolute inset-0 w-full h-full object-cover grayscale brightness-[0.5] transition-all duration-700 ease-out group-hover:grayscale-0 group-hover:brightness-100 group-hover:scale-110">
+                    <source src="Hero-section/9.mp4" type="video/mp4">
+                </video>
+            </div>
+            <div class="group relative w-full h-full overflow-hidden border border-white/5"><img src="Hero-section/NTL1.png" class="absolute inset-0 w-full h-full object-cover grayscale brightness-[0.5] transition-all duration-700 ease-out group-hover:grayscale-0 group-hover:brightness-100 group-hover:scale-110" alt="Video Editor"></div>
+            <div class="group relative w-full h-full overflow-hidden border border-white/5 hidden md:block"><img src="Hero-section/NTL2.jpg" class="absolute inset-0 w-full h-full object-cover grayscale brightness-[0.5] transition-all duration-700 ease-out group-hover:grayscale-0 group-hover:brightness-100 group-hover:scale-110" alt="Video Editor"></div>
+            <div class="group relative w-full h-full overflow-hidden border border-white/5 hidden lg:block"><img src="Hero-section/NTL4.png" class="absolute inset-0 w-full h-full object-cover grayscale brightness-[0.5] transition-all duration-700 ease-out group-hover:grayscale-0 group-hover:brightness-100 group-hover:scale-110" alt="Video Editor"></div>
+            <div class="group relative w-full h-full overflow-hidden border border-white/5"><img src="Hero-section/NTL5.png" class="absolute inset-0 w-full h-full object-cover grayscale brightness-[0.5] transition-all duration-700 ease-out group-hover:grayscale-0 group-hover:brightness-100 group-hover:scale-110" alt="Video Editor"></div>
+            <div class="group relative w-full h-full overflow-hidden border border-white/5 hidden lg:block"><img src="Hero-section/NTL6.png" class="absolute inset-0 w-full h-full object-cover grayscale brightness-[0.5] transition-all duration-700 ease-out group-hover:grayscale-0 group-hover:brightness-100 group-hover:scale-110" alt="Video Editor"></div>
+            <div class="group relative w-full h-full overflow-hidden border border-white/5"><img src="Hero-section/NTL7.jpg" class="absolute inset-0 w-full h-full object-cover grayscale brightness-[0.5] transition-all duration-700 ease-out group-hover:grayscale-0 group-hover:brightness-100 group-hover:scale-110" alt="Video Editor"></div>
+        </div>
+
+        <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none z-20">
+            <h1 class="text-4xl md:text-8xl lg:text-9xl font-black tracking-tighter text-white uppercase drop-shadow-2xl text-center px-4" style="font-family: 'Be Vietnam Pro', sans-serif;">DzungLayout</h1>
+            <p class="text-white/90 text-xs md:text-base lg:text-xl tracking-[0.5em] uppercase mt-4 font-light animate-pulse">Crafting emotions through frames and pixels.</p>
+        </div>
+        
+        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 z-30 animate-bounce">
+            <span class="text-xs tracking-widest uppercase rotate-90 block origin-left translate-y-12 translate-x-1 text-white font-bold" data-i18n="hero.scroll">Scroll</span>
+            <div class="h-16 w-px bg-white mx-auto mt-4 shadow-lg"></div>
+        </div>
+    </section>
+
+      <!-- Hero Section 2 -->
+    <section id="home2" class="min-h-screen flex items-center justify-center relative px-6 gpu-accelerated">
+        <div class="absolute inset-0 bg-noise opacity-50 pointer-events-none"></div>
+        <div class="max-w-5xl mx-auto text-center z-10">
+            <!-- Giảm mb-6 xuống mb-4 -->
+            <p class="text-sm md:text-base tracking-[0.3em] uppercase text-accent mb-4 animate-fade-in-up" data-i18n="hero.subtitle">Portfolio 2025</p>
+            <!-- Giảm mb-8 xuống mb-6 -->
+            <h1 class="text-6xl md:text-9xl font-serif leading-none mb-6 tracking-tighter">
+                <span class="block" data-i18n="hero.title1">Visual</span>
+                <span class="block italic text-stone-400 dark:text-stone-600" data-i18n="hero.title2">Storyteller</span>
+            </h1>
+            <!-- Giảm mb-8 xuống mb-6 -->
+            <div class="h-px w-24 bg-primary dark:bg-white mx-auto mb-6"></div>
+            <!-- Giảm mb-12 xuống mb-10 -->
+            <p class="text-lg md:text-2xl font-light max-w-2xl mx-auto leading-relaxed mb-10">
+                <span data-i18n="hero.intro">I am</span> <span id="typing-text" class="font-normal italic"></span>.<br>
+                <span data-i18n="hero.desc">Crafting emotions through frames and pixels.</span>
+            </p>
+            <div class="flex flex-col md:flex-row justify-center items-center gap-6">
+                <a href="#work" class="group relative px-8 py-3 overflow-hidden border border-primary dark:border-stone-200 transition-all hover:bg-primary hover:text-white dark:hover:bg-white dark:hover:text-black">
+                    <span class="relative z-10 text-sm tracking-widest uppercase" data-i18n="hero.cta_work">View Selected Work</span>
+                </a>
+                <a href="#about" class="text-sm tracking-widest uppercase border-b border-transparent hover:border-primary dark:hover:border-white transition-all pb-1" data-i18n="hero.cta_contact">Get in touch</a>
+            </div>
+        </div>
+        
+        <!-- ĐIỀU CHỈNH VỊ TRÍ SCROLL: Nâng lên bottom-32 (128px) để không bị mất chữ -->
+        <div class="absolute bottom-32 left-1/2 transform -translate-x-1/2 animate-bounce">
+            <span class="text-xs tracking-widest uppercase rotate-90 block origin-left translate-y-12 translate-x-1" data-i18n="hero.scroll">Scroll</span>
+            <div class="h-12 w-px bg-stone-300 mx-auto mt-4"></div>
+        </div>
+    </section>
+
+  <!-- About Section -->
+   <!-- Thêm min-h-screen và flex items-center để căn giữa màn hình -->
+    <section id="about" class="relative z-10 min-h-screen flex items-center py-20 px-6 bg-white dark:bg-darkPaper border-t border-stone-100 dark:border-stone-900 overflow-hidden">
+        <div class="max-w-5xl mx-auto w-full">
+            <div class="mb-12 md:mb-16">
+                <span class="text-xs font-bold tracking-[0.2em] uppercase text-accent block mb-4" data-i18n="about.intro">The Person Behind</span>
+                <h2 class="text-5xl md:text-7xl font-serif italic leading-tight"><span data-i18n="about.headline_1">Visuals with</span> <br> <span class="ml-12 md:ml-24 text-stone-400 dark:text-stone-600" data-i18n="about.headline_2">Soul & Purpose.</span></h2>
+            </div>
+            <div class="grid md:grid-cols-12 gap-12 items-center"> <!-- items-center để căn giữa hình và chữ -->
+                <div class="md:col-span-5 relative group reveal">
+                    <div class="relative overflow-hidden aspect-[3/4]"><img src="https://plus.unsplash.com/premium_photo-1682141028605-b2456e2bab14?q=80&w=687&auto=format&fit=crop" alt="Portrait" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition duration-1000"><div class="absolute top-4 left-4 right-4 bottom-4 border border-white/20 pointer-events-none"></div></div>
+                    <div class="absolute -bottom-6 -right-6 bg-paper dark:bg-stone-800 p-6 shadow-xl border border-stone-100 dark:border-stone-700 hidden md:block"><p class="text-xs font-bold tracking-widest uppercase text-accent mb-1">Based in</p><p class="font-serif text-xl" data-i18n="about.location">Ho Chi Minh City</p></div>
+                </div>
+                <div class="md:col-span-7 md:pl-12 flex flex-col justify-center h-full">
+                    <div>
+                        <h3 class="text-2xl font-bold mb-4" data-i18n="about.greeting">Hi, I'm DzungLayout.</h3>
+                        <p class="text-lg font-light leading-relaxed text-stone-600 dark:text-stone-300 mb-6 text-justify" data-i18n="about.bio">I am a Visual Director focused on storytelling through editing and motion. My approach is simple: strip away the unnecessary until only the essential emotion remains. I don't just edit videos; I engineer feelings.</p>
+                        <div class="mb-6 pl-6 border-l-2 border-accent/50 italic text-stone-500 dark:text-stone-400 font-serif text-lg leading-relaxed"><p data-i18n="about.philosophy">"Design is not just what it looks like and feels like. Design is how it works..."</p></div>
+                    <div class="mb-8"><h4 class="font-bold tracking-widest uppercase text-xs mb-4 text-stone-400" data-i18n="about.expertise">Expertise</h4><div class="grid grid-cols-2 gap-x-4 gap-y-2 text-stone-700 dark:text-stone-300 font-light"><div class="flex items-center"><span class="w-1.5 h-1.5 bg-accent rounded-full mr-2"></span>Web Design</div><div class="flex items-center"><span class="w-1.5 h-1.5 bg-accent rounded-full mr-2"></span>Video Editing</div><div class="flex items-center"><span class="w-1.5 h-1.5 bg-accent rounded-full mr-2"></span>Motion Graphics</div><div class="flex items-center"><span class="w-1.5 h-1.5 bg-accent rounded-full mr-2"></span>Brand Identity</div></div></div>
+                    <div class="mb-8 opacity-80 text-primary dark:text-white"><p class="font-scripture text-1xl md:text-3xl transform -rotate-0">Dzunglayout.</p></div>
+                </div>
+                <!-- STATS WITH ROLLING EFFECT -->
+                <div class="grid grid-cols-3 gap-8 border-t border-stone-200 dark:border-stone-800 pt-6">
+                    <div>
+                        <span class="block text-4xl font-serif font-bold mb-1">
+                            <span class="counter" data-target="7">0</span>+
+                        </span>
+                        <span class="text-xs uppercase tracking-widest text-stone-500" data-i18n="about.stat_years">Years Exp</span>
+                    </div>
+                    <div>
+                        <span class="block text-4xl font-serif font-bold mb-1">
+                            <span class="counter" data-target="150">0</span>+
+                        </span>
+                        <span class="text-xs uppercase tracking-widest text-stone-500" data-i18n="about.stat_projects">Projects</span>
+                    </div>
+                    <div>
+                        <span class="block text-4xl font-serif font-bold mb-1">
+                            <span class="counter" data-target="100">0</span>%
+                        </span>
+                        <span class="text-xs uppercase tracking-widest text-stone-500" data-i18n="about.stat_happy">Satisfaction</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+  <!-- MINI BLOG SLIDER (UPDATED: Navigation Buttons & Sync with Storage) -->
+    <section id="mini-blog" class="py-20 px-6 bg-paper dark:bg-dark border-t border-stone-200 dark:border-stone-800 overflow-hidden relative group">
+        <div class="max-w-screen-xl mx-auto">
+            <div class="flex justify-between items-end mb-10">
+                <div>
+                     <span class="text-xs font-bold tracking-[0.2em] uppercase text-accent block mb-2">Journal</span>
+                     <h2 class="text-3xl md:text-4xl font-serif italic">Latest Stories</h2>
+                </div>
+                <!-- Navigation Buttons -->
+                <div class="flex gap-4">
+                    <button id="slider-prev" class="w-10 h-10 border border-stone-300 dark:border-stone-700 flex items-center justify-center hover:bg-primary hover:text-white dark:hover:bg-white dark:hover:text-black transition rounded-full">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <button id="slider-next" class="w-10 h-10 border border-stone-300 dark:border-stone-700 flex items-center justify-center hover:bg-primary hover:text-white dark:hover:bg-white dark:hover:text-black transition rounded-full">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div id="mini-blog-container" class="overflow-x-auto scrollbar-hide pb-4 scroll-smooth">
+                <div id="mini-blog-track" class="flex gap-6 md:gap-8 w-max">
+                    <!-- Items will be injected via JS -->
+                </div>
+            </div>
+            
+            <div class="mt-6 text-center">
+                 <a href="blog.html" class="text-xs font-bold uppercase tracking-widest border-b border-stone-400 pb-1 hover:text-accent transition">View All Stories</a>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Selected Work -->
+    <section id="work" class="py-32 px-6 bg-white dark:bg-darkPaper">
+        <div class="max-w-screen-xl mx-auto">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-20 border-b border-stone-200 dark:border-stone-800 pb-8">
+                <div>
+                    <h2 class="text-4xl md:text-5xl mb-2" data-i18n="work.title">Selected Work</h2>
+                    <p class="text-stone-500 font-light" data-i18n="work.subtitle">A collection of moments & brands.</p>
+                </div>
+                <!-- Filter Buttons (Updated with functionality) -->
+                <div class="mt-6 md:mt-0 flex gap-4 text-sm font-bold text-stone-400">
+                    <button class="filter-btn text-primary dark:text-white border-b border-primary dark:border-white pb-1 transition-all" data-filter="all" data-i18n="work.filter_all">All</button>
+                    <button class="filter-btn hover:text-primary dark:hover:text-white border-b border-transparent hover:border-primary dark:hover:border-white pb-1 transition-all" data-filter="film">Film</button>
+                    <button class="filter-btn hover:text-primary dark:hover:text-white border-b border-transparent hover:border-primary dark:hover:border-white pb-1 transition-all" data-filter="design">Design</button>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-x-8 gap-y-16" id="work-grid">
+                <!-- Project 1 (Film) -->
+                <div class="work-item group cursor-pointer video-trigger reveal" data-category="film" data-video-id="zjUzZNXi2aQ"> 
+                    <div class="relative overflow-hidden aspect-[16/9] mb-6 bg-stone-100">
+                        <img src="https://plus.unsplash.com/premium_photo-1711061959382-0de7a4bddccf?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mzd8fHN0dWRpb3xlbnwwfHwwfHx8MA%3D%3D" alt="Work 1" class="object-cover w-full h-full transform transition duration-700 group-hover:scale-105 filter grayscale group-hover:grayscale-0">
+                        <div class="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition duration-500 flex items-center justify-center">
+                            <div class="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center group-hover:scale-110 transition duration-300"><i class="fas fa-play text-white text-xl pl-1"></i></div>
+                        </div>
+                    </div>
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <span class="text-xs font-bold tracking-widest uppercase text-accent mb-1 block">Video Editing</span>
+                            <h3 class="text-2xl italic group-hover:translate-x-2 transition duration-300" data-i18n="project1.title">Talkshow Người Thắp Lửa</h3>
+                        </div>
+                        <span class="text-xs border border-stone-300 px-2 py-1 rounded-full text-stone-500">2025</span>
+                    </div>
+                </div>
+
+                <!-- Project 2 (Design) -->
+                <div class="work-item group cursor-pointer md:mt-20 reveal" data-category="design">
+                    <div class="relative overflow-hidden aspect-[3/4] mb-6 bg-stone-100">
+                        <img src="images/web-show-1.jpg" alt="Work 2" class="object-cover w-full h-full transform transition duration-700 group-hover:scale-105 filter grayscale group-hover:grayscale-0">
+                    </div>
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <span class="text-xs font-bold tracking-widest uppercase text-accent mb-1 block">Brand Identity</span>
+                            <h3 class="text-2xl italic group-hover:translate-x-2 transition duration-300">Sunplay - Micracle</h3>
+                        </div>
+                        <span class="text-xs border border-stone-300 px-2 py-1 rounded-full text-stone-500">2024</span>
+                    </div>
+                </div>
+
+                 <!-- Project 3 (Film/Motion) -->
+                 <div class="work-item group cursor-pointer video-trigger reveal" data-category="film" data-video-id="6avPyTcdmtw">
+                    <div class="relative overflow-hidden aspect-[16/9] mb-6 bg-stone-100">
+                        <img src="images/Dien-dan-ngan-hang.png" alt="Work 3" class="object-cover w-full h-full transform transition duration-700 group-hover:scale-105 filter grayscale group-hover:grayscale-0">
+                        <div class="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition duration-500 flex items-center justify-center">
+                            <div class="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center group-hover:scale-110 transition duration-300"><i class="fas fa-play text-white text-xl pl-1"></i></div>
+                        </div>
+                    </div>
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <span class="text-xs font-bold tracking-widest uppercase text-accent mb-1 block">Video Editor</span>
+                            <h3 class="text-2xl italic group-hover:translate-x-2 transition duration-300">Banking Forum</h3>
+                        </div>
+                        <span class="text-xs border border-stone-300 px-2 py-1 rounded-full text-stone-500">2024</span>
+                    </div>
+                </div>
+
+                 <!-- Project 4 (Design) -->
+              <!--   <div class="work-item group cursor-pointer md:mt-20 reveal" data-category="design">
+                    <div class="relative overflow-hidden aspect-[4/5] mb-6 bg-stone-100">
+                        <img src="https://images.unsplash.com/photo-1600607686527-6fb886090705?w=800&auto=format&fit=crop&q=80" alt="Work 4" class="object-cover w-full h-full transform transition duration-700 group-hover:scale-105 filter grayscale group-hover:grayscale-0">
+                    </div>
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <span class="text-xs font-bold tracking-widest uppercase text-accent mb-1 block">Editorial Design</span>
+                            <h3 class="text-2xl italic group-hover:translate-x-2 transition duration-300">Vogue Mockup</h3>
+                        </div>
+                        <span class="text-xs border border-stone-300 px-2 py-1 rounded-full text-stone-500">2023</span>
+                    </div>
+                </div>
+            </div>
+        </div> -->
+
+                 <div class="work-item group cursor-pointer video-trigger reveal" data-category="film" data-video-id="uyn2Oa7K5J4">
+                   <!-- <div class="relative overflow-hidden aspect-[16/9] mb-6 bg-stone-100"> -->
+                       <div class="relative overflow-hidden aspect-[4/5] mb-6 bg-stone-100">
+                        <img src="images/Artboard-1.png" alt="Work 4" class="object-cover w-full h-full transform transition duration-700 group-hover:scale-105 filter grayscale group-hover:grayscale-0">
+                        <div class="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition duration-500 flex items-center justify-center">
+                            <div class="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center group-hover:scale-110 transition duration-300"><i class="fas fa-play text-white text-xl pl-1"></i></div>
+                        </div>
+                    </div>
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <span class="text-xs font-bold tracking-widest uppercase text-accent mb-1 block">Motion Graphics</span>
+                            <h3 class="text-2xl italic group-hover:translate-x-2 transition duration-300">Đồng Tâm Long An Banner</h3>
+                        </div>
+                        <span class="text-xs border border-stone-300 px-2 py-1 rounded-full text-stone-500">2024</span>
+                    </div>
+                </div>
+    </section> 
+
+     <!-- FEATURED SHOWREEL (ĐÃ KHÔI PHỤC) -->
+    <section class="relative h-screen w-full flex items-center justify-center overflow-hidden bg-black">
+        <!-- Video Background -->
+        <video autoplay loop muted playsinline class="absolute inset-0 w-full h-full object-cover opacity-80">
+            <!-- 1. Link nội bộ của bạn (Ưu tiên chạy trước) -->
+            <!-- QUAN TRỌNG: Phải sửa type="mp4" thành type="video/mp4" thì trình duyệt mới hiểu -->
+            <source src="videos/Ecopark1.mp4" type="video/mp4">
+            
+            <!-- 2. Link Online (Dự phòng) -->
+            <!-- Nếu không tìm thấy file nội bộ (ví dụ khi xem preview này), trình duyệt sẽ tự chạy link này -->
+            <source src="https://videos.pexels.com/video-files/3129957/3129957-uhd_2560_1440_25fps.mp4" type="video/mp4">
+            
+            Your browser does not support the video tag.
+        </video>
+        
+       <!-- Overlay Content -->
+     <!--   <div class="relative z-20 text-center text-white px-6">
+            <p class="text-sm md:text-base font-bold tracking-[0.5em] uppercase mb-4 animate-pulse">Showreel 2025</p>
+            <h2 class="text-6xl md:text-9xl font-serif italic tracking-tighter mix-blend-overlay">Emotion &<br>Motion</h2>
+    -->        
+            <!-- Play Button -->
+            <button class="mt-12 w-20 h-20 rounded-full border border-white/30 flex items-center justify-center hover:bg-white hover:text-black transition duration-500 group video-trigger mx-auto" data-video-id="tgbNymZ7vqY">
+                <i class="fas fa-play text-2xl pl-1 group-hover:scale-110 transition"></i>
+            </button>
+        </div>
+        
+        <!-- Gradient Overlay -->
+        <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
+        <div class="absolute inset-0 bg-gradient-to-b from-black via-transparent to-transparent"></div>
+    </section>
+
+    <!-- Services (Minimalist Zigzag - Aligned Left/Right) -->
+    <!-- Thêm min-h-screen và flex items-center để gói gọn trong 1 màn hình -->
+    <section id="services" class="relative z-10 min-h-screen flex items-center py-20 px-6 bg-white dark:bg-dark border-t border-stone-100 dark:border-stone-800">
+        <div class="max-w-screen-xl mx-auto w-full">
+            
+            <!-- 1. Header Section -->
+             <!-- Giảm mb-32 xuống mb-16 để tiết kiệm không gian -->
+             <div class="max-w-5xl mx-auto mb-10"> 
+                <div class="mb-8">
+                    <span class="text-xs font-bold tracking-[0.2em] uppercase text-accent block mb-4" data-i18n="services.intro">What I do</span>
+                    <h2 class="text-4xl md:text-5xl" data-i18n="services.title">Services</h2>
+                </div>
+                <div class="h-1 w-24 bg-primary dark:bg-white mt-2"></div> 
+                <div class="mt-6 max-w-xl"> 
+                    <p class="text-lg md:text-xl text-stone-500 dark:text-stone-400 font-light leading-relaxed" data-i18n="services.desc">
+                        Comprehensive visual solutions tailored for brands that value aesthetics and storytelling.
+                    </p>
+                </div>
+            </div>
+
+            <!-- 2. Services List -->
+            <!-- Giảm gap-24/32 xuống gap-16 để gọn hơn -->
+            <div class="flex flex-col gap-10 md:gap-20 relative">
+                
+                <!-- Item 1: Post-Production (CANH TRÁI - Aligned Right items-end text-right) -->
+                <div class="flex flex-col items-center text-center z-10 reveal md:w-1/2 md:ml-auto"> 
+                    <div class="mb-4 text-4xl text-primary dark:text-white transition-transform duration-500 hover:-translate-y-2">
+                        <i class="fas fa-film"></i>
+                    </div>
+                    
+                    <h3 class="text-2xl md:text-4xl font-serif italic font-bold mb-4" data-i18n="services.s1_title">Post-Production</h3>
+                    <div class="w-24 h-px bg-stone-300 dark:bg-stone-700 mb-4"></div>
+                    <p class="text-stone-500 font-light" data-i18n="services.s1_desc">
+                        Professional editing, sound design, and color grading for commercials, music videos, and documentaries.
+                    </p>
+                </div>
+
+                <!-- Item 2: VFX & Motion (CANH PHẢI - Aligned Left) -->
+                <div class="flex flex-col items-center text-center z-10 reveal delay-100 md:w-1/2">
+                     <div class="mb-4 text-4xl text-primary dark:text-white transition-transform duration-500 hover:-translate-y-2">
+                         <i class="fas fa-cubes"></i>
+                    </div>
+                    <h3 class="text-2xl md:text-4xl font-serif italic font-bold mb-4" data-i18n="services.s2_title">VFX & Motion</h3>
+                    <div class="w-24 h-px bg-stone-300 dark:bg-stone-700 mb-4"></div>
+                     <p class="text-stone-500 dark:text-stone-400 leading-relaxed" data-i18n="services.s2_desc">
+                        Elevating visuals with motion graphics, compositing, and visual effects that captivate.
+                    </p>
+                </div>
+
+                <!-- Item 3: Art Direction (CANH TRÁI - Aligned Right - Thẳng hàng với Post-Production) -->
+                <div class="flex flex-col items-center text-center z-10 reveal delay-100 md:w-1/2 md:ml-auto">
+                    <div class="mb-4 text-4xl text-primary dark:text-white transition-transform duration-500 hover:-translate-y-2">
+                        <i class="fas fa-compass"></i>
+                    </div>
+                     <h3 class="text-2xl md:text-4xl font-serif italic font-bold mb-4" data-i18n="services.s3_title">Art Direction</h3>
+                    <div class="w-24 h-px bg-stone-300 dark:bg-stone-700 mb-4"></div>
+                     <p class="text-stone-500 dark:text-stone-400 leading-relaxed" data-i18n="services.s3_desc">
+                        Defining the visual language and aesthetic strategy for brands, ensuring consistency across all media.
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+ 
+
+    <!-- Client Logos -->
+    <section class="py-16 border-t border-stone-100 dark:border-stone-800 bg-paper dark:bg-dark overflow-hidden">
+        <div class="max-w-screen-xl mx-auto px-6 mb-8 text-center"><p class="text-xs font-bold tracking-[0.2em] uppercase text-stone-400" data-i18n="logos.label">Trusted Partners</p></div>
+        <div class="relative flex overflow-x-hidden group">
+            <div class="absolute top-0 bottom-0 left-0 w-24 z-10 bg-gradient-to-r from-paper dark:from-dark to-transparent"></div>
+            <div class="absolute top-0 bottom-0 right-0 w-24 z-10 bg-gradient-to-l from-paper dark:from-dark to-transparent"></div>
+            <div class="py-4 animate-infinite-scroll whitespace-nowrap flex items-center gap-16 md:gap-24 pl-6">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg" class="h-8 w-auto object-contain grayscale opacity-40 hover:grayscale-0 hover:opacity-100 transition duration-300 cursor-pointer" alt="Google">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg" class="h-8 w-auto object-contain grayscale opacity-40 hover:grayscale-0 hover:opacity-100 transition duration-300 cursor-pointer" alt="Netflix">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/a/a6/Logo_NIKE.svg" class="h-6 w-auto object-contain grayscale opacity-40 hover:grayscale-0 hover:opacity-100 transition duration-300 cursor-pointer" alt="Nike">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/2/20/Adidas_Logo.svg" class="h-10 w-auto object-contain grayscale opacity-40 hover:grayscale-0 hover:opacity-100 transition duration-300 cursor-pointer" alt="Adidas">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/7/7b/Meta_Platforms_Inc._logo.svg" class="h-8 w-auto object-contain grayscale opacity-40 hover:grayscale-0 hover:opacity-100 transition duration-300 cursor-pointer" alt="Meta">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/IBM_logo.svg" class="h-8 w-auto object-contain grayscale opacity-40 hover:grayscale-0 hover:opacity-100 transition duration-300 cursor-pointer" alt="IBM">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/4/47/Samsung.svg" class="h-8 w-auto object-contain grayscale opacity-40 hover:grayscale-0 hover:opacity-100 transition duration-300 cursor-pointer" alt="Samsung">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg" class="h-8 w-auto object-contain grayscale opacity-40 hover:grayscale-0 hover:opacity-100 transition duration-300 cursor-pointer" alt="Google">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg" class="h-8 w-auto object-contain grayscale opacity-40 hover:grayscale-0 hover:opacity-100 transition duration-300 cursor-pointer" alt="Netflix">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/a/a6/Logo_NIKE.svg" class="h-6 w-auto object-contain grayscale opacity-40 hover:grayscale-0 hover:opacity-100 transition duration-300 cursor-pointer" alt="Nike">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/2/20/Adidas_Logo.svg" class="h-10 w-auto object-contain grayscale opacity-40 hover:grayscale-0 hover:opacity-100 transition duration-300 cursor-pointer" alt="Adidas">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/7/7b/Meta_Platforms_Inc._logo.svg" class="h-8 w-auto object-contain grayscale opacity-40 hover:grayscale-0 hover:opacity-100 transition duration-300 cursor-pointer" alt="Meta">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/IBM_logo.svg" class="h-8 w-auto object-contain grayscale opacity-40 hover:grayscale-0 hover:opacity-100 transition duration-300 cursor-pointer" alt="IBM">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/4/47/Samsung.svg" class="h-8 w-auto object-contain grayscale opacity-40 hover:grayscale-0 hover:opacity-100 transition duration-300 cursor-pointer" alt="Samsung">
+            </div>
+        </div>
+    </section>
+
+    <!-- AI Studio -->
+    <section id="studio" class="py-32 px-6 bg-paper dark:bg-dark relative">
+        <div class="absolute inset-0 bg-noise opacity-30 pointer-events-none"></div>
+        <div class="max-w-4xl mx-auto relative z-10">
+            <div class="text-center mb-16">
+                <span class="text-xs font-bold tracking-[0.2em] uppercase text-accent" data-i18n="ai.label">Experimental</span>
+                <h2 class="text-4xl md:text-5xl mt-2 mb-6" data-i18n="ai.title">AI Creative Studio</h2>
+                <p class="font-light text-lg text-stone-600 dark:text-stone-400 max-w-xl mx-auto" data-i18n="ai.desc">Merging human intuition with machine intelligence. A suite of tools I use to spark inspiration.</p>
+            </div>
+            <div class="grid md:grid-cols-2 gap-12">
+                <div class="bg-white dark:bg-[#1a1a1a] p-8 md:p-10 shadow-sm hover:shadow-xl transition duration-500 border border-stone-100 dark:border-stone-800">
+                    <div class="mb-8"><i class="fas fa-lightbulb text-2xl text-stone-400 mb-4 block"></i><h3 class="text-2xl font-serif italic mb-2" data-i18n="ai.t1_title">Concept Generator</h3><p class="text-sm text-stone-500 font-light" data-i18n="ai.t1_desc">Generate art direction & visual mood.</p></div>
+                    <div class="space-y-6">
+                        <input type="text" id="idea-input" class="w-full bg-transparent border-b border-stone-300 dark:border-stone-700 py-3 text-lg focus:outline-none focus:border-primary dark:focus:border-white transition placeholder-stone-400 font-serif" placeholder="Enter a subject (e.g. Noir City)..." data-i18n-placeholder="ai.t1_placeholder">
+                        <div id="idea-result" class="hidden text-sm leading-relaxed text-stone-600 dark:text-stone-300 prose dark:prose-invert"></div>
+                        <button id="btn-generate-idea" class="group flex items-center text-sm font-bold tracking-widest uppercase hover:text-stone-500 transition"><span data-i18n="ai.t1_btn">Ignite Spark</span><span class="ml-2 transform group-hover:translate-x-1 transition"><i class="fas fa-arrow-right"></i></span></button>
+                    </div>
+                </div>
+                <div class="bg-white dark:bg-[#1a1a1a] p-8 md:p-10 shadow-sm hover:shadow-xl transition duration-500 border border-stone-100 dark:border-stone-800">
+                    <div class="mb-8"><i class="fas fa-pen-fancy text-2xl text-stone-400 mb-4 block"></i><h3 class="text-2xl font-serif italic mb-2" data-i18n="ai.t2_title">Draft Assistant</h3><p class="text-sm text-stone-500 font-light" data-i18n="ai.t2_desc">Compose professional inquiries.</p></div>
+                    <div class="space-y-6">
+                        <textarea id="email-input" rows="1" class="w-full bg-transparent border-b border-stone-300 dark:border-stone-700 py-3 text-lg focus:outline-none focus:border-primary dark:focus:border-white transition placeholder-stone-400 font-serif resize-none" placeholder="Brief requirements..." data-i18n-placeholder="ai.t2_placeholder"></textarea>
+                        <div id="email-result" class="hidden relative p-6 bg-stone-50 dark:bg-black/20 text-sm font-mono text-stone-600 dark:text-stone-300 border-l-2 border-stone-300"></div>
+                        <button id="btn-generate-email" class="group flex items-center text-sm font-bold tracking-widest uppercase hover:text-stone-500 transition"><span data-i18n="ai.t2_btn">Compose</span><span class="ml-2 transform group-hover:translate-x-1 transition"><i class="fas fa-arrow-right"></i></span></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact" class="bg-primary text-white py-20 px-6">
+        <div class="max-w-screen-xl mx-auto flex flex-col md:flex-row justify-between items-center">
+            <div class="mb-8 md:mb-0 text-center md:text-left"><h2 class="text-4xl font-serif italic mb-2" data-i18n="footer.text">Let's create something timeless.</h2><a href="mailto:contact@dzung.com" class="text-stone-400 hover:text-white transition border-b border-stone-600 pb-1">contact@dzunglayout.com</a></div>
+            <div class="flex gap-6 text-xl"><a href="#" class="hover:text-stone-400 transition"><i class="fab fa-instagram"></i></a><a href="#" class="hover:text-stone-400 transition"><i class="fab fa-behance"></i></a><a href="#" class="hover:text-stone-400 transition"><i class="fab fa-linkedin"></i></a></div>
+        </div>
+        <div class="flex justify-center mt-16 mb-4"><button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="text-stone-600 hover:text-stone-300 transition duration-500 p-2 animate-bounce opacity-50 hover:opacity-100" title="Back to Top"><i class="fas fa-chevron-up text-xl"></i></button></div>
+        <div class="text-center text-xs text-stone-600 uppercase tracking-widest">© 2025 DzungLayout. All Rights Reserved.</div>
+    </footer>
+
+    <!-- Video Modal -->
+    <div id="video-modal" class="fixed inset-0 z-[100] hidden bg-black/90 backdrop-blur-md flex items-center justify-center p-4">
+        <button id="close-modal" class="absolute top-6 right-6 text-white text-4xl hover:text-stone-400 transition focus:outline-none">&times;</button>
+        <div class="w-full max-w-5xl aspect-video bg-black shadow-2xl relative">
+            <iframe id="video-iframe" class="w-full h-full" src="" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        const apiKey = ""; 
+        const translations = {
+            en: {
+                nav: { home: "Home", work: "Selected Work", services: "Services", studio: "AI Studio", profile: "Profile", resume: "Resume", contact: "Contact" },
+                hero: { subtitle: "Portfolio 2025", title1: "Visual", title2: "Storyteller", intro: "I am", desc: "Crafting emotions through frames and pixels.", cta_work: "View Selected Work", cta_contact: "Get in touch", scroll: "Scroll" },
+                work: { title: "Selected Work", subtitle: "A collection of moments & brands.", filter_all: "All" },
+                project1: { title: "Talkshow Người Thắp Lửa" },
+                services: { label: "What I do", title: "Services", desc: "Comprehensive visual solutions tailored for brands that value aesthetics and storytelling.", s1_title: "Post-Production", s1_desc: "Professional editing, sound design, and color grading for commercials, music videos, and documentaries.", s2_title: "Motion & VFX", s2_desc: "Elevating visuals with 2D/3D motion graphics, compositing, and visual effects that captivate.", s3_title: "Art Direction", s3_desc: "Defining the visual language and aesthetic strategy for brands, ensuring consistency across all media." },
+                ai: { label: "Experimental", title: "AI Creative Studio", desc: "Merging human intuition with machine intelligence. A suite of tools I use to spark inspiration.", t1_title: "Concept Generator", t1_desc: "Generate art direction & visual mood.", t1_placeholder: "Enter a subject (e.g. Noir City)...", t1_btn: "Ignite Spark", t2_title: "Draft Assistant", t2_desc: "Compose professional inquiries.", t2_placeholder: "Brief requirements...", t2_btn: "Compose" },
+                about: { intro: "The Person Behind", headline_1: "Visuals with", headline_2: "Soul & Purpose.", location: "Ho Chi Minh City", greeting: "Hi, I'm DzungLayout.", bio: "I am a Visual Director focused on storytelling through editing and motion. My approach is simple: strip away the unnecessary until only the essential emotion remains. I don't just edit videos; I engineer feelings.", philosophy: "\"Design is not just what it looks like and feels like. Design is how it works. I believe in minimalism that speaks volumes, and motion that evokes emotion.\"", expertise: "Expertise", recognition: "Recognition", stat_years: "Years Exp", stat_projects: "Projects", stat_happy: "Satisfaction" },
+                footer: { text: "Let's create something timeless." },
+                typing: ['DzungLayout', 'a Video Editor', 'a Designer', 'a Minimalist']
+            },
+            vi: {
+                nav: { home: "Trang chủ", work: "Dự án", services: "Dịch vụ", studio: "AI Studio", profile: "Về tôi", resume: "Hồ sơ", contact: "Liên hệ" },
+                hero: { subtitle: "Portfolio 2025", title1: "Nghệ thuật", title2: "kể chuyện", intro: "Tôi là", desc: "Chạm tới cảm xúc bằng hình ảnh và từng khung hình.", cta_work: "Xem Dự Án", cta_contact: "Liên hệ ngay", scroll: "Cuộn" },
+                work: { title: "Dự án tiêu biểu", subtitle: "Bộ sưu tập những khoảnh khắc & thương hiệu.", filter_all: "Tất cả" },
+                project1: { title: "Hành trình Tây Bắc" },
+                services: { label: "Lĩnh vực chuyên môn", title: "Dịch vụ", desc: "Giải pháp hình ảnh toàn diện dành cho những thương hiệu đề cao tính thẩm mỹ và câu chuyện.", s1_title: "Dựng Phim (Post-Production)", s1_desc: "Biên tập chuyên nghiệp, thiết kế âm thanh và chỉnh màu (Color Grading) cho TVC, MV và phim tài liệu.", s2_title: "Chuyển động & VFX", s2_desc: "Nâng tầm hình ảnh với đồ họa chuyển động 2D/3D, kỹ xảo điện ảnh đầy mê hoặc.", s3_title: "Chỉ đạo Nghệ thuật", s3_desc: "Định hình ngôn ngữ hình ảnh và chiến lược thẩm mỹ cho thương hiệu, đảm bảo sự nhất quán trên mọi nền tảng." },
+                ai: { label: "Thử nghiệm", title: "AI Creative Studio", desc: "Kết hợp trực giác con người và trí tuệ nhân tạo. Bộ công cụ tôi dùng để khơi nguồn cảm hứng.", t1_title: "Tạo Concept", t1_desc: "Gợi ý chỉ đạo nghệ thuật & mood hình ảnh.", t1_placeholder: "Nhập chủ đề (VD: Sài Gòn xưa)...", t1_btn: "Tạo ý tưởng", t2_title: "Trợ lý Soạn thảo", t2_desc: "Soạn email liên hệ chuyên nghiệp.", t2_placeholder: "Yêu cầu ngắn gọn...", t2_btn: "Soạn thảo" },
+                about: { intro: "Con người phía sau", headline_1: "Hình ảnh có", headline_2: "Tâm hồn & Mục đích.", location: "TP. Hồ Chí Minh", greeting: "Chào, tôi là DzungLayout.", bio: "Tôi là một Visual Director tập trung vào việc kể chuyện thông qua cắt dựng và chuyển động. Phương pháp của tôi rất đơn giản: loại bỏ những thứ không cần thiết cho đến khi chỉ còn lại cảm xúc cốt lõi.", philosophy: "\"Thiết kế không chỉ là trông nó như thế nào. Thiết kế là cách nó vận hành. Tôi tin vào sự tối giản nhưng sâu sắc, và những chuyển động khơi gợi cảm xúc.\"", expertise: "Chuyên môn", recognition: "Giải thưởng", stat_years: "Năm kinh nghiệm", stat_projects: "Dự án", stat_happy: "Hài lòng" },
+                footer: { text: "Cùng tạo nên những giá trị vượt thời gian." },
+                typing: ['DzungLayout', 'Video Editor', 'Designer', 'Người yêu tối giản']
+            }
+        };
+
+       
+
+                // --- 2. DATA LOADING (UPDATED) ---
+        // Sample data fallback
+        const samplePosts = [
+            { id: 8, title: "The Psychology of Sound", image: "https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?w=400", category: "Tutorial", date: "Nov 15" },
+            { id: 7, title: "On Set: 'Neon Nights'", image: "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=400", category: "BTS", date: "Nov 02" },
+            { id: 6, title: "Shooting 4:3 Aspect Ratio", image: "https://images.unsplash.com/photo-1533577116850-9cc66cad8a9b?w=400", category: "Inspiration", date: "Oct 28" },
+            { id: 5, title: "DaVinci Resolve Speed", image: "https://images.unsplash.com/photo-1574717024653-61fd2cf4d44c?w=400", category: "Tutorial", date: "Oct 20" }
+        ];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // TRY TO LOAD FROM LOCALSTORAGE (Sync with Blog Page)
+            // Use the SAME key as in blog.html (dzung_blog_posts_v5)
+            let posts = samplePosts;
+            try {
+                const storedPosts = localStorage.getItem('dzung_blog_posts_v5');
+                if (storedPosts) {
+                    posts = JSON.parse(storedPosts);
+                    // Sort by ID desc (newest first) and take top 6
+                    posts.sort((a,b) => b.id - a.id);
+                    posts = posts.slice(0, 6);
+                }
+            } catch(e) { console.log('Using sample posts'); }
+
+            // Render Mini Blog
+            const track = document.getElementById('mini-blog-track');
+            if(track) {
+                posts.forEach(post => {
+                    const div = document.createElement('div');
+                    div.className = "w-[300px] md:w-[400px] flex-shrink-0 group cursor-pointer relative";
+                    div.onclick = () => { window.location.href = `blog.html?id=${post.id}`; };
+                    div.innerHTML = `
+                        <div class="relative overflow-hidden aspect-[16/9] mb-4 bg-stone-100 dark:bg-stone-800">
+                            <img src="${post.image}" loading="lazy" class="w-full h-full object-cover transition duration-700 group-hover:scale-105 filter grayscale group-hover:grayscale-0">
+                            <div class="absolute top-3 left-3 bg-white/90 dark:bg-black/90 text-primary dark:text-white px-2 py-0.5 text-[9px] font-bold uppercase tracking-widest backdrop-blur-sm">${post.category}</div>
+                        </div>
+                        <div class="flex justify-between items-start">
+                            <h3 class="text-xl font-serif italic group-hover:text-accent transition line-clamp-2 w-3/4">${post.title}</h3>
+                            <span class="text-xs text-stone-400 mt-1">${post.date || ''}</span>
+                        </div>
+                    `;
+                    track.appendChild(div);
+                });
+            }
+
+            // Slider Controls
+            const container = document.getElementById('mini-blog-container');
+            const btnPrev = document.getElementById('slider-prev');
+            const btnNext = document.getElementById('slider-next');
+            
+            if(container && btnPrev && btnNext) {
+                btnNext.addEventListener('click', () => {
+                    container.scrollBy({ left: 350, behavior: 'smooth' });
+                });
+                btnPrev.addEventListener('click', () => {
+                    container.scrollBy({ left: -350, behavior: 'smooth' });
+                });
+            }   
+
+            function easeInOutCubic(t, b, c, d) {
+                t /= d / 2;
+                if (t < 1) return c / 2 * t * t * t + b;
+                t -= 2;
+                return c / 2 * (t * t * t + 2) + b;
+            }
+
+            function smoothScrollTo(target, duration) {
+                const targetElement = document.querySelector(target);
+                if (!targetElement) return;
+                const headerOffset = 80;
+                const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - headerOffset;
+                const startPosition = window.pageYOffset;
+                const distance = targetPosition - startPosition;
+                let startTime = null;
+                function animation(currentTime) {
+                    if (startTime === null) startTime = currentTime;
+                    const timeElapsed = currentTime - startTime;
+                    const run = easeInOutCubic(timeElapsed, startPosition, distance, duration);
+                    window.scrollTo(0, run);
+                    if (timeElapsed < duration) requestAnimationFrame(animation);
+                }
+                requestAnimationFrame(animation);
+            }
+
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault(); 
+                    const targetId = this.getAttribute('href');
+                    if (targetId === '#') return;
+                    smoothScrollTo(targetId, 1200); 
+                    const mobileMenu = document.getElementById('mobile-menu');
+                    if (mobileMenu && !mobileMenu.classList.contains('hidden')) mobileMenu.classList.add('hidden');
+                });
+            });
+
+            const homeSection = document.getElementById('home');
+            if (homeSection) homeSection.addEventListener('click', () => smoothScrollTo('#home2', 1200));
+
+            const nav = document.getElementById('main-nav');
+            let isScrolled = false; 
+            let ticking = false;
+            if (nav) {
+                window.addEventListener('scroll', () => {
+                    if (!ticking) {
+                        window.requestAnimationFrame(() => {
+                            const scrolled = window.scrollY > 50;
+                            if (scrolled && !isScrolled) {
+                                isScrolled = true;
+                                nav.classList.remove('text-white', 'mix-blend-difference');
+                                nav.classList.add('bg-white/90', 'dark:bg-dark/90', 'backdrop-blur-sm', 'border-b', 'border-stone-200', 'dark:border-stone-800', 'shadow-sm', 'text-primary', 'dark:text-white');
+                            } else if (!scrolled && isScrolled) {
+                                isScrolled = false;
+                                nav.classList.remove('bg-white/90', 'dark:bg-dark/90', 'backdrop-blur-sm', 'border-b', 'border-stone-200', 'dark:border-stone-800', 'shadow-sm', 'text-primary', 'dark:text-white');
+                                nav.classList.add('text-white', 'mix-blend-difference');
+                            }
+                            ticking = false;
+                        });
+                        ticking = true;
+                    }
+                });
+            }
+
+            const revealElements = document.querySelectorAll('.reveal');
+            const revealObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if(entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+            revealElements.forEach(el => revealObserver.observe(el));
+
+            let currentLang = localStorage.getItem('lang') || 'en';
+            const langBtn = document.getElementById('lang-toggle');
+            function updateContent() {
+                document.querySelectorAll('[data-i18n]').forEach(el => {
+                    const key = el.getAttribute('data-i18n');
+                    const keys = key.split('.');
+                    let val = translations[currentLang];
+                    keys.forEach(k => { if(val) val = val[k]; });
+                    if (val) el.textContent = val;
+                });
+                document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+                    const key = el.getAttribute('data-i18n-placeholder');
+                    const keys = key.split('.');
+                    let val = translations[currentLang];
+                    keys.forEach(k => { if(val) val = val[k]; });
+                    if (val) el.placeholder = val;
+                });
+                if (langBtn) langBtn.textContent = currentLang === 'en' ? 'EN' : 'VN';
+            }
+            if (langBtn) {
+                langBtn.addEventListener('click', () => {
+                    currentLang = currentLang === 'en' ? 'vi' : 'en';
+                    localStorage.setItem('lang', currentLang);
+                    updateContent();
+                });
+            }
+
+            const themeToggleBtn = document.getElementById('theme-toggle');
+            const html = document.documentElement;
+            if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) html.classList.add('dark');
+            if (themeToggleBtn) {
+                themeToggleBtn.addEventListener('click', () => {
+                    html.classList.toggle('dark');
+                    localStorage.theme = html.classList.contains('dark') ? 'dark' : 'light';
+                });
+            }
+
+            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            if (mobileMenuBtn && mobileMenu) mobileMenuBtn.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
+
+            const textElement = document.getElementById('typing-text');
+            let phrases = translations[currentLang].typing; 
+            let phraseIndex = 0;
+            let charIndex = 0;
+            let isDeleting = false;
+            function type() {
+                if (!textElement) return;
+                const currentPhrase = phrases[phraseIndex % phrases.length]; 
+                if (isDeleting) {
+                    textElement.textContent = currentPhrase.substring(0, charIndex - 1);
+                    charIndex--;
+                } else {
+                    textElement.textContent = currentPhrase.substring(0, charIndex + 1);
+                    charIndex++;
+                }
+                if (!isDeleting && charIndex === currentPhrase.length) {
+                    isDeleting = true;
+                    setTimeout(type, 2000);
+                } else if (isDeleting && charIndex === 0) {
+                    isDeleting = false;
+                    phraseIndex = (phraseIndex + 1) % phrases.length;
+                    setTimeout(type, 500);
+                } else {
+                    setTimeout(type, isDeleting ? 50 : 100);
+                }
+            }
+            updateContent();
+            type();
+
+            const modal = document.getElementById('video-modal');
+            const iframe = document.getElementById('video-iframe');
+            const closeBtn = document.getElementById('close-modal');
+            const videoTriggers = document.querySelectorAll('.video-trigger');
+            if (modal && iframe) {
+                videoTriggers.forEach(trigger => {
+                    trigger.addEventListener('click', () => {
+                        const videoId = trigger.getAttribute('data-video-id');
+                        if (videoId) {
+                            iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`;
+                            modal.classList.remove('hidden');
+                        }
+                    });
+                });
+                const closeModal = () => { modal.classList.add('hidden'); iframe.src = ''; };
+                if (closeBtn) closeBtn.addEventListener('click', closeModal);
+                modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+                document.addEventListener('keydown', (e) => { if (e.key === "Escape" && !modal.classList.contains('hidden')) closeModal(); });
+            }
+
+            const btnIdea = document.getElementById('btn-generate-idea');
+            if (btnIdea) {
+                btnIdea.addEventListener('click', async function() {
+                    const input = document.getElementById('idea-input').value;
+                    const resultDiv = document.getElementById('idea-result');
+                    const btn = this;
+                    if (!input.trim()) return;
+                    const loadingText = currentLang === 'en' ? 'Thinking...' : 'Đang suy nghĩ...';
+                    const thinkingText = currentLang === 'en' ? 'Consulting the muse...' : 'Đang tìm cảm hứng...';
+                    const btnText = translations[currentLang].ai.t1_btn;
+                    btn.innerHTML = `<span>${loadingText}</span>`;
+                    resultDiv.classList.remove('hidden');
+                    resultDiv.innerHTML = `<span class="animate-pulse">${thinkingText}</span>`;
+                    const langInstruction = currentLang === 'en' ? 'Language: English.' : 'Language: Vietnamese.';
+                    const prompt = `Act as an Art Director. Create a sophisticated visual concept for: "${input}". Format: Markdown. Keep it brief, poetic, and professional. Structure: ### [Concept Name] * **Mood:** ... * **Visuals:** ... ${langInstruction}`;
+                    const text = await callGemini(prompt);
+                    resultDiv.innerHTML = marked.parse(text);
+                    btn.innerHTML = `<span data-i18n="ai.t1_btn">${btnText}</span><span class="ml-2"><i class="fas fa-arrow-right"></i></span>`;
+                });
+            }
+
+            const btnEmail = document.getElementById('btn-generate-email');
+            if (btnEmail) {
+                btnEmail.addEventListener('click', async function() {
+                    const input = document.getElementById('email-input').value;
+                    const resultDiv = document.getElementById('email-result');
+                    const btn = this;
+                    if (!input.trim()) return;
+                    const loadingText = currentLang === 'en' ? 'Drafting...' : 'Đang viết...';
+                    const thinkingText = currentLang === 'en' ? 'Composing...' : 'Đang soạn thảo...';
+                    const btnText = translations[currentLang].ai.t2_btn;
+                    btn.innerHTML = `<span>${loadingText}</span>`;
+                    resultDiv.classList.remove('hidden');
+                    resultDiv.innerHTML = `<span class="animate-pulse">${thinkingText}</span>`;
+                    const langInstruction = currentLang === 'en' ? 'Language: English.' : 'Language: Vietnamese.';
+                    const prompt = `Write a short, professional inquiry email to DzungLayout based on: "${input}". Tone: Elegant, respectful, concise. ${langInstruction}`;
+                    const text = await callGemini(prompt);
+                    resultDiv.innerText = text;
+                    const ta = document.getElementById('email-input');
+                    ta.value = ""; 
+                    ta.placeholder = currentLang === 'en' ? "Anything else?" : "Còn yêu cầu gì khác không?";
+                    btn.innerHTML = `<span data-i18n="ai.t2_btn">${btnText}</span><span class="ml-2"><i class="fas fa-arrow-right"></i></span>`;
+                });
+            }
+
+            // Work Filter Logic
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            const workItems = document.querySelectorAll('.work-item');
+
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    // Update active state style
+                    filterBtns.forEach(b => {
+                        b.classList.remove('text-primary', 'dark:text-white', 'border-primary', 'dark:border-white');
+                        b.classList.add('hover:text-primary', 'dark:hover:text-white', 'border-transparent');
+                    });
+                    btn.classList.remove('hover:text-primary', 'dark:hover:text-white', 'border-transparent');
+                    btn.classList.add('text-primary', 'dark:text-white', 'border-primary', 'dark:border-white');
+
+                    const filterValue = btn.getAttribute('data-filter');
+
+                    workItems.forEach(item => {
+                        if (filterValue === 'all' || item.getAttribute('data-category') === filterValue) {
+                            item.classList.remove('hidden-item');
+                        } else {
+                            item.classList.add('hidden-item');
+                        }
+                    });
+                });
+            });
+        
+
+         // --- COUNTER ANIMATION (ROLLING NUMBERS) ---
+            const counters = document.querySelectorAll('.counter');
+            const counterObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const counter = entry.target;
+                        const target = +counter.getAttribute('data-target');
+                        const duration = 2000; // Thời gian chạy (ms)
+                        const increment = target / (duration / 16); // Tính bước nhảy (60fps)
+
+                        let current = 0;
+                        const updateCounter = () => {
+                            current += increment;
+                            if (current < target) {
+                                // Nếu số < 10 thì thêm số 0 đằng trước (VD: 01, 02...)
+                                let displayValue = Math.ceil(current);
+                                if (target < 10 && displayValue < 10) {
+                                     displayValue = '0' + displayValue;
+                                }
+                                counter.textContent = displayValue;
+                                requestAnimationFrame(updateCounter);
+                            } else {
+                                // Kết thúc animation, gán giá trị chính xác
+                                let displayValue = target;
+                                if (target < 10) displayValue = '0' + target;
+                                counter.textContent = displayValue;
+                            }
+                        };
+                        updateCounter();
+                        observer.unobserve(counter); // Chỉ chạy 1 lần.
+                    }
+                });
+            }, { threshold: 0.5 }); // Khi thấy 50% phần tử thì bắt đầu chạy
+
+            counters.forEach(counter => {
+                counterObserver.observe(counter);
+            });
+        });
+
+        async function callGemini(prompt) {
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+            const payload = { contents: [{ parts: [{ text: prompt }] }] };
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const data = await response.json();
+                return data.candidates[0].content.parts[0].text;
+            } catch (e) {
+                console.error(e);
+                const currentLang = localStorage.getItem('lang') || 'en';
+                return currentLang === 'en' ? "Unavailable at the moment." : "Hệ thống đang bận.";
+            }
+        }
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
