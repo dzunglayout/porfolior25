@@ -3,12 +3,17 @@ import os
 import random
 from datetime import datetime
 
-# 1. Cấu hình Gemini
+# 1. Cấu hình Gemini với API Key
 api_key = os.environ.get("GEMINI_API_KEY")
-genai.configure(api_key=api_key)
-model = genai.GenerativeModel('gemini-1.5-flash')
+if not api_key:
+    raise ValueError("GEMINI_API_KEY không tồn tại trong Secrets!")
 
-# 2. Danh sách chủ đề
+genai.configure(api_key=api_key)
+
+# 2. Sử dụng model 'gemini-1.5-flash-latest' (phiên bản ổn định nhất cho API v1beta)
+model = genai.GenerativeModel('gemini-1.5-flash-latest')
+
+# 3. Danh sách chủ đề
 topics = [
     "Chia sẻ kinh nghiệm du lịch trải nghiệm cá nhân tại Hà Giang.",
     "Tips dựng phim: Cách sử dụng màu sắc để kể chuyện (Color Grading).",
@@ -17,29 +22,29 @@ topics = [
 ]
 selected_topic = random.choice(topics)
 
-# 3. Đảm bảo thư mục tồn tại
+# 4. Đảm bảo thư mục tồn tại
 os.makedirs('_drafts', exist_ok=True)
 
-# 4. Gọi API với xử lý lỗi chặt chẽ
+# 5. Gọi API
 try:
     prompt = f"Bạn là blogger du lịch và filmmaker. Hãy viết một bài blog HTML (nằm trong thẻ <article>) về: {selected_topic}. Nội dung hấp dẫn, có tiêu đề h2."
+    
+    # Thêm tham số an toàn
     response = model.generate_content(prompt)
     
-    # Lấy nội dung văn bản
-    content = response.text
-    
-    # Tạo tên file theo ngày giờ để không bao giờ bị trùng
-    timestamp = datetime.now().strftime("%Y%m%d-%H%M%S")
-    file_path = f"_drafts/post-{timestamp}.html"
-    
-    # Ghi file
-    with open(file_path, "w", encoding="utf-8") as f:
-        f.write(content)
+    if response and response.text:
+        content = response.text
+        # Tạo tên file theo ngày giờ
+        timestamp = datetime.now().strftime("%Y%m%d-%H%M%S")
+        file_path = f"_drafts/post-{timestamp}.html"
         
-    print(f"--- THÀNH CÔNG: Đã tạo file {file_path} ---")
+        with open(file_path, "w", encoding="utf-8") as f:
+            f.write(content)
+        print(f"Thành công: Đã tạo file {file_path}")
+    else:
+        print("Lỗi: Gemini trả về nội dung rỗng.")
 
 except Exception as e:
-    # Nếu lỗi, ghi lỗi vào một file để bạn biết tại sao
     with open("_drafts/error_log.txt", "a", encoding="utf-8") as f:
-        f.write(f"{datetime.now()}: Lỗi {str(e)}\n")
-    print(f"Lỗi: {e}")
+        f.write(f"{datetime.now()}: {str(e)}\n")
+    print(f"Lỗi phát sinh: {e}")
