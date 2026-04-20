@@ -30,13 +30,16 @@ jobs:
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          
+          # Kiểm tra xem thư mục _drafts có tồn tại không, nếu không thì tạo
+          mkdir -p _drafts
+          
           git add _drafts/
           
-          # Kiểm tra xem có gì mới để commit không
-          if [ -n "$(git status --porcelain)" ]; then
-            git commit -m "New weekly draft post"
-            # Đẩy code lên nhánh main
-            git push origin main
+          # Chỉ commit nếu thực sự có thay đổi
+          if git diff --staged --quiet; then
+            echo "Không có gì mới để cập nhật."
           else
-            echo "No changes to commit"
+            git commit -m "New weekly draft post"
+            git push origin main
           fi
