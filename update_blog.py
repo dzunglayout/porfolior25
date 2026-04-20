@@ -10,33 +10,36 @@ model = genai.GenerativeModel('gemini-1.5-flash')
 
 # 2. Danh sách chủ đề
 topics = [
-    "Chia sẻ kinh nghiệm du lịch trải nghiệm cá nhân.",
-    "Tips dựng phim chuyên nghiệp.",
-    "Cách phối hợp SFX hiệu quả."
+    "Chia sẻ kinh nghiệm du lịch trải nghiệm cá nhân tại Hà Giang.",
+    "Tips dựng phim: Cách sử dụng màu sắc để kể chuyện (Color Grading).",
+    "Cách phối hợp SFX để tạo chiều sâu không gian cho video du lịch.",
+    "Hướng dẫn chọn nhạc nền phù hợp với tiết tấu phim trải nghiệm."
 ]
 selected_topic = random.choice(topics)
 
-# 3. Tạo thư mục _drafts ngay lập tức (để tránh lỗi Git không tìm thấy)
-if not os.path.exists('_drafts'):
-    os.makedirs('_drafts')
+# 3. Đảm bảo thư mục tồn tại
+os.makedirs('_drafts', exist_ok=True)
 
-# Tạo file log nhỏ để chắc chắn thư mục không trống
-with open("_drafts/.keep", "w") as f:
-    f.write("")
-
-# 4. Gọi API
+# 4. Gọi API với xử lý lỗi chặt chẽ
 try:
-    prompt = f"Viết một bài blog HTML ngắn về: {selected_topic}. Chỉ trả về code trong thẻ <article>."
+    prompt = f"Bạn là blogger du lịch và filmmaker. Hãy viết một bài blog HTML (nằm trong thẻ <article>) về: {selected_topic}. Nội dung hấp dẫn, có tiêu đề h2."
     response = model.generate_content(prompt)
     
-    # Kiểm tra nếu có nội dung
-    if response.text:
-        date_str = datetime.now().strftime("%Y-%m-%d")
-        file_path = f"_drafts/post-{date_str}.html"
-        with open(file_path, "w", encoding="utf-8") as f:
-            f.write(response.text)
-        print(f"Đã tạo file: {file_path}")
-    else:
-        print("Gemini không trả về nội dung.")
+    # Lấy nội dung văn bản
+    content = response.text
+    
+    # Tạo tên file theo ngày giờ để không bao giờ bị trùng
+    timestamp = datetime.now().strftime("%Y%m%d-%H%M%S")
+    file_path = f"_drafts/post-{timestamp}.html"
+    
+    # Ghi file
+    with open(file_path, "w", encoding="utf-8") as f:
+        f.write(content)
+        
+    print(f"--- THÀNH CÔNG: Đã tạo file {file_path} ---")
+
 except Exception as e:
-    print(f"Lỗi rồi: {e}")
+    # Nếu lỗi, ghi lỗi vào một file để bạn biết tại sao
+    with open("_drafts/error_log.txt", "a", encoding="utf-8") as f:
+        f.write(f"{datetime.now()}: Lỗi {str(e)}\n")
+    print(f"Lỗi: {e}")
