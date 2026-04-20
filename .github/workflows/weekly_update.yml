@@ -1,22 +1,22 @@
 name: Weekly Blog Agent
 on:
   schedule:
-    - cron: '0 0 * * 1' # Tự động chạy 0h00 sáng thứ Hai hàng tuần
-  workflow_dispatch: # Cho phép bạn bấm nút chạy thủ công để thử nghiệm
+    - cron: '0 0 * * 1'
+  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
     permissions:
-      contents: write # Cấp quyền ghi vào repo
+      contents: write # Cấp quyền ghi cụ thể ở đây
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4 # Cập nhật lên v4
 
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5 # Cập nhật lên v5
         with:
-          python-version: '3.9'
+          python-version: '3.10'
 
       - name: Install Gemini Library
         run: pip install google-generativeai
@@ -28,8 +28,9 @@ jobs:
 
       - name: Commit and Push
         run: |
-          git config --global user.name "Gemini-Agent"
-          git config --global user.email "agent@google.com"
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add _drafts/
-          git commit -m "New weekly draft post" || exit 0
+          # Chỉ commit nếu có sự thay đổi, tránh lỗi khi không có file mới
+          git diff --quiet && git diff --staged --quiet || git commit -m "New weekly draft post"
           git push
