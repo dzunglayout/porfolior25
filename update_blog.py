@@ -3,48 +3,42 @@ import os
 import random
 from datetime import datetime
 
-# 1. Cấu hình Gemini với API Key
+# 1. Cấu hình
 api_key = os.environ.get("GEMINI_API_KEY")
-if not api_key:
-    raise ValueError("GEMINI_API_KEY không tồn tại trong Secrets!")
-
 genai.configure(api_key=api_key)
 
-# 2. Sử dụng model 'gemini-1.5-flash-latest' (phiên bản ổn định nhất cho API v1beta)
-model = genai.GenerativeModel('gemini-1.5-flash-latest')
-
-# 3. Danh sách chủ đề
+# 2. CHỦ ĐỀ
 topics = [
     "Chia sẻ kinh nghiệm du lịch trải nghiệm cá nhân tại Hà Giang.",
-    "Tips dựng phim: Cách sử dụng màu sắc để kể chuyện (Color Grading).",
-    "Cách phối hợp SFX để tạo chiều sâu không gian cho video du lịch.",
-    "Hướng dẫn chọn nhạc nền phù hợp với tiết tấu phim trải nghiệm."
+    "Tips dựng phim: Cách sử dụng Color Grading để tạo cảm xúc.",
+    "Cách phối hợp SFX chuyên nghiệp trong video du lịch.",
+    "Hướng dẫn chọn thiết bị quay phim tối giản cho dân du lịch bụi."
 ]
 selected_topic = random.choice(topics)
 
-# 4. Đảm bảo thư mục tồn tại
+# 3. Đảm bảo thư mục tồn tại
 os.makedirs('_drafts', exist_ok=True)
 
-# 5. Gọi API
+# 4. GỌI GEMINI 2.5 FLASH
 try:
-    prompt = f"Bạn là blogger du lịch và filmmaker. Hãy viết một bài blog HTML (nằm trong thẻ <article>) về: {selected_topic}. Nội dung hấp dẫn, có tiêu đề h2."
+    # Cập nhật tên model thành gemini-2.5-flash
+    model = genai.GenerativeModel('gemini-2.5-flash')
     
-    # Thêm tham số an toàn
+    prompt = f"Bạn là một chuyên gia Filmmaker và Blogger du lịch. Hãy viết một bài blog HTML (nằm gọn trong thẻ <article>) về: {selected_topic}. Văn phong lôi cuốn, chuyên nghiệp."
+    
     response = model.generate_content(prompt)
     
-    if response and response.text:
-        content = response.text
-        # Tạo tên file theo ngày giờ
+    if response.text:
         timestamp = datetime.now().strftime("%Y%m%d-%H%M%S")
         file_path = f"_drafts/post-{timestamp}.html"
         
         with open(file_path, "w", encoding="utf-8") as f:
-            f.write(content)
-        print(f"Thành công: Đã tạo file {file_path}")
+            f.write(response.text)
+        print(f"--- THÀNH CÔNG rực rỡ với Gemini 2.5: {file_path} ---")
     else:
-        print("Lỗi: Gemini trả về nội dung rỗng.")
+        print("API 2.5 không trả về văn bản.")
 
 except Exception as e:
     with open("_drafts/error_log.txt", "a", encoding="utf-8") as f:
-        f.write(f"{datetime.now()}: {str(e)}\n")
-    print(f"Lỗi phát sinh: {e}")
+        f.write(f"{datetime.now()}: Lỗi phiên bản 2.5 - {str(e)}\n")
+    print(f"Lỗi: {e}")
