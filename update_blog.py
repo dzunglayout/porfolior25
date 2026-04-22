@@ -9,7 +9,7 @@ genai.configure(api_key=api_key)
 
 # 2. CHỦ ĐỀ
 topics = [
-    "Chia sẻ kinh nghiệm du lịch bụi trải nghiệm cá nhân tại Nhật bản, Hàn Quốc, Singapore, Malaysia, Campuchia, Phú Quốc, Nha Trang, Vũng Tàu, BẢo Lộc...",
+    "Chia sẻ kinh nghiệm du lịch bụi trải nghiệm cá nhân tại Nhật bản, Hàn Quốc, Singapore, Malaysia, Campuchia, Phú Quốc, Nha Trang, Vũng Tàu, Bảo Lộc...",
     "Tips dựng phim: Cách sử dụng Color Grading để tạo cảm xúc.",
     "Cách phối hợp SFX chuyên nghiệp trong video du lịch.",
     "Hướng dẫn chọn thiết bị quay phim tối giản cho dân du lịch bụi."
