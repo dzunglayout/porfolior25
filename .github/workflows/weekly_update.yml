@@ -14,12 +14,14 @@ jobs:
         uses: actions/checkout@v4 # Cập nhật lên v4
 
       - name: Set up Python
-        uses: actions/setup-python@v5 # Cập nhật lên v5
+        uses: actions/setup-python@v5
         with:
-          python-version: '3.10'
+          python-version: '3.11' # Nâng cấp lên 3.11 theo yêu cầu của Google
 
-      - name: Install Gemini Library
-        run: pip install google-generativeai
+      - name: Install New Gemini Library
+        run: |
+          python -m pip install --upgrade pip
+          pip install google-genai # Dùng thư viện đời mới nhất
 
       - name: Run Agent Script
         env:
